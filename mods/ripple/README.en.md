@@ -1,0 +1,786 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="brand/mark-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="brand/mark.svg">
+    <img src="brand/mark.svg" width="120" height="120" alt="The ClaudeRipple mascot: a hollow ripple ring with a curling wave crest">
+  </picture>
+</p>
+
+<h1 align="center">ClaudeRipple</h1>
+
+<p align="center"><b>English</b> · <a href="README.ko.md">한국어</a> · <a href="README.zh-CN.md">简体中文</a> · <a href="README.ja.md">日本語</a> · <a href="README.es.md">Español</a> · <a href="README.pt-BR.md">Português (BR)</a></p>
+
+<p align="center">
+  <b>Chat stays Claude. Only Code becomes GPT.</b><br>
+  Claude Desktop's own setting for other models switches the <b>whole app</b> — chat, phone Remote
+  Control and connectors go with it.<br>ClaudeRipple turns nothing off: you stay signed in to your
+  Claude subscription while GPT, DeepSeek, Kimi, Grok<br>or 400+ other models answer in the
+  <b>Code tab</b>. Claude inside the <b>Codex app</b> and <b>Codex CLI</b> too.
+</p>
+
+<p align="center">
+  <a href="https://apps.apple.com/us/app/id6823063731"><img height="40" alt="App Store" src="https://img.shields.io/badge/App%20Store-Download-0D96F6?style=for-the-badge&logo=apple&logoColor=white"></a>
+  <a href="https://play.google.com/store/apps/details?id=com.clauderipple.remote&hl=en"><img height="40" alt="Google Play" src="https://img.shields.io/badge/Google%20Play-Download-01875F?style=for-the-badge&logo=googleplay&logoColor=white"></a>
+  <a href="https://discord.gg/R8ZgGSNHjw"><img height="40" alt="Discord" src="https://img.shields.io/badge/Discord-Join-5865F2?style=for-the-badge&logo=discord&logoColor=white"></a>
+  <a href="https://github.com/sponsors/PBJ-2"><img height="40" alt="GitHub Sponsors" src="https://img.shields.io/badge/Sponsor-%E2%99%A5-DB61A2?style=for-the-badge&logo=githubsponsors&logoColor=white"></a>
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/clauderipple"><img alt="npm" src="https://img.shields.io/npm/v/clauderipple?label=npm"></a>
+  <img alt="Alpha" src="https://img.shields.io/badge/status-alpha-orange">
+  <a href="LICENSE"><img alt="GPL-3.0" src="https://img.shields.io/badge/license-GPL--3.0-blue"></a>
+  <img alt="macOS" src="https://img.shields.io/badge/macOS-arm64%20%7C%20x64-black">
+  <img alt="Windows" src="https://img.shields.io/badge/Windows-arm64%20%7C%20x64-0078D4">
+  <img alt="Linux" src="https://img.shields.io/badge/Linux-x64%20(systemd)-FCC624">
+  <img alt="Node" src="https://img.shields.io/badge/node-24%2B-success">
+  <a href="README.ko.md"><img alt="한국어" src="https://img.shields.io/badge/docs-한국어-red"></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/PBJ-2/clauderipple/releases/download/v0.9.0/clauderipple-demo.mp4"><img src="docs/media/demo.webp" width="880" alt="A one-minute tour: other models in Claude Desktop's own model menu, effort set for every prompt, and each subagent sent to the model that fits. Click for the full video."></a><br>
+  <sub>A one-minute tour: other models in Claude Desktop's own model menu, effort set for every prompt, and each subagent sent to the model that fits. Click for the full video.</sub>
+</p>
+
+<table align="center">
+  <tr>
+    <td align="center" width="34%"><img src="docs/media/picker.png" width="300" alt="GPT, DeepSeek, GLM and Gemini in Claude Desktop's own model menu"><br><sub>GPT, DeepSeek, GLM and Gemini in Claude Desktop's own model menu</sub></td>
+    <td align="center" width="66%"><img src="docs/media/answer.png" alt="GPT-6 Astra working in the Code tab, every request logged on the right"><br><sub>GPT-6 Astra working in the Code tab, every request logged on the right</sub></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><img src="docs/media/subagents.png" alt="Subagents on DeepSeek and GLM, named in the background-task panel"><br><sub>Subagents on DeepSeek and GLM, named in the background-task panel</sub></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><img src="docs/media/mod-band.png" alt="The ripple mod: effort, context, cache timer, and which model answered with its cache hit"><br><sub>The ripple mod: effort, context, cache timer, and which model answered with its cache hit</sub></td>
+  </tr>
+  <tr>
+    <td align="center" width="50%"><img src="docs/media/mod-alerts.png" alt="Warnings when the cache goes cold or a limit is near, and a compaction offer"><br><sub>Warnings when the cache goes cold or a limit is near, and a compaction offer</sub></td>
+    <td align="center" width="50%"><img src="docs/media/mod-settings.png" alt="Quick settings: automatic effort, the judge, worker modes"><br><sub>Quick settings: automatic effort, the judge, worker modes</sub></td>
+  </tr>
+</table>
+
+---
+
+## 1P, not 3P: the difference this whole project exists for
+
+Claude Desktop already ships an official way to use other models — the **inference
+gateway** setting, what the app calls third-party or **3P** mode. Turning it on is
+not a per-session choice. It switches the **whole app** into a different deployment
+mode at launch, and that mode is a different product:
+
+- The window stops loading `claude.ai` and loads a local bundle instead. claude.ai
+  `/api/` and `/v1/` calls answer `custom_3p_not_available` 503.
+- "Chat" is no longer claude.ai chat. It is a Claude Code local-agent session.
+- Remote Control and side sessions are switched off outright
+  (`shouldEnableSessionsBridge()` returns false).
+- Anthropic's own claude.ai connectors, Claude Design, mobile continuity and chat
+  search go with it.
+
+There is no middle setting. "Chat on Claude, Code on the gateway" is impossible for
+anyone, because 1P mode routes nothing through the gateway at all. (All of this is
+read out of the app's own bundle; see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) §2.)
+
+**ClaudeRipple never touches that setting.** The app stays signed in to your Claude
+subscription in 1P mode, and another model answers in the Code tab and its subagents
+— under its real name in the model picker, at the reasoning effort you chose. You do
+not trade your Claude account for a GPT one. You keep both, in one app.
+
+Three things follow from staying in 1P, and no gateway-based tool can offer any of them:
+
+- **Code from your phone, on GPT.** Remote Control is off in 3P. It is on here, so you
+  can pick a model and send a task from a phone and watch the commits land.
+- **Connectors alive while another model works.** 3P stubs claude.ai calls, which takes
+  Anthropic's own connectors with them. Read a Google Drive doc and have GPT write the code.
+- **Cloud and side sessions.** Gone in 3P. Untouched here.
+
+If you pay for Claude, 3P is not an option — it throws away the half of the
+subscription you are paying for. This is the only way to keep it and still choose
+the model.
+
+## FAQ
+
+### Can I use GPT in the Claude Desktop app?
+
+Yes — in the **Code tab** and its subagents. Install ClaudeRipple, sign in with a
+ChatGPT Plus or Pro subscription, and GPT (GPT-6 Sol, Luna, Astra, GPT-5.6 Terra and
+the rest) shows up under its real name in the model picker, with the reasoning effort
+you pick. The app itself is not modified and not switched into any other mode. The
+general **chat** tab stays Claude: no tool can route it without turning the whole app
+into gateway mode (see [1P, not 3P](#1p-not-3p-the-difference-this-whole-project-exists-for)).
+
+### How do I use GPT in Claude Code?
+
+The same install covers the terminal `claude` CLI. ClaudeRipple is a local proxy that
+Claude Code is pointed at through two lines in `~/.claude/settings.json`, so your
+skills, hooks, MCP servers, `CLAUDE.md` and subagents keep working while another model
+answers.
+
+### Do I have to turn on Claude Desktop's "third-party inference" (gateway) setting?
+
+No — and you should not. That setting switches the whole app into 3P mode, which stops
+loading claude.ai, replaces chat with a local-agent session and turns Remote Control
+off. ClaudeRipple never touches it.
+
+### Will I lose claude.ai chat, Remote Control or my connectors?
+
+No. The app stays signed in to your Claude subscription, so chat, phone Remote Control,
+cloud sessions and Anthropic's own connectors keep working. That is the whole point of
+staying in 1P.
+
+### Can I still use Claude itself?
+
+Yes. Model mapping is per model name: leave a name mapped to Claude and it answers as
+Claude. Most people map one or two names to GPT and leave the rest alone.
+
+### Do I need an OpenAI API key?
+
+No. Any ChatGPT plan that includes Codex works — Plus, Pro and Business, and Enterprise or
+Edu where the workspace admin has turned Codex on. You sign in from the app and no API key
+is involved. The plan's usage limits apply; once they are used up, Codex credits you have
+bought carry on. API keys are for the other providers (DeepSeek, Kimi, GLM, OpenRouter and
+anything else with an Anthropic- or OpenAI-compatible endpoint).
+
+### Which models can I use?
+
+GPT through a ChatGPT subscription, and DeepSeek, Kimi, GLM, Grok, Qwen and 400+ more
+through OpenRouter or a direct API key. Claude models keep working as they are.
+
+### Does it work on Windows?
+
+Yes, on Windows and macOS, arm64 and x64. Install, dashboard, restart and uninstall are
+measured on Windows 11 arm64; the x64 runtime is measured under emulation. Linux works too
+where there is a systemd user session: install, a Code-tab request through the router, a
+restart in the middle of a streaming answer and uninstall are measured on Ubuntu 24.04 x64
+with Claude Desktop 2.2553.13, and so is picker mode: models from `cli.extraModels` show
+in the Code-tab picker next to Claude's own.
+
+### Is my code sent anywhere else?
+
+No. The proxy runs on your own machine. Requests go to the provider you configured and
+nowhere else, and credentials stay in your home directory. See [Privacy](#privacy).
+
+### Will my Claude account get banned? Is this against Anthropic's terms?
+
+What ClaudeRipple does with Claude is small and checkable: a request that stays on Claude
+leaves your machine byte for byte as Claude Code sent it, and a request routed to GPT or
+another provider never reaches Anthropic at all. It works through the proxy and
+certificate settings Claude Code documents for corporate networks (`HTTPS_PROXY`,
+`NODE_EXTRA_CA_CERTS` — [Enterprise network configuration](https://code.claude.com/docs/en/corporate-proxy)),
+not by patching the app. The reports of banned accounts are about
+the opposite direction — a Claude subscription login used from **another** program.
+ClaudeRipple has one optional feature of that kind: Claude inside Codex using your
+subscription login. That use is subject to Anthropic's terms; an Anthropic API key avoids
+the question. Rotating several Claude subscriptions is likewise your call under those
+terms. Only Anthropic can say how an account is treated, so nothing here is a promise.
+
+### What about Gemini through a Google account?
+
+An AI Studio API key is the way Google supports, and the safe one. The Google account
+sign-in (Antigravity) is different: Google's [Antigravity terms](https://antigravity.google/terms)
+(section 6) and the [Gemini CLI FAQ](https://geminicli.com/docs/resources/faq/) name using
+those credentials from another program as a breach. In February 2026 Google suspended
+accounts used this way — the suspension also cut off Gemini CLI and Code Assist — and
+[said](https://github.com/google-gemini/gemini-cli/discussions/20632) a second violation
+is permanent. ClaudeRipple offers the sign-in because others do and people asked, shows
+this warning before it starts, and does nothing to hide the traffic. Use a secondary
+account if you use it at all.
+
+### Can I use several ChatGPT accounts?
+
+Yes. Each `clauderipple login` (or **+ Add ChatGPT account** in the dashboard) adds one.
+When an account hits its usage limit, the same request moves to the next account and the
+spent one rests until its window resets; a conversation stays on the account that
+answered, to keep its prompt cache. This applies to the Claude Desktop Code tab, Claude
+Code, and GPT in the Codex app and CLI.
+
+### Can I use Claude inside Codex?
+
+Yes. `clauderipple codex on` adds ClaudeRipple as a provider, and Claude models appear in
+the Codex app's and CLI's model list under their own names. They answer through your
+Claude Code login or an Anthropic API key. See [Codex app and Codex CLI](#codex-app-and-codex-cli).
+
+### Can it generate images?
+
+Yes, with a ChatGPT subscription and no API key:
+`clauderipple image "a red paper boat" -o boat.png --aspect square`. `--ref FILE` adds
+a reference image and `--transparent` a transparent background. One image takes about
+30 seconds, and the subscription chooses the resolution and quality. Subagents
+ClaudeRipple generates are told the same call, so they can make images too. See
+[Claude Code](#claude-code-terminal-remote-control-subagents).
+
+### Does GPT do worse inside Claude Code?
+
+Claude Code's system prompt and tool descriptions are written for Claude, so another model
+reads instructions tuned for someone else, and it may behave a little differently than in
+its own client. ClaudeRipple tells each model its own name and effort, reshapes tool
+schemas a vendor would reject, and lets you append instructions per provider. A common
+setup is Claude as the main model with GPT or DeepSeek as subagents.
+
+### How is this different from CC Switch, opencodex or claude-code-router?
+
+See the [comparison table](#one-tool-instead-of-four). In short: ClaudeRipple reaches
+the Claude **Desktop** Code tab while the app stays signed in to Claude, and shows other
+models in its picker under their real names. CC Switch also reaches the desktop app, but
+by turning on its gateway (3P) mode.
+
+### Is it free?
+
+Yes. ClaudeRipple is open source under GPL-3.0. You pay only for the subscriptions or API
+keys you already use.
+
+## One tool instead of four
+
+Similar tools let the Claude Code CLI or Codex CLI use other models, but they either
+cannot reach the Claude **desktop app** or reach it only through its gateway (3P) mode,
+and the moment you switch models you lose the Claude-subscription side (claude.ai chat,
+Remote Control, cloud sessions). ClaudeRipple covers the desktop app, the terminal and
+Codex from one menu-bar app, runs both subscriptions side by side, and keeps the
+Claude Code harness intact: your skills, hooks, MCP servers, `CLAUDE.md`, subagents
+and claude.ai connectors keep working while another model does the thinking.
+
+| | ClaudeRipple | CC Switch (checked 2026-09-24) | opencodex / openclaude (checked 2026-09-16) | claude-code-router | Claude Desktop gateway (3P) mode |
+|---|---|---|---|---|---|
+| Claude **Desktop** Code tab **without** gateway (3P) mode | ✅ | ❌ ² | ❌ ¹ | ❌ | ❌ by definition |
+| Keeps claude.ai chat, Remote Control, cloud sessions, connectors | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Claude and GPT subscriptions side by side | ✅ | ❌ one provider at a time | ❌ all-or-nothing | ❌ | ❌ |
+| Real model names in the Desktop picker | ✅ | ❌ `claude-*` role names ² | ❌ | ❌ | partial |
+| Several ChatGPT accounts, switching when one runs out (Desktop and Codex) | ✅ | ❌ switched by hand ³ | ✅ | ❌ | ❌ |
+| Terminal `claude` CLI | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Codex **app** and Codex CLI → Claude | ✅ | ✅ | ✅ | ❌ | ❌ |
+| Prompt cache on translated providers | **94–99 %** measured | not measured | not measured | varies | n/a |
+| Subagents named by real model in the task panel | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Settings GUI, no terminal needed | ✅ | ✅ | ❌ | ❌ | ❌ |
+| Desktop app with its own runtime | ✅ | ✅ | ❌ | ❌ | – |
+
+¹ opencodex's README showed Claude Desktop in a demo but published no setup steps for it,
+in the repository or on its documentation site (checked 2026-09-16). At the time the only
+public way into the desktop app was the official gateway setting — the last column.
+
+² CC Switch reaches Claude Desktop by writing the app's third-party profile
+(`Claude-3p/claude_desktop_config.json`, `"inferenceProvider": "gateway"`), which is the
+last column. Through its local gateway the picker shows only `claude-sonnet-*`,
+`claude-opus-*` and `claude-haiku-*` role names ([its manual](https://github.com/farion1231/cc-switch/blob/main/docs/user-manual/en/2-providers/2.6-claude-desktop.md)).
+CC Switch manages more tools than this table covers (Gemini CLI, OpenCode and others) and
+syncs MCP servers and skills across them.
+
+³ Each ChatGPT account is bound to its own provider card, and official ChatGPT cards are
+kept out of the failover queue (v3.20.0 release notes).
+
+The desktop app's own "third-party inference" setting flips the whole app into another
+mode: you lose claude.ai chat, Remote Control and cloud sessions. Tools that replace
+`ANTHROPIC_BASE_URL` never reach the desktop app, and the ones that do reach it write
+that same setting. ClaudeRipple instead is a
+tiny HTTPS proxy that only the Claude Code process trusts: requests for the models
+you map go to your provider, everything else goes to Anthropic byte for byte.
+
+## What you get
+
+- **Any model in Claude Desktop and Claude Code.** GPT-6 Sol / Luna / Astra and
+  GPT-5.6 Terra / Sol / Luna through your ChatGPT Plus/Pro subscription (new models
+  appear the day OpenAI serves them), Google Gemini, or DeepSeek, Kimi, GLM,
+  MiniMax, Qwen, Grok, Mistral, Groq, Together, Fireworks, OpenRouter (400+ models)
+  and local Ollama / LM Studio. Under their real names in the picker, or mapped onto
+  a Claude name.
+- **Claude in the Codex app and Codex CLI.** A local OpenAI-compatible endpoint that
+  Codex treats as a provider; Claude models appear in Codex's own model list. Uses
+  your current Claude Code login or an Anthropic API key.
+- **Multiple Claude accounts without breaking the prompt cache.** Opt a native Claude
+  provider into account rotation, add subscriptions from the dashboard, and each
+  conversation stays on the account that answered. Before the response starts, a
+  quota or authentication refusal moves that turn to the next account. This native
+  Claude Desktop/Code path is separate from the translated Codex ingress, which picks
+  one available login and does not rotate accounts.
+- **Several ChatGPT accounts.** Each `clauderipple login` (or **+ Add ChatGPT account**
+  in the dashboard) adds one. When an account hits its limit, the next one takes over
+  the same request and the spent one rests until its window resets; a conversation
+  stays on the account that answered, to keep its cache. This covers the Claude Desktop
+  Code tab and subagents **and GPT in the Codex app and CLI** — Codex keeps its own
+  sign-in and moves to the next account without signing out.
+- **The full Claude Code harness, untouched.** Skills, hooks, MCP, `CLAUDE.md`,
+  subagents, plan mode, Remote Control on your phone: nothing is turned off.
+- **Correct by construction.** Prompt caching preserved (Anthropic cache breakpoints
+  and stable OpenAI prefixes), Claude Code's server-side threads handled, tool calls
+  and images round-tripped, reasoning effort clamped to what each model accepts,
+  Anthropic-only request fields stripped for compatible vendors.
+- **A real request log.** Who asked, which model and account answered, tokens in /
+  cached / out, output speed, latency and status per request, and usage for any period
+  across every provider.
+- **Know where your limits stand.** Claude, ChatGPT, Gemini, OpenCode Go, MiniMax and
+  Grok accounts each get a gauge from the limits their provider reports, with the reset
+  time when it is known. Once a window has run long enough to judge its pace, one on
+  course to hit 100% before it resets says so (amber, then red within the hour). Requests
+  to models with a known price are costed at API rates (estimates marked `≈`), so you see
+  what your subscriptions are worth.
+- **A warm cache while you step away.** Keep-warm pings an idle chat to hold its prompt
+  cache, chat by chat with the band's flame (by default for chats over 30k tokens, up to
+  two hours after the last reply), and a card tells you what it held when you come back.
+- **Accounts under your control.** Put one account first, pause another, clear a
+  cooldown, give a provider several API keys, or pin a worker to an exact account.
+- **Fast for GPT.** Two switches send the main session's or subagents' GPT requests on
+  Codex's fast tier, and the log marks each FAST request.
+- **Updates itself.** Installed with the script or npm, the router checks every 12 hours
+  and installs a new version after 10 quiet minutes; the notification opens what changed.
+  Off in the dashboard's About view.
+- **Subagent name tags.** The background-task panel shows `Terra·high · Review`
+  instead of a generic "Agent".
+- **The ripple mod, above the prompt.** A band shows the reasoning effort, context, cache
+  timer, and which model answered your last request with its cache hit. A small judge
+  model (Haiku 5.5 or Jev) reads each prompt with the recent turns and sets the effort,
+  low through max, and asking for a level in chat ("use xhigh for this") sets it for that
+  message, within the subscription-saving cap if you turned that on. Delegated
+  work goes to `ripple:auto` with a difficulty tier, and your ladder in the dashboard
+  picks the worker for each tier: light work to DeepSeek or GLM, hard work to GPT or Opus.
+  Cards warn when the cache has gone cold, the context gets heavy or a plan window passes
+  80%. Press the context chip to see what fills it; **Compact** tidies up first and lets
+  you pick the model that writes the summary; **Handoff** opens a fresh session with a
+  resume note. The **Agents** pane follows every worker, background command and watch.
+  `Log` (or `/ripple-log`) opens the request log in a side pane. One switch on the
+  Clients screen, or `clauderipple mod on`.
+- **Images from your ChatGPT subscription.** `clauderipple image "<prompt>"`, with
+  reference images and transparent backgrounds. Subagents are told how, so a GPT or
+  DeepSeek worker can make an image and look at it without an image tool.
+- **Close the laptop, Claude keeps working.** On macOS and Windows the laptop stays awake
+  with the lid shut while Claude works (and 10 minutes after), so a task you started from
+  your phone finishes. If the Wi-Fi loses its internet, it moves to your phone's hotspot
+  (iPhone or Android) and back to a known Wi-Fi later. Off until you turn it on in the
+  dashboard's Laptop view; see [Lid closed and the phone hotspot](#lid-closed-and-the-phone-hotspot).
+- **Lean workers, if you want them.** One switch gives generated subagents only the
+  tools a worker uses instead of every MCP server and plugin of the session: one
+  worker's first request fell from 33k to 9k tokens.
+- **Made for people who don't want a terminal.** Provider presets with one-click
+  connection tests and model discovery, drop-down model mapping, auto-save, a UI in
+  English, Korean, Chinese, Japanese, Spanish and Portuguese. A menu-bar app that carries its own runtime and sets itself up on
+  first launch, with no administrator rights. When something breaks, Status names the
+  problem and its fix, and the repair screen works while the router is down.
+
+<p align="center">
+  <img src="docs/media/mapping.png" width="880" alt="Model mapping: which model answers for each Claude name, with per-model reasoning effort">
+</p>
+
+## Ripple Remote: every model, from your phone, for hours
+
+Start a job in the Claude desktop app, close the laptop, and keep going from the couch.
+**Ripple Remote** is the phone app for ClaudeRipple: the same sessions, whichever model
+runs them, on your phone, and it does not drop you after 30 minutes.
+
+<p align="center">
+  <img src="docs/media/remote/store/en-1.png" width="260" alt="A remote that doesn't time out: a GPT session followed for 1h 47m">
+  <img src="docs/media/remote/store/en-2.png" width="260" alt="GPT, DeepSeek and Gemini in one model picker on the phone">
+  <img src="docs/media/remote/store/en-3.png" width="260" alt="Approve a DeepSeek session's request from the phone">
+</p>
+
+- **Hours, not minutes.** The connection holds as long as your computer is on. Watch a
+  two-hour refactor through to the end and approve it when it asks.
+- **Any model you route.** GPT, DeepSeek, Gemini or Claude: every session looks and works
+  the same. Switch the next turn's model and reasoning effort from your phone.
+- **Your Claude app sessions, as they are.** Sessions you started in the Code tab on your
+  Mac continue on the phone — the live timeline, tool calls, diffs, subagents and their
+  models, plan approvals and question cards, photos and files.
+- **Your Mac's status bar in your pocket.** The model that answered, the cache and your
+  usage limits, as the ClaudeRipple band shows them on the Mac.
+- **Pairs with the laptop features.** With [lid-closed awake and the phone
+  hotspot](#lid-closed-and-the-phone-hotspot), the laptop keeps working in a bag and stays
+  online when the Wi-Fi does not.
+- **Answer the app's sessions without Remote Control.** Send a message, approve, clear or
+  interrupt a session open in the Claude app; its turn and any artifact it publishes show
+  on the phone.
+- **Told when your computer drops.** If it goes to sleep or stays offline mid-task, the
+  phone gets a push, and another when it is back.
+- **Private by design.** Messages, attachments and notifications are end-to-end
+  encrypted; the relay and the push service cannot read them. No account, no ads, no
+  tracking, free.
+
+Install ClaudeRipple on your computer, open the dashboard's **Phone** view and scan the
+QR code once. iPhone: [App Store](https://apps.apple.com/us/app/id6823063731). Android:
+[Google Play](https://play.google.com/store/apps/details?id=com.clauderipple.remote&hl=en).
+Claude app sessions work on macOS and Windows; the app has a demo you can try without a
+computer.
+
+## Roadmap
+
+Already shipped from earlier plans: per-account limit gauges, a pace warning before a window
+runs out, cost at API prices with usage history, account failover and lid-closed awake.
+The full plan, with the issues behind each item, is in [docs/ROADMAP.md](docs/ROADMAP.md). Next, in order:
+
+1. **See where your limit goes.** Why a request missed the cache, what each request is made of, a limit forecast with alerts, task-finished alerts, a guard against dangerous commands, and image descriptions for models that cannot read images.
+2. **Settings in one place.** One page for plugins, MCP servers, skills and hooks, with the tokens each one really costs; popular bundles in one click; one rules file for Claude and Codex.
+3. **Memory.** Every session distilled daily into decisions, records and open items, and only the few that matter brought back when you start a session, ask about it, or are about to edit a file.
+4. **Accounts handled for you.** Use first the account whose weekly limit resets soonest; hold a request when every account is out and send it when one resets; import accounts from other tools.
+5. **Save tokens, measured honestly.** A before-and-after cost meter first, then savings in the router that do not break the cache.
+
+Ideas and votes are welcome in [issues](https://github.com/PBJ-2/clauderipple/issues).
+
+## Install
+
+**macOS**
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/PBJ-2/clauderipple/main/scripts/install.sh | sh
+```
+
+**Windows** (PowerShell)
+
+```powershell
+irm https://raw.githubusercontent.com/PBJ-2/clauderipple/main/scripts/install.ps1 | iex
+```
+
+**Linux** (a desktop session with systemd)
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/PBJ-2/clauderipple/main/scripts/install.sh | sh
+```
+
+The router runs as a per-user systemd service: `systemctl --user status clauderipple`, and
+`journalctl --user -u clauderipple` for what it printed. Picker mode trusts the local CA in the
+NSS database Chromium reads (`~/.pki/nssdb`, your user only, no sudo), which takes `certutil`:
+run `sudo apt install libnss3-tools` (Fedora: `sudo dnf install nss-tools`) before `clauderipple picker on`.
+
+That is the whole prerequisite list. The script uses a Node 24+ you already have, and
+downloads the official build into `~/.clauderipple/runtime` when you have none,
+verifying it against the checksum nodejs.org publishes. Then it sets ClaudeRipple up:
+a local certificate, two lines in `~/.claude/settings.json`, and a background router
+that starts with your computer. No administrator rights, no password.
+
+With Node already installed you can skip the script:
+
+```sh
+npm install -g clauderipple
+clauderipple install
+```
+
+On Windows, PowerShell's default execution policy refuses the `clauderipple.ps1` npm adds, so
+run `clauderipple.cmd install` there (or use Command Prompt). `install` removes that file, and
+plain `clauderipple` works in PowerShell from then on. The install script never leaves one.
+
+Then open the dashboard and add a provider:
+
+```sh
+clauderipple ui
+```
+
+**Providers** → add ChatGPT or paste an API key → **Model mapping**.
+
+**The menu-bar / tray app** shows the router's state, opens the dashboard in a click, and
+keeps a repair screen that works while the router is down:
+
+```sh
+clauderipple tray
+```
+
+On macOS and Windows the install script adds it by default. It runs on Electron, about 270MB,
+fetched once; set `CLAUDERIPPLE_NO_TRAY=1` before the install command to skip it. On Linux, or
+after an npm-only install, `clauderipple tray --install` adds it. Everything else works without it.
+
+**Updating.** An install from the script or npm updates itself: it checks 10 minutes after
+it starts and every 12 hours, and installs once nothing has been in flight for 10 minutes (off
+in the dashboard's About view). To update now, use the tray's **Check for Updates…**, or:
+
+```sh
+clauderipple update
+```
+
+It updates the way you installed — the install script again, or npm — and restarts the router
+on the new version. The tray's Electron is kept across updates.
+
+Optional, for real names in the Desktop picker: **Clients → Claude Desktop → Model
+picker → on**, then quit and reopen Claude Desktop. To trust the local certificate
+for your user only, macOS asks for your login password and Windows shows a
+confirmation dialog with the fingerprint; Linux adds it to your NSS database without asking.
+ClaudeRipple never sees a password, and no platform needs administrator rights.
+
+> **Closing Claude Desktop's window is not enough.** It keeps running, and the next
+> launch reuses it without reading the new setting. Quit it properly (macOS: ⌘Q;
+> Windows: the tray icon, or Task Manager; Linux: Ctrl+Q or the tray icon, until
+> `pgrep -f claude-desktop` prints nothing) or the picker will silently not change.
+
+<details>
+<summary>From source (Node 24)</summary>
+
+```bash
+git clone https://github.com/PBJ-2/clauderipple && cd clauderipple && npm install
+node packages/cli/src/index.ts install   # certs, settings.json env, supervisor (launchd / Task Scheduler), end-to-end probe
+node packages/cli/src/index.ts ui        # open the local GUI in your browser
+```
+
+`uninstall` reverses everything and restores `~/.claude/settings.json` from a backup.
+Other commands: `status`, `start`, `stop`, `restart`, `logs -f`, `login`, `logout`,
+`claude-login`, `claude-logout`, `picker on|off`, `agent-title on|off`, `mod on|off`,
+`codex on|off`, `update`, `image "<prompt>"`.
+</details>
+
+## Clients
+
+### Claude Desktop
+
+Works out of the box after install. Map models on **Model mapping** (auto-saves),
+or turn on **picker mode** to see provider models by name in the app's own picker.
+Effort chosen in the app is passed through; unsupported levels are clamped.
+
+### Claude Code (terminal, Remote Control, subagents)
+
+Same router, same mapping. `/model gpt-5.6-terra` lists the models you added.
+Subagents follow the routing; a `[[gpt: sol@xhigh]]` marker in a subagent prompt
+overrides the model for that call, and the task panel shows the real model name.
+
+**You do not have to build an agent harness for this.** Point the subagent slot at
+a routed model and every subagent runs on it — no agent file, nothing else:
+
+```jsonc
+// Settings → CLI models, or "cli": { "models": { … } } in the config
+{ "subagent": "gpt-5.6-terra" }   // → CLAUDE_CODE_SUBAGENT_MODEL
+```
+
+**Every model you tick is also a named subagent.** The router writes
+`~/.claude/agents/<name>.md` for each model exactly one provider carries
+(`gpt-5.6-terra` → `gpt-5-6-terra`, `deepseek-v4.1-flash` → `deepseek-v4-1-flash`),
+so "have DeepSeek do it" needs nothing beyond ticking the model: the Agent tool
+lists it, `subagent_type: "deepseek-v4-1-flash"` runs it, and the task panel
+names it. Untick the model and its file goes away. The router only ever touches
+the files it wrote (recorded in `generated-agents.json`); an agent file you wrote
+yourself under the same name wins and is left alone, so a custom brief is still
+just Claude Code's own agent file with a `model:` the router knows:
+
+```markdown
+---
+name: reviewer
+description: Independent review on GPT-5.6 Sol.
+model: gpt-5.6-sol@medium
+---
+You are the reviewer for this session. Verify the change yourself and report
+the conclusion only.
+```
+
+Per-call effort goes on the **first line** of the subagent prompt:
+`[[ripple: gpt-5-6-terra@high]]` — any agent name or model id works there. A
+marker anywhere else is prose and is ignored (a compaction summary that quotes
+one must not re-route the session). A model the router cannot place is refused
+by name (`400 ClaudeRipple: no provider declares "…"`) instead of being sent on
+to fail somewhere less legible; native Claude models always pass through.
+Set `"cli": { "agentFiles": false }` to turn generation off.
+
+By default a generated worker inherits every tool of the session, so each MCP
+server and plugin rides along on every worker request. `"cli": {
+"limitWorkerTools": true }` (or **Worker tools** in the dashboard) gives it only
+the read, edit, run, search and skill tools, which cut one worker's first
+request from about 33k to 9k tokens. Such a worker has no browser or simulator
+tools. A worker that needs them belongs in an agent file of your own, which is
+never touched.
+
+With a ChatGPT provider configured, images come from the same subscription:
+
+```bash
+clauderipple image "a red paper boat, flat illustration" -o boat.png --aspect square
+```
+
+`--transparent`, `--format png|jpeg|webp` and `--ref FILE` (a reference image,
+repeatable) are optional. One image takes about 30 seconds. The subscription
+backend picks the resolution and quality itself, so the shape is asked for in
+words (`--aspect`). The command is a client of `POST /api/image` on the admin
+port, which answers with the image bytes. Generated workers are told the `curl`
+form of it, so a worker with only Bash can make an image and read it back.
+
+Claude Code runs `WebSearch` as a separate small-model request. To keep a
+ChatGPT-routed setup from spending Anthropic quota for that request, select the
+same ChatGPT provider as the search backend in `config.json`:
+
+```jsonc
+{ "webSearch": { "provider": "chatgpt", "model": "gpt-5.6-terra" } }
+```
+
+This is opt-in. With no `webSearch` setting, Claude Code's existing search path
+is unchanged.
+
+When a slot is routed to a provider that cannot run server tools (an
+`openai-compatible` one, for example) and no search backend is set, its searches
+are refused rather than answered with invented results. To let only those
+searches go to Anthropic while the slot's other requests stay routed, set:
+
+```jsonc
+{ "webSearch": "native" }
+```
+
+The search is then sent unchanged, with its original Claude model id, on the
+app's own login. A search for a model id that does not start with `claude-` is
+still refused. `webSearch` takes either a backend object or `"native"`, not both.
+
+### Remote (SSH) sessions
+
+Claude Desktop's Code tab can run a session on a remote Linux host over SSH.
+Claude Code then runs **on that host**, where ClaudeRipple is not, so routed
+models are unknown there (`Agent type 'gpt-6-1-sol' not found`). Connect the
+host once from the machine ClaudeRipple runs on:
+
+```bash
+clauderipple remote add my-server            # an ssh alias or user@host; --port N (default 18791)
+clauderipple remote hosts                    # tunnel state per host (also in `remote status`)
+clauderipple remote remove my-server         # undo it
+```
+
+`remote add` needs key-based `ssh my-server` to work without a password prompt.
+It copies the router's CA certificate (the public certificate only) to
+`~/.clauderipple-remote/` on the host, points the host's
+`~/.claude/settings.json` at the tunnel (`HTTPS_PROXY=http://127.0.0.1:18791`,
+`NODE_EXTRA_CA_CERTS`; the original is kept as
+`settings.json.clauderipple-backup`; a different proxy already there is refused
+without `--force`), and copies the generated agent files. The router then keeps
+a reverse SSH tunnel open from the host's `127.0.0.1:18791` to itself, restarts
+it when it drops, and copies the agent files again whenever they change. The
+host needs only `sh` — no Node and no ClaudeRipple.
+
+While the tunnel is down, Claude Code on the host gets *connection refused*
+rather than going to Anthropic around the router. The remote session only exists
+while this machine's Claude Desktop is connected to it anyway. The tunnel
+listens on the host's loopback only, but on a shared host every user there can
+reach that port, and through it your router. The status mod and image
+generation are not available on remote hosts yet.
+
+## Lid closed and the phone hotspot
+
+For sessions you drive from your phone (Remote Control, Ripple Remote): the laptop
+keeps working in a bag. Open the dashboard's **Laptop** view.
+
+**Stay awake with the lid closed.** Three modes: *Off*; *While working* — awake while a
+model call runs and for 10 minutes after the last one; *Always* — until you turn it off
+or a time you set. It lets go by itself when the battery drops below 20% or (on macOS) the
+Mac reports a thermal warning, and puts a closed laptop to sleep when it does. Don't carry
+it in a closed bag for long while it is awake.
+
+- macOS: press **Set up** once. macOS's own password dialog installs a sudoers rule for
+  exactly the commands used (`pmset disablesleep`, `pmset sleepnow`, joining the hotspot
+  you name); ClaudeRipple never sees the password. `clauderipple awake setup --remove`
+  takes it out. If Insomnia is installed, setup removes it (it does the same job).
+- Windows: no administrator rights. A child of the router holds
+  `SetThreadExecutionState`, and the lid action is set to "do nothing" only while it is
+  held; your own power settings come back afterwards, also if the router dies.
+
+**Wi-Fi without internet → phone hotspot.** It probes the internet through the Wi-Fi
+interface (a router with a dead uplink or a captive portal still looks "connected" to
+the OS) and joins the hotspot you name after 3 of 5 rounds fail. On the hotspot it tries
+the way back 5, 10, 20, 30, 40, 50 and 60 minutes after landing, then every 10 minutes:
+it leaves the hotspot so the OS joins the best known Wi-Fi in range, and stays there only
+if that Wi-Fi has internet. A model call that starts during the switch waits a moment
+instead of failing.
+
+- Join the phone's hotspot from the laptop once by hand, so the OS keeps its password.
+- iPhone: keep Settings › Personal Hotspot › "Allow Others to Join" on. On a Mac, the
+  same Apple Account and Bluetooth on help it find the phone.
+- Android: an idle hotspot turns itself off after a while; turn it on again if it is
+  not found.
+- Linux: not supported yet.
+
+### Codex app and Codex CLI
+
+```bash
+clauderipple codex on     # adds a "clauderipple" provider to ~/.codex/config.toml (backup first)
+codex --profile clauderipple -m claude-sonnet-5
+```
+
+`codex on` also points Codex's built-in OpenAI provider at ClaudeRipple (`openai_base_url`).
+Codex keeps its ChatGPT sign-in; its GPT requests go on to ChatGPT unchanged, except that the
+account is chosen from the ones added to ClaudeRipple — so with several added, Codex too moves
+from a spent account to the next. With none added, or all of them at their limit, Codex's own
+login is used. An `openai_base_url` you set yourself is left alone. `clauderipple codex off` undoes it.
+
+Claude models show up in Codex's model list under their names (ClaudeRipple writes
+a model catalog next to Codex's own). Claude is reached through your Claude Code
+login (detected from the running Desktop session, the terminal login, or a
+sign-in of ClaudeRipple's own: **Providers → Claude (Anthropic) → + Add
+Claude account** opens the browser, no terminal needed; the same as
+`clauderipple claude-login`) or an Anthropic API key. Reusing a
+subscription login is subject to Anthropic's terms. Any Anthropic-compatible
+provider you configured is available the same way.
+
+<p align="center">
+  <img src="docs/media/add-provider.png" width="880" alt="Add provider: ChatGPT subscription, presets, OpenAI-compatible providers">
+</p>
+
+## Providers
+
+| Provider | Kind | Auth | Model list | Notes |
+|---|---|---|---|---|
+| ChatGPT subscription | Codex backend | several sign-ins, switching when one runs out (Codex login reused too) | read from your subscription (GPT-6 Sol, Luna, Astra, GPT-5.6 …) | effort low…max (Luna: ultra), prompt cache 94–99 % |
+| Google Gemini | Gemini API | AI Studio API key, or Google account sign-in (Antigravity, see the FAQ) | discovered | translated (Messages ⇄ generateContent), thought signatures kept across turns |
+| Grok subscription | Grok CLI chat proxy | the Grok CLI's sign-in (`grok login`), refreshed through the CLI | read from your subscription (Grok 4.7, 4.7 Fast, 4.6, 4.5) | translated (Chat Completions), effort low…xhigh; the CLI's own channel, not a published API ([§4e](docs/ARCHITECTURE.md#4e-grok-providers-implemented-2026-10-08)) |
+| OpenRouter | Anthropic-compatible | API key | 400+, discovered | per-model effort support read from the API |
+| DeepSeek, Kimi, Z.ai GLM, MiniMax, Qwen (intl / cn) | Anthropic-compatible | API key | preset | verified against vendor docs |
+| OpenCode Go, OpenCode Zen | OpenAI-compatible (Anthropic protocol for some models; Google protocol on Go) | API key | preset | Go's subscription quota and per-model prices shown |
+| xAI Grok, Mistral, Groq, Together, Fireworks | OpenAI-compatible | API key | discovered | translated (Chat Completions / Responses) |
+| Ollama, LM Studio | OpenAI-compatible, local | none | discovered | |
+| Anthropic | native | Claude login(s) or API key | Claude models | optional sticky rotation for Claude Desktop/Code; Codex picks one login |
+| Anything else | custom | your choice | discovered | any Anthropic- or OpenAI-compatible endpoint |
+
+Requests to compatible providers are cleaned of Anthropic-only fields
+(server-side threads, deferred tools, context management, thinking bindings) and
+effort is clamped per model, so vendors do not 400 on Claude Code's request shape.
+
+## How it works
+
+```
+Claude Desktop / claude CLI ──HTTPS_PROXY──▶ ClaudeRipple ──▶ api.anthropic.com   (unchanged)
+                                               │
+                        mapped model ──────────┼──▶ chatgpt.com/backend-api (Responses ⇄ Messages)
+                                               ├──▶ Anthropic-compatible vendors (+ compat layer)
+                                               ├──▶ OpenAI-compatible vendors (Messages ⇄ Chat/Responses)
+                                               └──▶ Google Gemini (Messages ⇄ generateContent)
+Codex app / CLI ──/v1/responses──▶ ClaudeRipple ingress ──▶ Claude (your login or API key) / vendors
+```
+
+- The Claude Code CLI reads `HTTPS_PROXY` and `NODE_EXTRA_CA_CERTS` from
+  `~/.claude/settings.json` (Anthropic's documented corporate-proxy path). Only that
+  process trusts ClaudeRipple's local CA; the OS keychain is untouched unless you
+  turn on picker mode.
+- Picker mode routes the app's own claude.ai traffic through the proxy and adds
+  your models to the picker list the app fetches at start. Off again with one click.
+- The router drains in-flight calls on restart, self-exits on repeated upstream
+  failures so launchd restarts it, rotates logs, and never drops a request silently.
+
+Details with sources: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Privacy
+
+Everything runs on 127.0.0.1. API keys live in `~/.clauderipple/config.json`
+and added Claude OAuth grants in `~/.clauderipple/claude-accounts.json` (both
+0600). Admin APIs and logs expose neither tokens nor upstream account ids. The only
+network destinations are the providers you configure. There is no telemetry.
+
+## Status: alpha
+
+In daily use by the author, but young. Expect rough edges:
+
+- **Windows support is new (2026-09-14).** Install, setup, the router, signing
+  in, the picker and a live GPT call are verified on x64 hardware; crash recovery
+  on arm64. The window still has the stock Windows title bar.
+- **Linux support is new (2026-09-24)**, contributed with measurements on Ubuntu
+  24.04 x64 (install, a Code-tab request, restart mid-stream, picker mode, uninstall).
+  It needs a systemd user session; other distributions and arm64 are untested.
+- ChatGPT, OpenRouter and Claude-in-Codex are verified with live accounts; the
+  other presets follow the vendors' official documentation.
+- A model added to the picker is usable from the next session.
+- Claude Code and Codex change their wire protocols often; a client update can
+  break a translation until ClaudeRipple catches up. Bugs and logs welcome.
+
+## Community
+
+Questions and bug reports are on Discord: [https://discord.gg/R8ZgGSNHjw](https://discord.gg/R8ZgGSNHjw).
+What is planned next: [docs/ROADMAP.md](docs/ROADMAP.md).
+
+## Sponsors
+
+ClaudeRipple is free and GPL-licensed, with no paid tier and no telemetry. It has shipped 70+
+releases since September 2026 to keep up with new models and every Claude Code and Codex update,
+and it runs on paid infrastructure such as the Ripple Remote relay. If it saves you a
+subscription or an evening of setup, **[sponsor it on GitHub](https://github.com/sponsors/PBJ-2)**,
+from $3 a month or once. Supporters ($10 a month and up) are listed here.
+
+<!-- Supporter and Backer tier sponsors: add each name here (Backers with a link). -->
+_No sponsors yet. Yours could be the first._
+
+## Not affiliated
+
+ClaudeRipple is an independent open-source project. It is not affiliated with,
+endorsed by, or sponsored by Anthropic or OpenAI. Claude and Claude Code are
+trademarks of Anthropic, PBC. ChatGPT and Codex are trademarks of OpenAI.
+
+## License
+
+Copyright (c) 2026 pbj. GPL-3.0 — see [LICENSE](LICENSE). Use it freely; if you distribute a modified
+version, ship its source under the same license.
