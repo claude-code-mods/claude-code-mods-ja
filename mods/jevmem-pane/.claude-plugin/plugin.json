@@ -1,0 +1,24 @@
+{
+  "name": "jevmem-pane",
+  "displayName": "jevmem pane",
+  "version": "0.7.8",
+  "description": "Claude Code 聊天旁的侧面板：本次提示 jevmem 想起了什么、它的守卫做了什么决定、上一轮保存了什么，并提供「为什么／错误／忘记」按钮。只读取 .jevmem/ 下的三个本地文件并调用 jevmem 命令，不向外发送数据。需要 jevmem CLI 且项目已开启。",
+  "author": {
+    "name": "Avinash Jetwani",
+    "url": "https://github.com/Avinash-jetwani"
+  },
+  "homepage": "https://avinash-jetwani.github.io/jevmem/",
+  "repository": "https://github.com/Avinash-jetwani/jevmem",
+  "privacyPolicyUrl": "https://github.com/Avinash-jetwani/jevmem/blob/main/PRIVACY.md",
+  "supportUrl": "https://github.com/Avinash-jetwani/jevmem/issues",
+  "documentationUrl": "https://avinash-jetwani.github.io/jevmem/pane/",
+  "license": "MIT",
+  "keywords": [
+    "memory",
+    "project-memory",
+    "pane",
+    "jev",
+    "claude-code"
+  ],
+  "types": "./types/index.d.ts"
+}

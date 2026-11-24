@@ -1,0 +1,11 @@
+{
+  "name": "operator",
+  "displayName": "Operator Memory",
+  "version": "0.2.0",
+  "description": "面向 Claude Code 中 agent 驱动开发的持久化项目与用户记忆。",
+  "author": {
+    "name": "Aerovato Research"
+  },
+  "repository": "https://github.com/aerovato/operator-memory",
+  "license": "BSD-3-Clause"
+}

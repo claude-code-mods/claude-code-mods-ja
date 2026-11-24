@@ -1,0 +1,19 @@
+{
+  "name": "tavernweave-agent-skills",
+  "version": "2.4.0",
+  "description": "TavernWeaveX 无限月读 2.4.0：23 项共享技能，覆盖角色卡、软件工作与有界云端任务，带能力检查与可恢复的交接；在 Claude Code 中注入 Host Front Door，添加 tavernweave agent 并在提示上方提供 Soul 模式开关。实际执行取决于宿主工具与权限。",
+  "author": {
+    "name": "LiarMTTT"
+  },
+  "homepage": "https://github.com/LiarMTTT/TavernWeave",
+  "repository": "https://github.com/LiarMTTT/TavernWeave",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "types": "./hooks/soul-switch-types.d.ts",
+  "keywords": [
+    "agent-skills",
+    "sillytavern",
+    "rolecard",
+    "mvu",
+    "code-quality"
+  ]
+}

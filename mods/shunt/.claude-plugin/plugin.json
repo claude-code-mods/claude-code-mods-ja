@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "shunt",
+  "displayName": "shunt · gateway",
+  "version": "0.1.0",
+  "description": "shunt 网关的 Claude Mod：提示上方的条带显示各窗口已用比例与重置时间（共享账号池的数据读自 shunt 的 GET /usage，或会话自身的 Claude 速率限制），/shunt:usage 打印账号池的完整明细。",
+  "author": {
+    "name": "Minsu Lee",
+    "email": "minsu.lee@pleaseai.dev",
+    "url": "https://github.com/amondnet"
+  },
+  "homepage": "https://github.com/pleaseai/shunt",
+  "repository": "https://github.com/pleaseai/shunt",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "shunt",
+    "llm-gateway",
+    "usage",
+    "quota",
+    "usage-band",
+    "mod",
+    "function-hooks"
+  ],
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "usageBand": {
+      "type": "boolean",
+      "title": "用量状态带",
+      "description": "在提示行上方显示用量：shunt 池的用量（每分钟和每轮结束后刷新），或不在 shunt 上时显示会话自身的速率限制。关闭后 mod 不进行任何轮询，/shunt:usage 仍会回答。",
+      "default": true
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "turbo",
+  "displayName": "Turbo",
+  "description": "人工把关的 agent 软件工厂：你决定做什么、评判结果，技能负责塑造、构建、打磨并交付改动，并从中学习。",
+  "author": {
+    "name": "Tobias Hagemann",
+    "url": "https://github.com/tobihagemann"
+  },
+  "homepage": "https://github.com/tobihagemann/turbo",
+  "repository": "https://github.com/tobihagemann/turbo",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

@@ -1,0 +1,18 @@
+{
+  "name": "token-optimizer",
+  "description": "独立的 Token Optimizer 状态栏（含自带测试）。它随 token-optimizer 插件一同发布。",
+  "author": {
+    "name": "Alex Greenshpun",
+    "url": "https://linkedin.com/in/alexgreensh"
+  },
+  "homepage": "https://github.com/alexgreensh/token-optimizer",
+  "repository": "https://github.com/alexgreensh/token-optimizer",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "keywords": [
+    "token",
+    "optimization",
+    "desktop",
+    "status-bar"
+  ],
+  "types": "./types/index.d.ts"
+}

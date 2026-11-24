@@ -1,0 +1,19 @@
+{
+  "name": "lane-stack",
+  "version": "1.67.4",
+  "description": "Claude Code 的单人产品经理流水线：编排 agent、泳道手册、入职与恢复命令。",
+  "author": {
+    "name": "VKirill",
+    "url": "https://github.com/VKirill/claude-lane-stack"
+  },
+  "homepage": "https://github.com/VKirill/claude-lane-stack",
+  "repository": "https://github.com/VKirill/claude-lane-stack",
+  "license": "MIT",
+  "keywords": [
+    "orchestration",
+    "dev-orchestrator",
+    "lanes",
+    "run-supervisor",
+    "claude-code"
+  ]
+}

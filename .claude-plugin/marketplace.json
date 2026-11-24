@@ -1,0 +1,489 @@
+{
+  "name": "claude-code-mods-zh",
+  "owner": {
+    "name": "claude-code-mods"
+  },
+  "description": "人工筛选、已验证、锁定版本的 Claude Code 模组（函数钩子插件），添加一次即可安装。",
+  "plugins": [
+    {
+      "name": "fm",
+      "source": "./mods/fm",
+      "description": "帆船工作动画与会话专用转录显示，跨会话共享 calm 模式偏好。",
+      "version": "1.0.0",
+      "author": {
+        "name": "kunchenguid"
+      },
+      "homepage": "https://github.com/kunchenguid/firstmate",
+      "license": "MIT",
+      "category": "git"
+    },
+    {
+      "name": "terminal-browser",
+      "source": "./mods/terminal-browser",
+      "description": "内置在 Claude Code 里的浏览器：预览网站和 HTML，并可让 agent 操作这个浏览器。",
+      "version": "0.0.2",
+      "author": {
+        "name": "zenbu-labs"
+      },
+      "homepage": "https://github.com/zenbu-labs/terminal-browser",
+      "license": "MIT",
+      "category": "rendering"
+    },
+    {
+      "name": "pebrel-prompt-suggestions",
+      "source": "./mods/pebrel-prompt-suggestions",
+      "description": "通过 Pebrel 会话桥在空输入框里给出原生提示预测。",
+      "version": "0.1.0",
+      "author": {
+        "name": "Kuddev"
+      },
+      "homepage": "https://github.com/Kuddev/pebrel",
+      "license": "GPL-3.0",
+      "category": "productivity"
+    },
+    {
+      "name": "token-optimizer",
+      "source": "./mods/token-optimizer",
+      "description": "token 优化状态栏，显示 token 去向并给出更省钱的调整。",
+      "version": "0.0.0",
+      "author": {
+        "name": "alexgreensh"
+      },
+      "homepage": "https://github.com/alexgreensh/token-optimizer",
+      "license": "NOASSERTION",
+      "category": "dashboards"
+    },
+    {
+      "name": "lcu-approve",
+      "source": "./mods/lcu-approve",
+      "description": "电脑使用的按应用授权：本次允许、始终允许或拒绝，并有已授权应用面板。",
+      "version": "0.6.0",
+      "author": {
+        "name": "amontlabs"
+      },
+      "homepage": "https://github.com/amontlabs/lcu",
+      "license": "MIT",
+      "category": "safety"
+    },
+    {
+      "name": "fast-jev-compaction",
+      "source": "./mods/fast-jev-compaction",
+      "description": "为 Claude Code 会话提供逐字保留的 Jev 压缩。",
+      "version": "0.3.0",
+      "author": {
+        "name": "tamaratran"
+      },
+      "homepage": "https://github.com/tamaratran/fast-jev-compaction",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "lot-map",
+      "source": "./mods/lot-map",
+      "description": "聊天旁的实时地图：记忆、文件、Shell、网络、模型、agent、技能与 hooks 被使用时点亮。",
+      "version": "0.12.1",
+      "author": {
+        "name": "alexeyw"
+      },
+      "homepage": "https://github.com/alexeyw/lot-map",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "council",
+      "source": "./mods/council",
+      "description": "同时咨询多个 AI agent 获取多种视角，带流式面板和可选的额外复查提示。",
+      "version": "2026.11.2",
+      "author": {
+        "name": "hex"
+      },
+      "homepage": "https://github.com/hex/claude-council",
+      "license": "MIT",
+      "category": "dashboards"
+    },
+    {
+      "name": "codex-attachment-manager",
+      "source": "./mods/codex-attachment-manager",
+      "description": "较早的图片以占位符发送、按 ID 取回原图，让长图片会话保住 prompt 缓存。",
+      "version": "0.11.5",
+      "author": {
+        "name": "chipfighter"
+      },
+      "homepage": "https://github.com/chipfighter/context-attachment-manager",
+      "license": "MIT",
+      "category": "dashboards"
+    },
+    {
+      "name": "storybloq",
+      "source": "./mods/storybloq",
+      "description": "项目记忆：把工单、问题、交接和经验存进仓库里的 .story/ 目录。",
+      "version": "1.16.0",
+      "author": {
+        "name": "Storybloq"
+      },
+      "homepage": "https://github.com/Storybloq/storybloq",
+      "license": "NOASSERTION",
+      "category": "productivity"
+    },
+    {
+      "name": "shared-session",
+      "source": "./mods/shared-session",
+      "description": "用链接或团队共享会话；队友用自己的 Claude Code 加入并实时看到每一轮。",
+      "version": "0.11.53",
+      "author": {
+        "name": "Paradigm-Study"
+      },
+      "homepage": "https://github.com/Paradigm-Study/claude-share",
+      "license": "MIT",
+      "category": "agents"
+    },
+    {
+      "name": "just-do-it",
+      "source": "./mods/just-do-it",
+      "description": "把已授权的工作推进到验证与交付，并暴露需要修复的配置问题。",
+      "version": "0.1.0",
+      "author": {
+        "name": "Lifecycle-Innovations-Limited"
+      },
+      "homepage": "https://github.com/Lifecycle-Innovations-Limited/claude-ops",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "prismantis",
+      "source": "./mods/prismantis",
+      "description": "为回复提供可换主题的彩色渲染：表格、标题、代码、数字、路径与链接。",
+      "version": "0.49.3",
+      "author": {
+        "name": "NahumLitvin"
+      },
+      "homepage": "https://github.com/NahumLitvin/prismantis",
+      "license": "MIT",
+      "category": "rendering"
+    },
+    {
+      "name": "filetree",
+      "source": "./mods/filetree",
+      "description": "IDE 风格的目录树，显示 Claude 正在做什么、改到哪个文件。",
+      "version": "0.8.5",
+      "author": {
+        "name": "data-goblin"
+      },
+      "homepage": "https://github.com/data-goblin/claude-code-filetree",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "jev-auto-compact",
+      "source": "./mods/jev-auto-compact",
+      "description": "上下文到 60% 时以零生成裁剪陈旧工具调用；无可裁剪时跳过而非退化为 LLM 摘要。",
+      "version": "1.6.1",
+      "author": {
+        "name": "notque"
+      },
+      "homepage": "https://github.com/notque/vexjoy-agent",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "cache-tax",
+      "source": "./mods/cache-tax",
+      "description": "在休息时保持一小时 prompt 缓存温热，冷启动前先询问并显示重写成本。",
+      "version": "2.4.2",
+      "author": {
+        "name": "karanb192"
+      },
+      "homepage": "https://github.com/karanb192/cache-tax",
+      "license": "MIT",
+      "category": "dashboards"
+    },
+    {
+      "name": "turbo",
+      "source": "./mods/turbo",
+      "description": "人工把关的 agent 软件工厂：你决定做什么并验收，技能负责构建与发布。",
+      "version": "0.0.0",
+      "author": {
+        "name": "tobihagemann"
+      },
+      "homepage": "https://github.com/tobihagemann/turbo",
+      "license": "MIT",
+      "category": "git"
+    },
+    {
+      "name": "agent-standup-band",
+      "source": "./mods/agent-standup-band",
+      "description": "本机其他会话需要你时在提示上方显示一行，结束时给一个提醒。",
+      "version": "1.47.1",
+      "author": {
+        "name": "Atoll92"
+      },
+      "homepage": "https://github.com/Atoll92/agent-standup",
+      "license": "MIT",
+      "category": "dashboards"
+    },
+    {
+      "name": "flightdeck",
+      "source": "./mods/flightdeck",
+      "description": "实时 agent 仪表盘：模型体征、值班架构师、权限检查、子 agent 卡片与会话日志。",
+      "version": "0.6.2",
+      "author": {
+        "name": "scasella"
+      },
+      "homepage": "https://github.com/scasella/claude-flightdeck",
+      "license": "MIT",
+      "category": "agents"
+    },
+    {
+      "name": "caliber-jev-compaction",
+      "source": "./mods/caliber-jev-compaction",
+      "description": "为 Claude Code 会话提供逐字保留的 Jev 压缩。",
+      "version": "0.3.0",
+      "author": {
+        "name": "caliber-ai-org"
+      },
+      "homepage": "https://github.com/caliber-ai-org/ai-setup",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "mazyos",
+      "source": "./mods/mazyos",
+      "description": "葡语商业操作插件：每次会话带入公司记忆、输出带品牌形象，并提供 17 个营销/SEO 技能。",
+      "version": "1.0.0",
+      "author": {
+        "name": "Mazzeo-Marketing"
+      },
+      "homepage": "https://github.com/Mazzeo-Marketing/MazyOS",
+      "license": "NOASSERTION",
+      "category": "git"
+    },
+    {
+      "name": "start",
+      "source": "./mods/start",
+      "description": "面向 agent 软件开发的流程编排命令。",
+      "version": "4.0.0",
+      "author": {
+        "name": "rsmdt"
+      },
+      "homepage": "https://github.com/rsmdt/the-startup",
+      "license": "MIT",
+      "category": "agents"
+    },
+    {
+      "name": "shunt",
+      "source": "./mods/shunt",
+      "description": "shunt 网关的用量条：各窗口花费与重置时间，以及完整的 /shunt:usage 明细。",
+      "version": "0.1.0",
+      "author": {
+        "name": "pleaseai"
+      },
+      "homepage": "https://github.com/pleaseai/shunt",
+      "license": "Apache-2.0",
+      "category": "dashboards"
+    },
+    {
+      "name": "operator",
+      "source": "./mods/operator",
+      "description": "面向 agent 开发的持久项目与用户记忆。",
+      "version": "0.2.0",
+      "author": {
+        "name": "aerovato"
+      },
+      "homepage": "https://github.com/aerovato/operator-memory",
+      "license": "BSD-3-Clause",
+      "category": "productivity"
+    },
+    {
+      "name": "carbon",
+      "source": "./mods/carbon",
+      "description": "在终端和桌面应用中追踪 Claude Code 会话的碳足迹。",
+      "version": "1.20.1",
+      "author": {
+        "name": "gwittebolle"
+      },
+      "homepage": "https://github.com/gwittebolle/claude-carbon",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "agentctl",
+      "source": "./mods/agentctl",
+      "description": "会话级 agent 控制面板：任务范围、证据与交接。",
+      "version": "0.3.1",
+      "author": {
+        "name": "sd0xdev"
+      },
+      "homepage": "https://github.com/sd0xdev/sd0x-harness",
+      "license": "MIT",
+      "category": "safety"
+    },
+    {
+      "name": "multi-core",
+      "source": "./mods/multi-core",
+      "description": "在单个会话里使用 ChatGPT、Cursor、OpenCode 与 Antigravity 模型，用 /model 切换。",
+      "version": "0.0.0",
+      "author": {
+        "name": "greenpolo"
+      },
+      "homepage": "https://github.com/greenpolo/cc-multi-cli-plugin",
+      "license": "Apache-2.0",
+      "category": "safety"
+    },
+    {
+      "name": "work-mode",
+      "source": "./mods/work-mode",
+      "description": "会话模式：auto（不中途提问）、out（委派批量工作）、wrap（收敛并收尾）。",
+      "version": "0.8.0",
+      "author": {
+        "name": "danyuchn"
+      },
+      "homepage": "https://github.com/danyuchn/claude-work-mode",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "tokendoctor",
+      "source": "./mods/tokendoctor",
+      "description": "回放你过去的会话，展示每项改动能省多少，然后只应用你选择的改动。",
+      "version": "0.6.1",
+      "author": {
+        "name": "localixai"
+      },
+      "homepage": "https://github.com/localixai/tokendoctor",
+      "license": "MIT",
+      "category": "dashboards"
+    },
+    {
+      "name": "engineer",
+      "source": "./mods/engineer",
+      "description": "严谨的 agent 工程方法套件：需求受理、验收标准探索、规格、计划、实现、验证与加固。",
+      "version": "0.40.2",
+      "author": {
+        "name": "swingerman"
+      },
+      "homepage": "https://github.com/swingerman/engineer",
+      "license": "MIT",
+      "category": "git"
+    },
+    {
+      "name": "skins",
+      "source": "./mods/skins",
+      "description": "转录皮肤的十五种主题、丰富卡片与用量条；/skin 实时切换。",
+      "version": "0.5.16",
+      "author": {
+        "name": "hellosverre"
+      },
+      "homepage": "https://github.com/hellosverre/claude-skins",
+      "license": "MIT",
+      "category": "dashboards"
+    },
+    {
+      "name": "show-your-work",
+      "source": "./mods/show-your-work",
+      "description": "在终端里展示成品：截图、操作录屏和前后对比的 QA。",
+      "version": "1.1.0",
+      "author": {
+        "name": "iamumeransari"
+      },
+      "homepage": "https://github.com/iamumeransari/claude-show-your-work",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "jevmem-pane",
+      "source": "./mods/jevmem-pane",
+      "description": "侧栏显示 jevmem 召回了什么、守卫判定什么、上一轮保存了什么。",
+      "version": "0.7.8",
+      "author": {
+        "name": "Avinash-jetwani"
+      },
+      "homepage": "https://github.com/Avinash-jetwani/jevmem",
+      "license": "MIT",
+      "category": "safety"
+    },
+    {
+      "name": "ctx-handoff",
+      "source": "./mods/ctx-handoff",
+      "description": "把你教给 Claude 的内容沉淀为项目笔记，捕捉常见疏漏，保温缓存并续接长会话。",
+      "version": "0.8.2",
+      "author": {
+        "name": "cablate"
+      },
+      "homepage": "https://github.com/cablate/ctx-handoff-mod",
+      "license": "MIT",
+      "category": "dashboards"
+    },
+    {
+      "name": "inbox",
+      "source": "./mods/inbox",
+      "description": "汇总会话中等待你处理的问题、任务、发现与 PR。",
+      "version": "0.6.0",
+      "author": {
+        "name": "petekp"
+      },
+      "homepage": "https://github.com/petekp/inbox",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "lane-stack",
+      "source": "./mods/lane-stack",
+      "description": "单人 PM 流水线：编排 agent、泳道手册、入职与续接命令。",
+      "version": "1.67.4",
+      "author": {
+        "name": "VKirill"
+      },
+      "homepage": "https://github.com/VKirill/claude-lane-stack",
+      "license": "MIT",
+      "category": "agents"
+    },
+    {
+      "name": "compact-adviser",
+      "source": "./mods/compact-adviser",
+      "description": "在完成的检查点建议或执行 /compact，由 TypeSafe Jev 判定。",
+      "version": "0.1.14",
+      "author": {
+        "name": "kunchenguid"
+      },
+      "homepage": "https://github.com/kunchenguid/compact-adviser",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "ripple",
+      "source": "./mods/ripple",
+      "description": "为每条提示选择推理强度、为每个委派任务选择执行者，保温缓存并显示请求去向。",
+      "version": "0.7.0",
+      "author": {
+        "name": "PBJ-2"
+      },
+      "homepage": "https://github.com/PBJ-2/clauderipple",
+      "license": "GPL-3.0",
+      "category": "dashboards"
+    },
+    {
+      "name": "tavernweave-agent-skills",
+      "source": "./mods/tavernweave-agent-skills",
+      "description": "23 个共享技能用于角色卡、软件工作和有界云任务，提示上方有 Soul 模式开关。",
+      "version": "2.4.0",
+      "author": {
+        "name": "LiarMTTT"
+      },
+      "homepage": "https://github.com/LiarMTTT/TavernWeave",
+      "license": "NOASSERTION",
+      "category": "dashboards"
+    },
+    {
+      "name": "agent-usage-guard",
+      "source": "./mods/agent-usage-guard",
+      "description": "在子 agent 扩散、重上下文提示和重试循环消耗你的用量窗口之前将其拦下。",
+      "version": "1.2.1",
+      "author": {
+        "name": "rbartoli"
+      },
+      "homepage": "https://github.com/rbartoli/agent-usage-guard",
+      "license": "MIT",
+      "category": "dashboards"
+    }
+  ]
+}
