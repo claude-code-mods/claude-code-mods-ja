@@ -1,6 +1,6 @@
 # terminal-browser Claude Code 插件（中文版）
 
-> 中文版由 claude-code-mods-zh 项目翻译，原作者与许可证见文末。原版 README 见 [README.en.md](README.en.md)。
+> 日本語版は claude-code-mods-ja プロジェクトによる翻訳です。原作者とライセンスは文末を参照してください。原文は [README.en.md](README.en.md) をご覧ください。
 
 
 > 本插件为实验性功能，存在一些[已知限制](#注意事项)。
@@ -127,4 +127,4 @@ terminal-browser 的内部实现已提取为 JavaScript 库 —— https://githu
 - 原作者：[zenbu-labs](https://github.com/zenbu-labs/terminal-browser)
 - 原仓库：https://github.com/zenbu-labs/terminal-browser
 - 许可证：MIT
-- 中文翻译与界面本地化：claude-code-mods-zh 项目
+- 日本語翻訳と UI ローカライズ：claude-code-mods-ja プロジェクト

@@ -1,8 +1,10 @@
 {
   "name": "agent-usage-guard",
-  "description": "在子 agent 并发展开、超长上下文提示和重试循环吃掉你的用量窗口之前将其拦下。它读取你套餐的用量、统计所有会话中的 agent 数量，并在 Claude Code 自带的对话框里询问。",
+  "description": "サブエージェントの過剰な並列化、超長文コンテキストのプロンプト、リトライループが使用枠を食う前に遮断します。あなたのプランの使用状況を読み、全セッションのエージェント数を数え、Claude Code 標準のダイアログで確認します。",
   "version": "1.2.1",
-  "author": { "name": "Riccardo Bartoli" },
+  "author": {
+    "name": "Riccardo Bartoli"
+  },
   "homepage": "https://github.com/rbartoli/agent-usage-guard",
   "repository": "https://github.com/rbartoli/agent-usage-guard",
   "license": "MIT",
@@ -11,5 +13,13 @@
   "documentationUrl": "https://github.com/rbartoli/agent-usage-guard#readme",
   "supportUrl": "https://github.com/rbartoli/agent-usage-guard/issues",
   "privacyPolicyUrl": "https://github.com/rbartoli/agent-usage-guard#security-and-privacy",
-  "keywords": ["mod", "usage", "rate-limit", "subagents", "context", "guardrails", "cost"]
+  "keywords": [
+    "mod",
+    "usage",
+    "rate-limit",
+    "subagents",
+    "context",
+    "guardrails",
+    "cost"
+  ]
 }

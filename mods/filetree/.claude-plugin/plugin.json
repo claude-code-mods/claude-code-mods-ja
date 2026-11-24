@@ -1,7 +1,7 @@
 {
   "name": "filetree",
   "version": "0.8.5",
-  "description": "为 Claude Code 提供 IDE 风格文件树，显示 Claude 正在做什么、在哪个文件里。",
+  "description": "Claude Code 向けの IDE 風ファイルツリー。Claude が何をしているか、どのファイルにいるかを表示します。",
   "types": "./types/index.d.ts",
   "author": {
     "name": "Kurt Buhler"

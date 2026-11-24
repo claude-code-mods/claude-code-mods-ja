@@ -1,8 +1,10 @@
 {
   "name": "inbox",
   "version": "0.6.0",
-  "description": "汇总会话中等着你处理的问题、任务、发现和 PR。",
-  "author": { "name": "Pete Petrash" },
+  "description": "セッション内であなたを待っている質問、タスク、発見、PR をまとめます。",
+  "author": {
+    "name": "Pete Petrash"
+  },
   "repository": "https://github.com/petekp/inbox",
   "homepage": "https://github.com/petekp/inbox",
   "documentationUrl": "https://github.com/petekp/inbox#readme",

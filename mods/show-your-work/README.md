@@ -1,6 +1,6 @@
 # claude-show-your-work
 
-> 中文版由 claude-code-mods-zh 项目翻译，原作者与许可证见文末。原版 README 见 [README.en.md](README.en.md)。
+> 日本語版は claude-code-mods-ja プロジェクトによる翻訳です。原作者とライセンスは文末を参照してください。原文は [README.en.md](README.en.md) をご覧ください。
 
 不离开终端即可查看、审阅并迭代 agent 的工作。为 Claude Code 提供图片、视频与可视化 QA。
 
@@ -27,4 +27,4 @@ Claude 构建或修改可视内容时会在聊天中展示。也可直接要求�
 - 原作者：[iamumeransari](https://github.com/iamumeransari/claude-show-your-work)
 - 原仓库：https://github.com/iamumeransari/claude-show-your-work
 - 许可证：MIT
-- 中文翻译与界面本地化：claude-code-mods-zh 项目
+- 日本語翻訳と UI ローカライズ：claude-code-mods-ja プロジェクト

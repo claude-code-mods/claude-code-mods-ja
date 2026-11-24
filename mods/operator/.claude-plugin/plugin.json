@@ -2,7 +2,7 @@
   "name": "operator",
   "displayName": "Operator Memory",
   "version": "0.2.0",
-  "description": "面向 Claude Code 中 agent 驱动开发的持久化项目与用户记忆。",
+  "description": "Claude Code におけるエージェント駆動開発のための永続的なプロジェクト・ユーザーメモリ。",
   "author": {
     "name": "Aerovato Research"
   },

@@ -2,7 +2,7 @@
   "name": "tokendoctor",
   "displayName": "tokendoctor",
   "version": "0.6.1",
-  "description": "同样的 Claude Code，最多省 38%。回放你自己的历史会话，展示每项改动本可省下多少，然后只改你选中的项。",
+  "description": "同じ Claude Code で最大 38% 節約。自分の過去セッションを再生し、各変更でどれだけ節約できたかを示してから、選んだ変更だけを適用します。",
   "author": {
     "name": "rsaryev"
   },

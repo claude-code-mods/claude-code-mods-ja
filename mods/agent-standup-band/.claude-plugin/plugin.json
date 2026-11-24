@@ -1,7 +1,7 @@
 {
   "name": "agent-standup-band",
   "version": "1.47.1",
-  "description": "本机其他 Claude Code 会话需要你处理（审批或回答）时，在提示上方显示一行；某个会话完成一轮时弹出提醒。只读取 Claude Code 为各会话保存的状态文件，不向外发送任何内容。",
+  "description": "同じマシンの他の Claude Code セッションから対応（承認や返答）を求められたときに入力欄の上に一行を表示し、セッションが一巡完了するとトーストで知らせます。各セッションが保存した状態ファイルを読むだけで、外部に何も送信しません。",
   "author": {
     "name": "Double Geste",
     "url": "https://github.com/Atoll92"

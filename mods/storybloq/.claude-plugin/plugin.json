@@ -3,7 +3,7 @@
   "name": "storybloq",
   "displayName": "Storybloq",
   "version": "1.16.0",
-  "description": "Claude Code 与 Codex 的项目记忆。Storybloq 把工单、issue、交接和教训存进仓库内的 .story/ 目录。",
+  "description": "Claude Code と Codex のためのプロジェクトメモリ。チケット、issue、引き継ぎ、教訓をリポジトリ内の .story/ ディレクトリに保存します。",
   "author": {
     "name": "Amir Shayegh",
     "url": "https://storybloq.com"

@@ -1,6 +1,6 @@
 # Context Attachment Manager
 
-> 中文版由 claude-code-mods-zh 项目翻译，原作者与许可证见文末。原版 README 见 [README.en.md](README.en.md)。
+> 日本語版は claude-code-mods-ja プロジェクトによる翻訳です。原作者とライセンスは文末を参照してください。原文は [README.en.md](README.en.md) をご覧ください。
 
 一个面向图片密集型对话的本地插件，支持 Codex、Claude Code 及其他 agent。较早的图片不再随每条消息重发；模型按 ID 取回所需图片，即使对话压缩后也如此。
 
@@ -21,4 +21,4 @@ Install Context Attachment Manager for me, following https://github.com/chipfigh
 - 原作者：[chipfighter](https://github.com/chipfighter/context-attachment-manager)
 - 原仓库：https://github.com/chipfighter/context-attachment-manager
 - 许可证：MIT
-- 中文翻译与界面本地化：claude-code-mods-zh 项目
+- 日本語翻訳と UI ローカライズ：claude-code-mods-ja プロジェクト

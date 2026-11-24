@@ -1,7 +1,7 @@
 {
   "name": "lcu-approve",
   "version": "0.6.0",
-  "description": "LCU 计算机操作在 Claude 应用与 Claude Code 中的原生逐应用审批（允许本次会话、始终允许、拒绝），以及已批准应用的 /computer-use-apps 面板。",
+  "description": "Claude アプリと Claude Code における LCU computer use のアプリごとのネイティブ承認（この会話のみ許可、常に許可、拒否）と、承認済みアプリの /computer-use-apps パネル。",
   "author": {
     "name": "LCU"
   },

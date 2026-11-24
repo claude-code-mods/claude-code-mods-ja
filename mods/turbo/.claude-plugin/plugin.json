@@ -1,7 +1,7 @@
 {
   "name": "turbo",
   "displayName": "Turbo",
-  "description": "人工把关的 agent 软件工厂：你决定做什么、评判结果，技能负责塑造、构建、打磨并交付改动，并从中学习。",
+  "description": "人がゲートするエージェント型ソフトウェアファクトリ。作るものと成果の判定はあなたが行い、スキルが変更を形にし、ビルドし、磨き、納品し、そこから学習します。",
   "author": {
     "name": "Tobias Hagemann",
     "url": "https://github.com/tobihagemann"

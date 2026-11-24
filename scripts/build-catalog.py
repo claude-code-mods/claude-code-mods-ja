@@ -72,7 +72,7 @@ def build_market(mods, summaries):
             entry = {
                 "name": manifest.get("name", m["name"]),
                 "source": f"./mods/{m['name']}",
-                "description": summaries.get(m["name"], {}).get("zh-CN", m["description"]),
+                "description": summaries.get(m["name"], {}).get("ja", m["description"]),
                 "version": manifest.get("version", "0.0.0"),
                 "author": {"name": m["repo"].split("/")[0]},
                 "homepage": f"https://github.com/{m['repo']}",

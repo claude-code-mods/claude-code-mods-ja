@@ -1,6 +1,6 @@
 # Lot Map for Claude Code
 
-> 中文版由 claude-code-mods-zh 项目翻译，原作者与许可证见文末。原版 README 见 [README.en.md](README.en.md)。
+> 日本語版は claude-code-mods-ja プロジェクトによる翻訳です。原作者とライセンスは文末を参照してください。原文は [README.en.md](README.en.md) をご覧ください。
 
 一个 Claude Code mod：在聊天旁的面板中实时展示工作地图。每次工具调用、模型步骤、钩子和技能都从中心向其站点发送脉冲，因此你看到的是记忆、文件、shell、网络和 agent 在工作。
 
@@ -19,4 +19,4 @@
 - 原作者：[alexeyw](https://github.com/alexeyw/lot-map)
 - 原仓库：https://github.com/alexeyw/lot-map
 - 许可证：MIT
-- 中文翻译与界面本地化：claude-code-mods-zh 项目
+- 日本語翻訳と UI ローカライズ：claude-code-mods-ja プロジェクト

@@ -2,7 +2,7 @@
   "name": "jevmem-pane",
   "displayName": "jevmem pane",
   "version": "0.7.8",
-  "description": "Claude Code 聊天旁的侧面板：本次提示 jevmem 想起了什么、它的守卫做了什么决定、上一轮保存了什么，并提供「为什么／错误／忘记」按钮。只读取 .jevmem/ 下的三个本地文件并调用 jevmem 命令，不向外发送数据。需要 jevmem CLI 且项目已开启。",
+  "description": "Claude Code のチャット横のサイドパネル。今回のプロンプトで jevmem が思い出した内容、ガードの判定、直前のターンで保存した内容を表示し、「なぜ／間違い／忘れる」ボタンも備えます。.jevmem/ 以下の 3 つのローカルファイルを読み、jevmem コマンドを呼ぶだけです。外部にデータは送信しません。jevmem CLI とプロジェクトでの有効化が必要です。",
   "author": {
     "name": "Avinash Jetwani",
     "url": "https://github.com/Avinash-jetwani"

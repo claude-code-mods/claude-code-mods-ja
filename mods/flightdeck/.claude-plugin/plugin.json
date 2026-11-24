@@ -1,7 +1,7 @@
 {
   "name": "flightdeck",
   "version": "0.6.2",
-  "description": "Flightdeck：Claude Code 的实时 agent 看板。主模型体征、待命架构师、每次权限检查、子 agent 卡片与泳道、单轮回执和会话日志，全部来自真实会话事件。",
+  "description": "Flightdeck：Claude Code のライブエージェントダッシュボード。モデルバイタル、当番アーキテクト、各権限チェック、サブエージェントのカードとレーン、ターンごとの受け渡し、セッションログを、実際のセッションイベントから表示します。",
   "author": {
     "name": "Stephen Casella",
     "url": "https://github.com/scasella"

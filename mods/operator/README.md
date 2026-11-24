@@ -1,6 +1,6 @@
 # Operator Memory for Claude Code
 
-> 中文版由 claude-code-mods-zh 项目翻译，原作者与许可证见文末。原版 README 见 [README.en.md](README.en.md)。
+> 日本語版は claude-code-mods-ja プロジェクトによる翻訳です。原作者とライセンスは文末を参照してください。原文は [README.en.md](README.en.md) をご覧ください。
 
 
 Operator Memory 为 Claude Code 提供由 agent 维护的、以可读 Markdown 保存的持久项目与用户上下文。
@@ -36,4 +36,4 @@ operator-helper install claude-code
 - 原作者：[aerovato](https://github.com/aerovato/operator-memory)
 - 原仓库：https://github.com/aerovato/operator-memory
 - 许可证：BSD-3-Clause
-- 中文翻译与界面本地化：claude-code-mods-zh 项目
+- 日本語翻訳と UI ローカライズ：claude-code-mods-ja プロジェクト

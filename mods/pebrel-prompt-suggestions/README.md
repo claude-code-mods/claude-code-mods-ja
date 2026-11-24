@@ -1,6 +1,6 @@
 # Claude Code 原生提示预测
 
-> 中文版由 claude-code-mods-zh 项目翻译，原作者与许可证见文末。原版 README 见 [README.en.md](README.en.md)。
+> 日本語版は claude-code-mods-ja プロジェクトによる翻訳です。原作者とライセンスは文末を参照してください。原文は [README.en.md](README.en.md) をご覧ください。
 
 
 本适配器使用 Claude Code 原生的函数钩子（function hooks）。它已在 Claude Code 2.1.310 上验证；更早版本不在支持范围内。加载到新进程的方式是 `--plugin-dir <适配器绝对路径>` 并设置 `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1`。加载适配器并不会把它安装到用户的全局 Claude 配置中。
@@ -20,4 +20,4 @@
 - 原作者：[Kuddev](https://github.com/Kuddev/pebrel)
 - 原仓库：https://github.com/Kuddev/pebrel
 - 许可证：GPL-3.0
-- 中文翻译与界面本地化：claude-code-mods-zh 项目
+- 日本語翻訳と UI ローカライズ：claude-code-mods-ja プロジェクト

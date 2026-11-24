@@ -1,7 +1,7 @@
 {
   "name": "lot-map",
   "version": "0.12.1",
-  "description": "聊天旁的实时地图：记忆、文件、shell、网络、模型、agents、技能与 hooks 在被使用时依次亮起。",
+  "description": "チャット横のライブマップ。メモリ、ファイル、シェル、ネットワーク、モデル、エージェント、スキル、フックが使われると順に光ります。",
   "author": {
     "name": "Aleksei Volodin",
     "url": "https://github.com/alexeyw"
@@ -10,7 +10,16 @@
   "repository": "https://github.com/alexeyw/lot-map",
   "supportUrl": "https://github.com/alexeyw/lot-map/issues",
   "privacyPolicyUrl": "https://github.com/alexeyw/lot-map/blob/main/PRIVACY.md",
-  "keywords": ["mod", "map", "visualization", "activity", "tool calls", "hooks", "subagents", "memory"],
+  "keywords": [
+    "mod",
+    "map",
+    "visualization",
+    "activity",
+    "tool calls",
+    "hooks",
+    "subagents",
+    "memory"
+  ],
   "license": "MIT",
   "icon": "./.claude-plugin/icon.png",
   "types": "./types/index.d.ts",

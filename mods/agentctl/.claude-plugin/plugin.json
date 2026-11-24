@@ -1,6 +1,8 @@
 {
   "name": "agentctl",
   "version": "0.3.1",
-  "description": "面向单个 Claude Code 会话的 Agent 控制面板：任务范围、证据与交接。它是控制与展示层，不是隔离边界。",
-  "author": { "name": "sd0xdev" }
+  "description": "単一の Claude Code セッション向けのエージェント制御プレーン。タスク範囲、エビデンス、引き継ぎを扱います。制御と表示の層であり、隔離境界ではありません。",
+  "author": {
+    "name": "sd0xdev"
+  }
 }

@@ -1,7 +1,7 @@
 {
   "name": "cache-tax",
   "version": "2.4.2",
-  "description": "在休息期间保持一小时 prompt 缓存温热，冷启动发送前先询问并显示预计重写成本。保活会消耗模型请求和 token。需要 Claude Code 2.1.287+。",
+  "description": "休止中も 1 時間のプロンプトキャッシュを温存し、コールド送信の前に確認して予想される書き換えコストを表示します。Keep-alive はモデルリクエストとトークンを消費します。Claude Code 2.1.287 以降が必要です。",
   "author": {
     "name": "Karan Bansal",
     "url": "https://karanbansal.in/"
@@ -24,7 +24,10 @@
       "title": "无界面提示词",
       "description": "guard（默认）：对 CLI 和 SDK 提示词保留冷发送守卫。send：允许非交互式 SDK 提示词不经询问直接发送，除非明确设置了 guard refuse。远程人工提示词始终保留守卫。",
       "default": "guard",
-      "options": ["guard", "send"]
+      "options": [
+        "guard",
+        "send"
+      ]
     },
     "autoWarm": {
       "type": "string",

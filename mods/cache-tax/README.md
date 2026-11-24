@@ -5,7 +5,7 @@
 
 # Cache Tax for Claude Code（中文版）
 
-> 中文版由 claude-code-mods-zh 项目翻译，原作者与许可证见文末。原版 README 见 [README.en.md](README.en.md)。
+> 日本語版は claude-code-mods-ja プロジェクトによる翻訳です。原作者とライセンスは文末を参照してください。原文は [README.en.md](README.en.md) をご覧ください。
 
 **在你离开时保持 Claude Code 的提示词缓存温热。**
 
@@ -237,4 +237,4 @@ cache-tax 是 [Awesome Claude Code Mods](https://github.com/karanb192/awesome-cl
 - 原作者：[Karan Bansal](https://karanbansal.in/)（karanb192）
 - 原仓库：https://github.com/karanb192/cache-tax
 - 许可证：MIT
-- 中文翻译与界面本地化：claude-code-mods-zh 项目
+- 日本語翻訳と UI ローカライズ：claude-code-mods-ja プロジェクト

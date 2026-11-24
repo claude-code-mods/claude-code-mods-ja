@@ -1,7 +1,7 @@
 {
   "name": "jev-auto-compact",
   "version": "1.6.1",
-  "description": "Jev 驱动的逐字压缩：上下文达到 60% 后，在不生成任何内容的前提下清理过期工具调用。无可清理项时直接跳过（绝不回退到 LLM 摘要），并为 learning.db 记录证据。",
+  "description": "Jev による逐語圧縮。コンテキストが 60% に達すると、一切生成せずに古いツール呼び出しを整理します。整理するものがなければスキップし（LLM 要約へのフォールバックは絶対に行いません）、learning.db に証跡を記録します。",
   "author": {
     "name": "vexjoy-agent"
   },

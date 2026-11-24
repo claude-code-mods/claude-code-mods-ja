@@ -1,6 +1,6 @@
 {
   "name": "token-optimizer",
-  "description": "独立的 Token Optimizer 状态栏（含自带测试）。它随 token-optimizer 插件一同发布。",
+  "description": "独立した Token Optimizer ステータスバー（テスト同梱）。token-optimizer プラグインと一緒に配布されます。",
   "author": {
     "name": "Alex Greenshpun",
     "url": "https://linkedin.com/in/alexgreensh"

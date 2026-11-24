@@ -1,9 +1,18 @@
 {
   "name": "skins",
   "version": "0.5.16",
-  "description": "Claude Code 皮肤：工具行可展开查看输入与回答，高亮的代码、diff、表格、公式、Mermaid 与 shell 卡片，链接、折叠、用量条、专注模式和 15 套主题。/skin 可即时切换。",
-  "author": { "name": "hellosverre", "url": "https://github.com/hellosverre" },
+  "description": "Claude Code のスキン。ツール行を展開して入力と回答を確認でき、コード、diff、表、数式、Mermaid、シェルのカードをハイライト表示。リンク、折りたたみ、使用状況バー、フォーカスモード、15 テーマに対応。/skin で即時切り替えできます。",
+  "author": {
+    "name": "hellosverre",
+    "url": "https://github.com/hellosverre"
+  },
   "license": "MIT",
-  "keywords": ["claude-code-mods", "claude-mods", "function-hooks", "theme", "skin"],
+  "keywords": [
+    "claude-code-mods",
+    "claude-mods",
+    "function-hooks",
+    "theme",
+    "skin"
+  ],
   "types": "./types/index.d.ts"
 }

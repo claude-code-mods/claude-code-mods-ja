@@ -1,8 +1,10 @@
 {
   "name": "work-mode",
   "version": "0.8.0",
-  "description": "Claude Code 的 /work-mode 会话模式：auto（中途不提问）、out（委派批量工作）、wrap（收敛收尾），另有委派提醒。",
+  "description": "Claude Code の /work-mode セッションモード：auto（途中で質問しない）、out（バッチ作業を委譲）、wrap（収束して仕上げ）。委譲のリマインダーもあります。",
   "types": "./types/index.d.ts",
-  "author": { "name": "Dustin Yuchen Teng" },
+  "author": {
+    "name": "Dustin Yuchen Teng"
+  },
   "license": "MIT"
 }

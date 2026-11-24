@@ -1,6 +1,6 @@
 # jevmem pane
 
-> 中文版由 claude-code-mods-zh 项目翻译，原作者与许可证见文末。原版 README 见 [README.en.md](README.en.md)。
+> 日本語版は claude-code-mods-ja プロジェクトによる翻訳です。原作者とライセンスは文末を参照してください。原文は [README.en.md](README.en.md) をご覧ください。
 
 一个 Claude Code 侧边面板，位于你的对话旁，显示 [jevmem](https://github.com/Avinash-jetwani/jevmem) 为你刚发送的提示与刚结束的回合做了什么：
 
@@ -27,4 +27,4 @@
 - 原作者：[Avinash-jetwani](https://github.com/Avinash-jetwani/jevmem)
 - 原仓库：https://github.com/Avinash-jetwani/jevmem
 - 许可证：MIT
-- 中文翻译与界面本地化：claude-code-mods-zh 项目
+- 日本語翻訳と UI ローカライズ：claude-code-mods-ja プロジェクト

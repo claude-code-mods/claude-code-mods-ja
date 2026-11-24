@@ -1,6 +1,6 @@
 # prismantis
 
-> 中文版由 claude-code-mods-zh 项目翻译，原作者与许可证见文末。原版 README 见 [README.en.md](README.en.md)。
+> 日本語版は claude-code-mods-ja プロジェクトによる翻訳です。原作者とライセンスは文末を参照してください。原文は [README.en.md](README.en.md) をご覧ください。
 
 一个 Claude Code mod，用彩色重绘 Claude 的回复：表格、标题、列表、引用、高亮代码、数字、路径与链接、mermaid 图表，以及工具行，共 17 种主题，并带复制按钮。运行 `/prismantis setup` 选择外观，或 `/prismantis demo` 查看它绘制的一切。
 
@@ -21,4 +21,4 @@ prismantis 不发任何网络请求。以下一切都在你的机器上完成。
 - 原作者：[Nahum Litvin](https://github.com/NahumLitvin/prismantis)
 - 原仓库：https://github.com/NahumLitvin/prismantis
 - 许可证：MIT
-- 中文翻译与界面本地化：claude-code-mods-zh 项目
+- 日本語翻訳と UI ローカライズ：claude-code-mods-ja プロジェクト

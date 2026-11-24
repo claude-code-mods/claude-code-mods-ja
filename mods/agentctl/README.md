@@ -5,7 +5,7 @@ mods API 被标记为可能在版本间变更；宿主写入 `.claude-plugin/typ
 
 设计：本仓库中的 `docs/features/agent-control-plane-mod/`（需求、可行性研究、技术规格、请求票据）。该目录不属于 sd0x-dev-flow 插件：安装插件不会安装该 mod。要安装它，运行 `/agentctl-setup`（它检查宿主、经你批准后安装 `agentctl@sd0xdev-marketplace`，并构建你的首条任务行；`/agentctl-setup --task` 与工作流技能会代拟一份方案供你接受），或用 `claude --plugin-dir mods/agentctl` 为一个会话加载它。
 
-> 中文版由 claude-code-mods-zh 项目翻译，原作者与许可证见文末。原版 README 见 [README.en.md](README.en.md)。
+> 日本語版は claude-code-mods-ja プロジェクトによる翻訳です。原作者とライセンスは文末を参照してください。原文は [README.en.md](README.en.md) をご覧ください。
 
 ## 首次运行
 
@@ -22,7 +22,7 @@ mods API 被标记为可能在版本间变更；宿主写入 `.claude-plugin/typ
 
 一位未读过设计的测试者独立完成了步骤 1–4 与交接（§ 无指导运行）。
 
-发送请求本身就是一次普通的 Claude 回合；mod 自身不调用模型。当你的目标以中文书写时回复使用繁体中文，否则用英文 —— 这只是启发式，不是语言区域检测。
+发送请求本身就是一次普通的 Claude 回合；mod 自身不调用模型。当你的目标以日文书写时回复使用日文，否则用英文 —— 这只是启发式，不是语言区域检测。
 
 ## 它做什么
 
@@ -141,7 +141,7 @@ Signal 13，在 2.1.289（步骤 1–3）与再次从头在 2.1.292 上演练：
 
 | 步骤 | 结果 |
 |---|---|
-| `/agentctl 幫 …/README 加一行測試說明` | 请求以繁体中文填入空输入框，附带来自 `$.plugin.root` 的辅助程序路径；未发送也未绑定 |
+| `/agentctl 幫 …/README 加一行測試說明` | 请求以日文填入空输入框，附带来自 `$.plugin.root` 的辅助程序路径；未发送也未绑定 |
 | Enter | Claude 运行辅助程序的 `--help`、读取项目、发现文件不存在并**询问**，而非编造范围；得到回答后通过辅助程序写入方案 |
 | 预览 | 在回合结束时连同摘要与“仅绑定范围；不启动工作”显示；状态带指名等待中的方案 |
 | Tab + Enter | 从建议接受；回复指名下一步 |
@@ -174,4 +174,4 @@ Signal 13，在 2.1.289（步骤 1–3）与再次从头在 2.1.292 上演练：
 - 原作者：[sd0xdev](https://github.com/sd0xdev/sd0x-harness)
 - 原仓库：https://github.com/sd0xdev/sd0x-harness（路径 mods/agentctl）
 - 许可证：MIT
-- 中文翻译与界面本地化：claude-code-mods-zh 项目
+- 日本語翻訳と UI ローカライズ：claude-code-mods-ja プロジェクト

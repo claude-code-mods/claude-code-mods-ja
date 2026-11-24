@@ -1,6 +1,6 @@
 # Firstmate Calm
 
-> 中文版由 claude-code-mods-zh 项目翻译，原作者与许可证见文末。
+> 日本語版は claude-code-mods-ja プロジェクトによる翻訳です。原作者とライセンスは文末を参照してください。
 
 Firstmate Calm 为 Claude Code 带来帆船工作动画与会话专用转录展示，并与 Pi Calm 扩展共享每个 home 的 calm 偏好。
 
@@ -17,4 +17,4 @@ Firstmate Calm 为 Claude Code 带来帆船工作动画与会话专用转录展�
 - 原作者：[kunchenguid](https://github.com/kunchenguid/firstmate)
 - 原仓库：https://github.com/kunchenguid/firstmate
 - 许可证：MIT
-- 中文翻译与界面本地化：claude-code-mods-zh 项目
+- 日本語翻訳と UI ローカライズ：claude-code-mods-ja プロジェクト

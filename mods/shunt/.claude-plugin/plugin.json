@@ -3,7 +3,7 @@
   "name": "shunt",
   "displayName": "shunt · gateway",
   "version": "0.1.0",
-  "description": "shunt 网关的 Claude Mod：提示上方的条带显示各窗口已用比例与重置时间（共享账号池的数据读自 shunt 的 GET /usage，或会话自身的 Claude 速率限制），/shunt:usage 打印账号池的完整明细。",
+  "description": "shunt ゲートウェイ用の Claude mod。入力欄上の帯に各ウィンドウの使用割合とリセット時刻を表示します（共有アカウントプールのデータは shunt の GET /usage から、セッション自身のデータは Claude のレート制限から読み取り）。/shunt:usage はアカウントプールの完全な内訳を出力します。",
   "author": {
     "name": "Minsu Lee",
     "email": "minsu.lee@pleaseai.dev",

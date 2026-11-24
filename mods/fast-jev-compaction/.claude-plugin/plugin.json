@@ -1,7 +1,7 @@
 {
   "name": "fast-jev-compaction",
   "version": "0.3.0",
-  "description": "为 Claude Code 会话提供逐字保留的 Jev 压缩。",
+  "description": "Claude Code セッションを逐語的に保持する Jev 圧縮を提供します。",
   "license": "MIT",
   "userConfig": {
     "apiKey": {

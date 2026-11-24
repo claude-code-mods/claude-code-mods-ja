@@ -1,6 +1,6 @@
 # shunt
 
-> 中文版由 claude-code-mods-zh 项目翻译，原作者与许可证见文末。原版 README 见 [README.en.md](README.en.md)。
+> 日本語版は claude-code-mods-ja プロジェクトによる翻訳です。原作者とライセンスは文末を参照してください。原文は [README.en.md](README.en.md) をご覧ください。
 
 一个 **Claude Mod** —— 一个 Claude Code 插件，其行为是一个[函数钩子](https://github.com/anthropics/claude-code/issues/91870)模块 —— 在提示行上方的状态带中显示用量：如果配置了 [shunt](https://github.com/pleaseai/shunt) 网关，则显示该网关共享账户池的用量；否则显示会话自身的 Claude 速率限制。它还以该池的完整明细回答 `/shunt:usage`。
 
@@ -174,4 +174,4 @@ CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude --plugin-dir plugins/shunt
 - 原作者：[pleaseai](https://github.com/pleaseai/shunt)
 - 原仓库：https://github.com/pleaseai/shunt
 - 许可证：MIT 或 Apache-2.0（与 shunt 项目一致）
-- 中文翻译与界面本地化：claude-code-mods-zh 项目
+- 日本語翻訳と UI ローカライズ：claude-code-mods-ja プロジェクト

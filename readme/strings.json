@@ -1,26 +1,26 @@
 {
-  "zh-CN": {
-    "label": "简体中文",
+  "ja": {
+    "label": "日本語",
     "file": "README.md",
     "categories": {
-      "dashboards": "仪表盘与用量",
-      "agents": "Agent 与子 agent",
-      "productivity": "效率与上下文",
-      "rendering": "渲染与预览",
-      "safety": "安全与守卫",
-      "git": "Git、PR 与部署",
-      "fun": "等待时的消遣"
+      "dashboards": "ダッシュボードと使用状況",
+      "agents": "エージェントとサブエージェント",
+      "productivity": "生産性とコンテキスト",
+      "rendering": "レンダリングとプレビュー",
+      "safety": "セーフティとガード",
+      "git": "Git、PR、デプロイ",
+      "fun": "待ち時間の娯楽"
     },
     "columns": [
-      "模组",
-      "功能",
-      "权限"
+      "mod",
+      "機能",
+      "アクセス"
     ],
     "reach": {
-      "http": "联网",
-      "process": "运行命令",
-      "model": "调用模型",
-      "fs": "读写文件",
+      "http": "ネットワーク",
+      "process": "コマンド実行",
+      "model": "モデル呼び出し",
+      "fs": "ファイル読み書き",
       "mcp": "MCP"
     },
     "by": "作者"

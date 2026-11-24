@@ -1,6 +1,6 @@
 # Token Optimizer 桌面版
 
-> 中文版由 claude-code-mods-zh 项目翻译，原作者与许可证见文末。原版 README 见 [README.en.md](README.en.md)。
+> 日本語版は claude-code-mods-ja プロジェクトによる翻訳です。原作者とライセンスは文末を参照してください。原文は [README.en.md](README.en.md) をご覧ください。
 
 Claude 桌面应用的状态栏。它绘制在提示行上方，显示会话质量、上下文填充量、缓存倒计时，以及你的 5 小时与每周限制，并由 Clawd 演示会话正在做什么。
 
@@ -41,4 +41,4 @@ Claude 桌面应用的状态栏。它绘制在提示行上方，显示会话质�
 - 原作者：[alexgreensh](https://github.com/alexgreensh/token-optimizer)
 - 原仓库：https://github.com/alexgreensh/token-optimizer
 - 许可证：NOASSERTION（详见原仓库）
-- 中文翻译与界面本地化：claude-code-mods-zh 项目
+- 日本語翻訳と UI ローカライズ：claude-code-mods-ja プロジェクト

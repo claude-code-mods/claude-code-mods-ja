@@ -1,13 +1,21 @@
 {
   "name": "engineer",
   "version": "0.40.2",
-  "description": "严谨的 Agent 工程方法（DAE）——Claude Code 方法论套件：需求受理、验收标准探索、规格撰写、计划、实现、验证与加固。",
+  "description": "規律あるエージェント型エンジニアリングの方法論（DAE）——Claude Code 向けの方法論キット。受け付け、受け入れ基準の発見、仕様作成、計画、実装、検証、強化をカバーします。",
   "author": {
     "name": "Miklos"
   },
   "repository": "https://github.com/swingerman/engineer",
   "license": "MIT",
-  "keywords": ["dae", "disciplined-agentic-engineering", "methodology", "ai-development", "tdd", "atdd", "engineering"],
+  "keywords": [
+    "dae",
+    "disciplined-agentic-engineering",
+    "methodology",
+    "ai-development",
+    "tdd",
+    "atdd",
+    "engineering"
+  ],
   "decarchy": {
     "lifecycles": {
       "command": "python3",

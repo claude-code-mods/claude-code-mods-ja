@@ -5,7 +5,7 @@
 [![Claude Code 2.1.289+](https://img.shields.io/badge/Claude%20Code-2.1.289%2B%20mod-d97757.svg)](https://claude.com/blog/claude-code-mods)
 [![Listed on statuslin.es](https://img.shields.io/badge/listed%20on-statuslin.es-c96442)](https://statuslin.es/mods/flightdeck)
 
-> 中文版由 claude-code-mods-zh 项目翻译，原作者与许可证见文末。原版 README 见 [README.en.md](README.en.md)。
+> 日本語版は claude-code-mods-ja プロジェクトによる翻訳です。原作者とライセンスは文末を参照してください。原文は [README.en.md](README.en.md) をご覧ください。
 
 **一个把实时 agent 仪表盘放进你终端的 Claude Code mod**：上下文与成本、架构师时间线、每一次权限检查，以及以卡片或泳道展示的子 agent。每个数字都来自真实的会话事件，且不会离开你的机器。
 
@@ -203,4 +203,4 @@ npx -p typescript tsc -p .       # 首次加载后执行，它会写入 .claude-
 - 原作者：[scasella](https://github.com/scasella/claude-flightdeck)
 - 原仓库：https://github.com/scasella/claude-flightdeck
 - 许可证：MIT
-- 中文翻译与界面本地化：claude-code-mods-zh 项目
+- 日本語翻訳と UI ローカライズ：claude-code-mods-ja プロジェクト
