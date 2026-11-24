@@ -1,0 +1,34 @@
+{
+  "name": "engineer",
+  "version": "0.40.2",
+  "description": "厳格なエージェントエンジニアリング手法（DAE）——Claude Code 向けメソドロジースイート：要件の受付、受け入れ基準の探索、仕様作成、計画、実装、検証、強化。",
+  "author": {
+    "name": "Miklos"
+  },
+  "repository": "https://github.com/swingerman/engineer",
+  "license": "MIT",
+  "keywords": ["dae", "disciplined-agentic-engineering", "methodology", "ai-development", "tdd", "atdd", "engineering"],
+  "decarchy": {
+    "lifecycles": {
+      "command": "python3",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/scripts/dae_lifecycle.py"
+      ]
+    }
+  },
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "economyModel": {
+      "type": "string",
+      "title": "低コストモデルの別名",
+      "description": "この mod 自身がタスクを振り分ける際に、低コストモデルクラスが解決するモデルの別名です（model-classes.md を参照）。モデルのラインナップが変わったら更新してください。",
+      "default": "sonnet"
+    },
+    "frontierModels": {
+      "type": "string",
+      "title": "最先端モデルの別名",
+      "description": "ループガードが最先端モデルのクラスを判定するために使う、カンマ区切りの別名（または id の一部）です。",
+      "default": "fable"
+    }
+  }
+}

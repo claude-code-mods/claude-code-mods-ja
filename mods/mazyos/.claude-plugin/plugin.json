@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "mazyos",
+  "displayName": "MazyOS",
+  "version": "1.0.0",
+  "description": "Claude Code におけるあなたのビジネスの OS：企業メモリがすべてのセッションに入り、ビジュアルアイデンティティが Claude のすべての出力に貫かれ、17 のスキルがマーケティング、SEO、Google Ads、Instagram カルーセル、Google Maps の顧客開拓をカバーします。チャットサイドパネル、ステータス行、危険な git コマンドのブロック付き。",
+  "author": {
+    "name": "Mazzeo",
+    "url": "https://mazyos.com.br"
+  },
+  "homepage": "https://mazyos.com.br",
+  "repository": "https://github.com/mazzeoia/MazyOS",
+  "keywords": [
+    "claude-code",
+    "plugin",
+    "skills",
+    "agente-de-ia",
+    "negocio",
+    "marketing",
+    "seo",
+    "google-ads",
+    "meta-ads",
+    "instagram",
+    "carrossel",
+    "prospeccao",
+    "google-maps",
+    "pequenas-empresas",
+    "pt-br",
+    "brasil"
+  ],
+  "skills": "./skills/",
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "abrirPainel": {
+      "type": "boolean",
+      "title": "起動時にパネルを開く",
+      "description": "セッションが MazyOS フォルダで始まり、ターミナルが十分に広い場合、MazyOS パネル（メモリ、フォーカス、ショートカット）を開きます。/mazyos でいつでも開けます。",
+      "default": true
+    },
+    "linhaDeStatus": {
+      "type": "boolean",
+      "title": "ステータス行",
+      "description": "MazyOS フォルダで作業中、プロンプトの下に 'MazyOS · ビジネス · フォーカス' を表示します。",
+      "default": true
+    },
+    "protegerGit": {
+      "type": "boolean",
+      "title": "git ブレーキ",
+      "description": "MazyOS フォルダ内で、git push --force、git reset --hard など作業を消す git コマンドの前に確認を求めます。",
+      "default": true
+    }
+  }
+}

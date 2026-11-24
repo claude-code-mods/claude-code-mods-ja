@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "shunt",
+  "displayName": "shunt · gateway",
+  "version": "0.1.0",
+  "description": "shunt ゲートウェイ用の Claude Mod：プロンプト上部の帯に、各ウィンドウの使用割合とリセット時刻を表示します（共有アカウントプールのデータは shunt の GET /usage から読み取り、プールを使わない場合はセッション自身の Claude レート制限を表示します）。/shunt:usage はアカウントプールの詳細をすべて出力します。",
+  "author": {
+    "name": "Minsu Lee",
+    "email": "minsu.lee@pleaseai.dev",
+    "url": "https://github.com/amondnet"
+  },
+  "homepage": "https://github.com/pleaseai/shunt",
+  "repository": "https://github.com/pleaseai/shunt",
+  "license": "MIT OR Apache-2.0",
+  "keywords": [
+    "shunt",
+    "llm-gateway",
+    "usage",
+    "quota",
+    "usage-band",
+    "mod",
+    "function-hooks"
+  ],
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "usageBand": {
+      "type": "boolean",
+      "title": "使用量ステータス帯",
+      "description": "プロンプト行の上に使用量を表示します：shunt プールの使用量（毎分と各ターンの終了後に更新）、または shunt を使っていない場合はセッション自身のレート制限です。オフにすると mod はポーリングを一切行わず、/shunt:usage は引き続き応答します。",
+      "default": true
+    }
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "name": "flightdeck",
+  "version": "0.6.2",
+  "description": "Flightdeck：Claude Code のリアルタイム agent ダッシュボード。主モデルの状態、待機中のアーキテクト、毎回の権限チェック、子 agent カードとスイムレーン、単一ターンのレシート、セッションログが、すべて実際のセッションイベントから得られます。",
+  "author": {
+    "name": "Stephen Casella",
+    "url": "https://github.com/scasella"
+  },
+  "homepage": "https://github.com/scasella/claude-flightdeck",
+  "repository": "https://github.com/scasella/claude-flightdeck",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "claude-code-mod",
+    "claude-code-plugin",
+    "dashboard",
+    "subagents",
+    "agents",
+    "observability",
+    "tui"
+  ],
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "architectPattern": {
+      "title": "アーキテクト照合パターン",
+      "description": "待機中のアーキテクトを識別するためのエージェント種別とサーバーツールの正規表現（大文字小文字を区別しません）、例: advisor|architect|reviewer",
+      "type": "string",
+      "default": "advisor|architect"
+    },
+    "architectLabel": {
+      "title": "アーキテクトのラベル",
+      "description": "アーキテクトの役割に表示する名前",
+      "type": "string",
+      "default": "アーキテクト"
+    },
+    "gateLabel": {
+      "title": "権限ゲートのラベル",
+      "description": "権限パネルに表示する名前",
+      "type": "string",
+      "default": "権限ゲート"
+    },
+    "panels": {
+      "title": "パネル",
+      "description": "パネルと表示順をカンマ区切りで指定します: main、architect、gate、agents、loops、receipt、log。省略すると非表示になります。",
+      "type": "string",
+      "default": "main,architect,gate,agents,loops,receipt,log"
+    },
+    "motion": {
+      "title": "アニメーション",
+      "description": "実際の作業が行われている間、接続線にアニメーションを付けるか、静止のままにするか",
+      "type": "string",
+      "options": [
+        "while-active",
+        "off"
+      ],
+      "default": "while-active"
+    },
+    "moments": {
+      "title": "アーキテクト相談のタイミング",
+      "description": "各相談の推定タイミングを表示します（計画前、エラーの繰り返し、完了前）",
+      "type": "boolean",
+      "default": true
+    },
+    "matchDescriptions": {
+      "title": "エージェントの説明も照合",
+      "description": "エージェント種別の名前だけでなく、説明もパターンに一致する場合、それもアーキテクトと見なします",
+      "type": "boolean",
+      "default": false
+    },
+    "maxCards": {
+      "title": "スイムレーン前のカード数",
+      "description": "横並びで表示するエージェントカードの数。これを超えるエージェントはスイムレーンに切り替わります（1-6）",
+      "type": "number",
+      "default": 3
+    },
+    "paneColumns": {
+      "title": "パネルの幅",
+      "description": "パネルを全画面の会話ログの横にドッキングするときの要求列数（最低 40）。Claude Code は端末幅の最大 45% を占め、手動でドラッグした幅が優先されます。",
+      "type": "number",
+      "default": 66
+    },
+    "layout": {
+      "title": "レイアウト",
+      "description": "auto: パネルが入力欄の上に埋め込まれているときは最大 8 行の要約を表示。ドッキングしており幅が 110 列以上なら 2 列、それ以外は 1 列",
+      "type": "string",
+      "options": [
+        "auto",
+        "compact",
+        "wide",
+        "mini"
+      ],
+      "default": "auto"
+    },
+    "palette": {
+      "title": "配色",
+      "description": "theme は Claude Code のテーマ（ライト、ダーク、色覚異常対応）に従います。pastel はダーク端末向けに調整された固定の色です",
+      "type": "string",
+      "options": [
+        "theme",
+        "pastel"
+      ],
+      "default": "theme"
+    },
+    "openOnStart": {
+      "title": "起動時に開く",
+      "description": "セッション開始時にパネルを開きます",
+      "type": "boolean",
+      "default": true
+    },
+    "statusLine": {
+      "title": "ステータス行",
+      "description": "ステータス行にコンテキスト、エージェント、相談、拒否の回数を表示します",
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

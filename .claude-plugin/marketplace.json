@@ -1,0 +1,489 @@
+{
+  "name": "claude-code-mods-ja",
+  "owner": {
+    "name": "claude-code-mods"
+  },
+  "description": "厳選、検証済み、バージョン固定の Claude Code mod（関数フックプラグイン）。一度追加すればすべてインストールできます。",
+  "plugins": [
+    {
+      "name": "fm",
+      "source": "./mods/fm",
+      "description": "帆船の作業アニメーションと会話専用の文字起こしを表示し、セッション間で calm モードの設定を共有します。",
+      "version": "1.0.0",
+      "author": {
+        "name": "kunchenguid"
+      },
+      "homepage": "https://github.com/kunchenguid/firstmate",
+      "license": "MIT",
+      "category": "git"
+    },
+    {
+      "name": "terminal-browser",
+      "source": "./mods/terminal-browser",
+      "description": "Claude Code 内蔵のブラウザー。ウェブサイトや HTML をプレビューし、エージェントがブラウザーを操作できます。",
+      "version": "0.0.2",
+      "author": {
+        "name": "zenbu-labs"
+      },
+      "homepage": "https://github.com/zenbu-labs/terminal-browser",
+      "license": "MIT",
+      "category": "rendering"
+    },
+    {
+      "name": "pebrel-prompt-suggestions",
+      "source": "./mods/pebrel-prompt-suggestions",
+      "description": "Pebrel のセッションブリッジにより、空の入力欄にネイティブなプロンプト予測を表示します。",
+      "version": "0.1.0",
+      "author": {
+        "name": "Kuddev"
+      },
+      "homepage": "https://github.com/Kuddev/pebrel",
+      "license": "GPL-3.0",
+      "category": "productivity"
+    },
+    {
+      "name": "token-optimizer",
+      "source": "./mods/token-optimizer",
+      "description": "token の消費先と節約のヒントを表示するトークン最適化ステータスバー。",
+      "version": "0.0.0",
+      "author": {
+        "name": "alexgreensh"
+      },
+      "homepage": "https://github.com/alexgreensh/token-optimizer",
+      "license": "NOASSERTION",
+      "category": "dashboards"
+    },
+    {
+      "name": "lcu-approve",
+      "source": "./mods/lcu-approve",
+      "description": "PC 操作のアプリごとの承認（今回のみ許可、常に許可、拒否）と、承認済みアプリの一覧パネルを提供します。",
+      "version": "0.6.0",
+      "author": {
+        "name": "amontlabs"
+      },
+      "homepage": "https://github.com/amontlabs/lcu",
+      "license": "MIT",
+      "category": "safety"
+    },
+    {
+      "name": "fast-jev-compaction",
+      "source": "./mods/fast-jev-compaction",
+      "description": "Claude Code のセッション向けに、内容を保持したまま Jev 圧縮を行います。",
+      "version": "0.3.0",
+      "author": {
+        "name": "tamaratran"
+      },
+      "homepage": "https://github.com/tamaratran/fast-jev-compaction",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "lot-map",
+      "source": "./mods/lot-map",
+      "description": "チャットの横に表示されるリアルタイムマップ。メモリ、ファイル、シェル、ネットワーク、モデル、エージェント、スキル、hook の使用状況が光ります。",
+      "version": "0.12.1",
+      "author": {
+        "name": "alexeyw"
+      },
+      "homepage": "https://github.com/alexeyw/lot-map",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "council",
+      "source": "./mods/council",
+      "description": "複数の AI エージェントに同時に相談して多様な視点を得ます。ストリーミングパネルと追加のレビュー促進プロンプトを備えます。",
+      "version": "2026.11.2",
+      "author": {
+        "name": "hex"
+      },
+      "homepage": "https://github.com/hex/claude-council",
+      "license": "MIT",
+      "category": "dashboards"
+    },
+    {
+      "name": "codex-attachment-manager",
+      "source": "./mods/codex-attachment-manager",
+      "description": "古い画像はプレースホルダーとして送信し、ID で元画像を取り出すことで、画像が多い長い会話の prompt キャッシュを維持します。",
+      "version": "0.11.5",
+      "author": {
+        "name": "chipfighter"
+      },
+      "homepage": "https://github.com/chipfighter/context-attachment-manager",
+      "license": "MIT",
+      "category": "dashboards"
+    },
+    {
+      "name": "storybloq",
+      "source": "./mods/storybloq",
+      "description": "プロジェクトの記憶。チケット、課題、引き継ぎ、学んだことをリポジトリ内の .story/ ディレクトリに保存します。",
+      "version": "1.16.0",
+      "author": {
+        "name": "Storybloq"
+      },
+      "homepage": "https://github.com/Storybloq/storybloq",
+      "license": "NOASSERTION",
+      "category": "productivity"
+    },
+    {
+      "name": "shared-session",
+      "source": "./mods/shared-session",
+      "description": "リンクやチームでセッションを共有します。仲間が自分の Claude Code から参加し、すべてのターンをリアルタイムで確認できます。",
+      "version": "0.11.53",
+      "author": {
+        "name": "Paradigm-Study"
+      },
+      "homepage": "https://github.com/Paradigm-Study/claude-share",
+      "license": "MIT",
+      "category": "agents"
+    },
+    {
+      "name": "just-do-it",
+      "source": "./mods/just-do-it",
+      "description": "承認済みの作業を検証と納品まで進め、修正が必要な設定の問題を洗い出します。",
+      "version": "0.1.0",
+      "author": {
+        "name": "Lifecycle-Innovations-Limited"
+      },
+      "homepage": "https://github.com/Lifecycle-Innovations-Limited/claude-ops",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "prismantis",
+      "source": "./mods/prismantis",
+      "description": "テーマ切り替えが可能なカラフルな回答レンダリング。表、見出し、コード、数値、パス、リンクに対応します。",
+      "version": "0.49.3",
+      "author": {
+        "name": "NahumLitvin"
+      },
+      "homepage": "https://github.com/NahumLitvin/prismantis",
+      "license": "MIT",
+      "category": "rendering"
+    },
+    {
+      "name": "filetree",
+      "source": "./mods/filetree",
+      "description": "IDE 風のディレクトリツリー。Claude が何をしていて、どのファイルを変更中かを表示します。",
+      "version": "0.8.5",
+      "author": {
+        "name": "data-goblin"
+      },
+      "homepage": "https://github.com/data-goblin/claude-code-filetree",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "jev-auto-compact",
+      "source": "./mods/jev-auto-compact",
+      "description": "コンテキストが 60% に達すると、生成を行わずに古いツール呼び出しを刈り込みます。刈り込むものがなければ LLM 要約にフォールバックせずスキップします。",
+      "version": "1.6.1",
+      "author": {
+        "name": "notque"
+      },
+      "homepage": "https://github.com/notque/vexjoy-agent",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "cache-tax",
+      "source": "./mods/cache-tax",
+      "description": "休憩中に 1 時間の prompt キャッシュを温かく保ち、コールド送信前に確認して再書き込みコストを表示します。",
+      "version": "2.4.2",
+      "author": {
+        "name": "karanb192"
+      },
+      "homepage": "https://github.com/karanb192/cache-tax",
+      "license": "MIT",
+      "category": "dashboards"
+    },
+    {
+      "name": "turbo",
+      "source": "./mods/turbo",
+      "description": "人間が主導するエージェントのソフトウェアファクトリー。作業内容の決定と検収はあなたが行い、スキルが構築と公開を担います。",
+      "version": "0.0.0",
+      "author": {
+        "name": "tobihagemann"
+      },
+      "homepage": "https://github.com/tobihagemann/turbo",
+      "license": "MIT",
+      "category": "git"
+    },
+    {
+      "name": "agent-standup-band",
+      "source": "./mods/agent-standup-band",
+      "description": "同じマシンの別セッションにあなたの対応が必要なときに入力欄の上に一行を表示し、作業完了時に通知します。",
+      "version": "1.47.1",
+      "author": {
+        "name": "Atoll92"
+      },
+      "homepage": "https://github.com/Atoll92/agent-standup",
+      "license": "MIT",
+      "category": "dashboards"
+    },
+    {
+      "name": "flightdeck",
+      "source": "./mods/flightdeck",
+      "description": "リアルタイムのエージェントダッシュボード。モデルの状態、当直アーキテクト、権限チェック、サブエージェントのカード、セッションログを表示します。",
+      "version": "0.6.2",
+      "author": {
+        "name": "scasella"
+      },
+      "homepage": "https://github.com/scasella/claude-flightdeck",
+      "license": "MIT",
+      "category": "agents"
+    },
+    {
+      "name": "caliber-jev-compaction",
+      "source": "./mods/caliber-jev-compaction",
+      "description": "Claude Code のセッション向けに、内容を保持したまま Jev 圧縮を行います。",
+      "version": "0.3.0",
+      "author": {
+        "name": "caliber-ai-org"
+      },
+      "homepage": "https://github.com/caliber-ai-org/ai-setup",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "mazyos",
+      "source": "./mods/mazyos",
+      "description": "ポルトガル語のビジネス運用プラグイン。毎セッションに会社の記憶を読み込み、ブランド統一の出力を行い、17 個のマーケティング/SEO スキルを提供します。",
+      "version": "1.0.0",
+      "author": {
+        "name": "Mazzeo-Marketing"
+      },
+      "homepage": "https://github.com/Mazzeo-Marketing/MazyOS",
+      "license": "NOASSERTION",
+      "category": "git"
+    },
+    {
+      "name": "start",
+      "source": "./mods/start",
+      "description": "エージェントを使ったソフトウェア開発のためのフロー編成コマンド。",
+      "version": "4.0.0",
+      "author": {
+        "name": "rsmdt"
+      },
+      "homepage": "https://github.com/rsmdt/the-startup",
+      "license": "MIT",
+      "category": "agents"
+    },
+    {
+      "name": "shunt",
+      "source": "./mods/shunt",
+      "description": "shunt ゲートウェイの使用状況バー。ウィンドウごとのコストとリセット時刻、および /shunt:usage の詳細を表示します。",
+      "version": "0.1.0",
+      "author": {
+        "name": "pleaseai"
+      },
+      "homepage": "https://github.com/pleaseai/shunt",
+      "license": "Apache-2.0",
+      "category": "dashboards"
+    },
+    {
+      "name": "operator",
+      "source": "./mods/operator",
+      "description": "エージェント開発向けの永続的なプロジェクトおよびユーザーの記憶。",
+      "version": "0.2.0",
+      "author": {
+        "name": "aerovato"
+      },
+      "homepage": "https://github.com/aerovato/operator-memory",
+      "license": "BSD-3-Clause",
+      "category": "productivity"
+    },
+    {
+      "name": "carbon",
+      "source": "./mods/carbon",
+      "description": "端末とデスクトップアプリで Claude Code セッションのカーボンフットプリントを追跡します。",
+      "version": "1.20.1",
+      "author": {
+        "name": "gwittebolle"
+      },
+      "homepage": "https://github.com/gwittebolle/claude-carbon",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "agentctl",
+      "source": "./mods/agentctl",
+      "description": "セッション単位のエージェント制御パネル。タスクの範囲、根拠、引き継ぎを扱います。",
+      "version": "0.3.1",
+      "author": {
+        "name": "sd0xdev"
+      },
+      "homepage": "https://github.com/sd0xdev/sd0x-harness",
+      "license": "MIT",
+      "category": "safety"
+    },
+    {
+      "name": "multi-core",
+      "source": "./mods/multi-core",
+      "description": "単一の Claude Code セッションで ChatGPT、Cursor、OpenCode、Antigravity のモデルを使い、/model で切り替えます。",
+      "version": "0.0.0",
+      "author": {
+        "name": "greenpolo"
+      },
+      "homepage": "https://github.com/greenpolo/cc-multi-cli-plugin",
+      "license": "Apache-2.0",
+      "category": "safety"
+    },
+    {
+      "name": "work-mode",
+      "source": "./mods/work-mode",
+      "description": "セッションモード：auto（途中で質問しない）、out（まとめて委任）、wrap（収束して終了）。",
+      "version": "0.8.0",
+      "author": {
+        "name": "danyuchn"
+      },
+      "homepage": "https://github.com/danyuchn/claude-work-mode",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "tokendoctor",
+      "source": "./mods/tokendoctor",
+      "description": "過去のセッションを再生して各変更の節約効果を示し、選んだ変更だけを適用します。",
+      "version": "0.6.1",
+      "author": {
+        "name": "localixai"
+      },
+      "homepage": "https://github.com/localixai/tokendoctor",
+      "license": "MIT",
+      "category": "dashboards"
+    },
+    {
+      "name": "engineer",
+      "source": "./mods/engineer",
+      "description": "厳密なエージェント工学の手法セット。要件受付、受け入れ基準の探索、仕様、計画、実装、検証、補強をカバーします。",
+      "version": "0.40.2",
+      "author": {
+        "name": "swingerman"
+      },
+      "homepage": "https://github.com/swingerman/engineer",
+      "license": "MIT",
+      "category": "git"
+    },
+    {
+      "name": "skins",
+      "source": "./mods/skins",
+      "description": "文字起こしスキンの 15 テーマ、リッチカード、使用状況バー。/skin でリアルタイムに切り替えられます。",
+      "version": "0.5.16",
+      "author": {
+        "name": "hellosverre"
+      },
+      "homepage": "https://github.com/hellosverre/claude-skins",
+      "license": "MIT",
+      "category": "dashboards"
+    },
+    {
+      "name": "show-your-work",
+      "source": "./mods/show-your-work",
+      "description": "成果物を端末で見せます。スクリーンショット、操作の記録、ビフォーアフターの QA を表示します。",
+      "version": "1.1.0",
+      "author": {
+        "name": "iamumeransari"
+      },
+      "homepage": "https://github.com/iamumeransari/claude-show-your-work",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "jevmem-pane",
+      "source": "./mods/jevmem-pane",
+      "description": "サイドバーに jevmem が呼び出した内容、ガードの判定、前のターンで保存した内容を表示します。",
+      "version": "0.7.8",
+      "author": {
+        "name": "Avinash-jetwani"
+      },
+      "homepage": "https://github.com/Avinash-jetwani/jevmem",
+      "license": "MIT",
+      "category": "safety"
+    },
+    {
+      "name": "ctx-handoff",
+      "source": "./mods/ctx-handoff",
+      "description": "Claude に教えた内容をプロジェクトノートとして蓄積し、よくある抜けを捕捉し、キャッシュを保温して長い会話を継続します。",
+      "version": "0.8.2",
+      "author": {
+        "name": "cablate"
+      },
+      "homepage": "https://github.com/cablate/ctx-handoff-mod",
+      "license": "MIT",
+      "category": "dashboards"
+    },
+    {
+      "name": "inbox",
+      "source": "./mods/inbox",
+      "description": "セッション中にあなたの対応を待っている質問、タスク、発見、PR をまとめます。",
+      "version": "0.6.0",
+      "author": {
+        "name": "petekp"
+      },
+      "homepage": "https://github.com/petekp/inbox",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "lane-stack",
+      "source": "./mods/lane-stack",
+      "description": "一人で回す PM パイプライン。エージェントの編成、レーンのハンドブック、オンボーディングと引き継ぎコマンドを提供します。",
+      "version": "1.67.4",
+      "author": {
+        "name": "VKirill"
+      },
+      "homepage": "https://github.com/VKirill/claude-lane-stack",
+      "license": "MIT",
+      "category": "agents"
+    },
+    {
+      "name": "compact-adviser",
+      "source": "./mods/compact-adviser",
+      "description": "完了したチェックポイントで /compact を提案または実行します。判定は TypeSafe Jev が行います。",
+      "version": "0.1.14",
+      "author": {
+        "name": "kunchenguid"
+      },
+      "homepage": "https://github.com/kunchenguid/compact-adviser",
+      "license": "MIT",
+      "category": "productivity"
+    },
+    {
+      "name": "ripple",
+      "source": "./mods/ripple",
+      "description": "プロンプトごとに推論強度を、委任タスクごとに実行者を選び、キャッシュを保温してリクエストの送信先を表示します。",
+      "version": "0.7.0",
+      "author": {
+        "name": "PBJ-2"
+      },
+      "homepage": "https://github.com/PBJ-2/clauderipple",
+      "license": "GPL-3.0",
+      "category": "dashboards"
+    },
+    {
+      "name": "tavernweave-agent-skills",
+      "source": "./mods/tavernweave-agent-skills",
+      "description": "キャラクターシート、ソフトウェア作業、範囲付きクラウドタスクのための 23 個の共有スキル。入力欄の上に Soul モードのトグルがあります。",
+      "version": "2.4.0",
+      "author": {
+        "name": "LiarMTTT"
+      },
+      "homepage": "https://github.com/LiarMTTT/TavernWeave",
+      "license": "NOASSERTION",
+      "category": "dashboards"
+    },
+    {
+      "name": "agent-usage-guard",
+      "source": "./mods/agent-usage-guard",
+      "description": "サブエージェントの増殖、長いコンテキストのプロンプト、リトライループが用量ウィンドウを消費する前に食い止めます。",
+      "version": "1.2.1",
+      "author": {
+        "name": "rbartoli"
+      },
+      "homepage": "https://github.com/rbartoli/agent-usage-guard",
+      "license": "MIT",
+      "category": "dashboards"
+    }
+  ]
+}

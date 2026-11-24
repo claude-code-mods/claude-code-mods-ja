@@ -1,0 +1,18 @@
+{
+  "name": "agent-standup-band",
+  "version": "1.47.1",
+  "description": "このコンピュータ上の別の Claude Code セッションがあなたの対応（承認や回答）を必要とするとき、プロンプトの上に一行を表示し、あるセッションが一巡を終えたときにトーストを表示します。Claude Code が各セッション用に保存する状態ファイルのみを読み取り、外部へは何も送信しません。",
+  "author": {
+    "name": "Double Geste",
+    "url": "https://github.com/Atoll92"
+  },
+  "homepage": "https://agent-standup.com",
+  "repository": "https://github.com/Atoll92/agent-standup",
+  "license": "MIT",
+  "keywords": [
+    "agents",
+    "sessions",
+    "notifications",
+    "standup"
+  ]
+}

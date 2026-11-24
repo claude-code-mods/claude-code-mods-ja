@@ -1,0 +1,15 @@
+{
+  "name": "agent-usage-guard",
+  "description": "サブエージェントの並列起動、長大なコンテキストのプロンプト、リトライループが使用量ウィンドウを食い潰す前に食い止めます。プランの使用量を読み取り、すべてのセッションのエージェント数を数え、Claude Code 標準のダイアログで確認します。",
+  "version": "1.2.1",
+  "author": { "name": "Riccardo Bartoli" },
+  "homepage": "https://github.com/rbartoli/agent-usage-guard",
+  "repository": "https://github.com/rbartoli/agent-usage-guard",
+  "license": "MIT",
+  "icon": "./.claude-plugin/icon.png",
+  "types": "./types/index.d.ts",
+  "documentationUrl": "https://github.com/rbartoli/agent-usage-guard#readme",
+  "supportUrl": "https://github.com/rbartoli/agent-usage-guard/issues",
+  "privacyPolicyUrl": "https://github.com/rbartoli/agent-usage-guard#security-and-privacy",
+  "keywords": ["mod", "usage", "rate-limit", "subagents", "context", "guardrails", "cost"]
+}

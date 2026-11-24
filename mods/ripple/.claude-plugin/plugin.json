@@ -1,0 +1,9 @@
+{
+  "name": "ripple",
+  "displayName": "ClaudeRipple",
+  "version": "0.7.0",
+  "description": "プロンプトごとに推論レベルを、委任タスクごとに worker を選択できます。プロンプトキャッシュをウォームな状態に保ち、ClaudeRipple が各リクエストをどこに送ったかも表示します。",
+  "author": { "name": "ClaudeRipple" },
+  "license": "GPL-3.0-only",
+  "types": "./types/index.d.ts"
+}

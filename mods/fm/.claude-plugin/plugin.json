@@ -1,0 +1,9 @@
+{
+  "name": "fm",
+  "version": "1.0.0",
+  "description": "帆船の作業アニメーションと会話専用の文字起こしを表示し、セッション間で calm モードの設定を共有します。",
+  "author": {
+    "name": "Firstmate",
+    "url": "https://github.com/kunchenguid/firstmate"
+  }
+}

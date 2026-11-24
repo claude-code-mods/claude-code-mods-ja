@@ -1,0 +1,13 @@
+{
+  "name": "inbox",
+  "version": "0.6.0",
+  "description": "セッション内で対応が必要な問題、タスク、発見事項、PR をまとめます。",
+  "author": { "name": "Pete Petrash" },
+  "repository": "https://github.com/petekp/inbox",
+  "homepage": "https://github.com/petekp/inbox",
+  "documentationUrl": "https://github.com/petekp/inbox#readme",
+  "supportUrl": "https://github.com/petekp/inbox/issues",
+  "privacyPolicyUrl": "https://github.com/petekp/inbox#what-it-runs-sends-and-changes",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

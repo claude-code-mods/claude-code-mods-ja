@@ -1,0 +1,38 @@
+{
+  "name": "carbon",
+  "version": "1.20.1",
+  "description": "Track the carbon footprint of your Claude Code sessions, in the terminal and the Claude desktop app",
+  "author": {
+    "name": "Gaetan Wittebolle",
+    "url": "https://github.com/gwittebolle"
+  },
+  "homepage": "https://github.com/gwittebolle/claude-carbon",
+  "repository": "https://github.com/gwittebolle/claude-carbon",
+  "license": "MIT",
+  "keywords": [
+    "carbon-footprint",
+    "sustainability",
+    "claude-code",
+    "green-it"
+  ],
+  "skills": "./skills/",
+  "statusLine": {
+    "type": "command",
+    "command": "\"${CLAUDE_PLUGIN_ROOT}/scripts/statusline.sh\""
+  },
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "showPerTurn": {
+      "type": "boolean",
+      "title": "ターンごとの CO₂ 排出量",
+      "description": "各ターンの所要時間を表示する行の末尾に、その返信の CO₂ 排出量を表示します。オフにするとセッション合計のみ表示されます。",
+      "default": true
+    },
+    "showSessionTotal": {
+      "type": "boolean",
+      "title": "ターミナルに CO₂ セッション合計を表示",
+      "description": "ターミナルのプロンプト下に、このセッションの CO₂ 合計と API 価格に基づく費用を固定表示します。ステータスラインにすでに表示されている場合（claude-carbon セグメント付きの ccstatusline など）は、この項目をオフにできます。デスクトップアプリではこの設定は保持されます。",
+      "default": true
+    }
+  }
+}

@@ -1,0 +1,682 @@
+{
+  "name": "prismantis",
+  "version": "0.49.3",
+  "description": "Claude Code の応答をカラフルなテーマで描画します：テーブル、見出し、コード、数値、パス、リンク。",
+  "author": {
+    "name": "Nahum Litvin",
+    "url": "https://github.com/NahumLitvin"
+  },
+  "homepage": "https://github.com/NahumLitvin/prismantis",
+  "repository": "https://github.com/NahumLitvin/prismantis",
+  "license": "MIT",
+  "keywords": [
+    "mod",
+    "theme",
+    "markdown",
+    "tables",
+    "colors",
+    "terminal"
+  ],
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "enabled": {
+      "type": "boolean",
+      "title": "有効",
+      "description": "この mod で応答を描画します。オフにすると Claude Code 標準のレンダラーに戻ります。",
+      "default": true
+    },
+    "surfaces": {
+      "type": "string",
+      "title": "表示対象",
+      "description": "この mod で描画する対象を、terminal、desktop、vscode、mobile をカンマ区切りで指定します（例：terminal,vscode）。指定外は Claude Code 標準のレンダラーに戻ります。空または all ならすべての対象で描画します。",
+      "default": "all"
+    },
+    "theme": {
+      "type": "string",
+      "title": "テーマ",
+      "description": "MIT ライセンスの人気テーマをベースにしたカラーパレットです。明るいバリエーション：catppuccin-latte、gruvbox-light、rose-pine-dawn、github-light、solarized-light。mono は太字と減光のみを使います。random は mod が読み込まれるたび（セッション開始または再読み込み時）にダーク系のプリセットをランダムに選びます。",
+      "default": "catppuccin-mocha",
+      "options": [
+        "catppuccin-mocha",
+        "catppuccin-latte",
+        "dracula",
+        "nord",
+        "tokyo-night",
+        "gruvbox-dark",
+        "gruvbox-light",
+        "rose-pine",
+        "rose-pine-dawn",
+        "everforest",
+        "github-dark",
+        "github-light",
+        "one-dark",
+        "solarized-dark",
+        "solarized-light",
+        "neon",
+        "kanagawa-wave",
+        "morning-haze",
+        "mono",
+        "random"
+      ]
+    },
+    "desktopColors": {
+      "type": "string",
+      "title": "デスクトップアプリの配色",
+      "description": "match にすると Claude Code デスクトップアプリ（コードタブ）もテーマの色で描画し、明るいテーマならライトモードに切り替えます。Claude Code 2.1.324 以降が必要です。端末と VS Code はそれぞれ独自の色を維持します。他の mod のデスクトップテーマを置き換え、off に戻すとアプリ本来の外観に戻ります。off はアプリをそのままにします。",
+      "default": "off",
+      "options": [
+        "off",
+        "match"
+      ]
+    },
+    "headingStyle": {
+      "type": "string",
+      "title": "見出しスタイル",
+      "description": "端末はフォントサイズが一通りしかないため、見出しには太さで差をつけます：banner（H1 を枠で囲み、H2 の下に太い罫線を引く）、bold、underline、または H1 を大文字にする uppercase。",
+      "default": "banner",
+      "options": [
+        "bold",
+        "underline",
+        "uppercase",
+        "banner"
+      ]
+    },
+    "tableStyle": {
+      "type": "string",
+      "title": "テーブルスタイル",
+      "description": "box：すべてのセルを枠で囲み、ヘッダー下に二重線を引きます。rules：ヘッダー下と行間に罫線を引きます。grid：ヘッダー下の線を太くし、余白を広げます。minimal：ヘッダー下の線のみです。",
+      "default": "box",
+      "options": [
+        "box",
+        "rules",
+        "grid",
+        "minimal"
+      ]
+    },
+    "tableLayout": {
+      "type": "string",
+      "title": "テーブルレイアウト",
+      "description": "classic：現在の外観です。列が幅を共有し、端末幅に合わせて縮みます。auto：同じ動作に加え、最長の単語でも収まらないほど広いテーブルは、各行をラベルと値の組として積み重ねます。compact：各列が最長の単語に合わせられるため、テーブルは狭く保たれ、長いセルは折り返します。stacked：すべてのテーブルをラベルと値の組で描画します。デスクトップアプリでは、どのレイアウトも各行が応答幅に応じた細い色付きボックスとして描画されます。",
+      "default": "classic",
+      "options": [
+        "classic",
+        "auto",
+        "compact",
+        "stacked"
+      ]
+    },
+    "statusMatrix": {
+      "type": "string",
+      "title": "ステータス行列",
+      "description": "テーブルのステータスセルの描画方法です。ステータス列とは、✓、passed、failed、pending のような値が入る列のことです。デフォルトの off はテーブルをそのまま保持します。color：該当セルをテーマの色で描画します（成功は緑、失敗は赤、警告は琥珀色、待機は灰色）。summary：テーブル下に `✓ 2 · ✗ 1 · ⚠ 1` のような集計行も追加します。group：ステータスで行を並べ替え、グループが変わる場所に太い罫線を引きます。",
+      "default": "off",
+      "options": [
+        "color",
+        "summary",
+        "group",
+        "off"
+      ]
+    },
+    "testMatrix": {
+      "type": "string",
+      "title": "テストレポート",
+      "description": "テーブルの下に、テスト結果のように読める行を追加します：✓ や failed のようなステータス列と、120 ms のような所要時間が並びます。report は実行のうち成功した割合、他の結果の種類ごとの件数、全体の所要時間をテーマのステータス色で描画します。両方が有効な場合、statusMatrix の集計行を置き換えます。デフォルトの off はテーブルをそのまま保持します。",
+      "default": "off",
+      "options": [
+        "report",
+        "off"
+      ]
+    },
+    "benchTable": {
+      "type": "string",
+      "title": "ベンチマーク",
+      "description": "ベンチマークを比較するテーブル（−10% や +3% のような変化の列）の描画方法です。デフォルトの off はテーブルをそのまま保持します。color：各変化をテーマの色で描画し、改善は緑、退歩は赤です。見出しに req/s、スループット、スコアへの言及がない限り、時間は短いほど良いものとして扱います。trend：テーブル下に各実行のスパークラインを描画し、各段階を改善したかどうかで色分けします。",
+      "default": "off",
+      "options": [
+        "trend",
+        "color",
+        "off"
+      ]
+    },
+    "schemaTable": {
+      "type": "string",
+      "title": "スキーマ",
+      "description": "データベーススキーマを記述するテーブル（フィールド列と型列）の描画方法です。デフォルトの off はテーブルをそのまま保持します。types：型の系統ごとにテーマの色で型セルを描画します（varchar などの文字列型は文字列色、int などの数値型は数値色、真偽値は強調色、timestamp などの時刻型はリンク色）。keys：制約セルを描画します（PK はアクセント色、FK はリンク色、unique や index は灰色）。full：両方を実行します。",
+      "default": "off",
+      "options": [
+        "full",
+        "types",
+        "keys",
+        "off"
+      ]
+    },
+    "compareTable": {
+      "type": "string",
+      "title": "比較",
+      "description": "選択肢を比較するテーブル（スコア列と順位列）の描画方法です。デフォルトの off はテーブルをそのまま保持します。rank：順位セルをテーマの色で描画します（1 位はアクセント色、2 位と 3 位はリンク色）。pick：最高スコアのセルを改善を表す色で太字に描画し、その色が数値色と同じテーマでも目立つようにします。full：両方を実行します。",
+      "default": "off",
+      "options": [
+        "full",
+        "rank",
+        "pick",
+        "off"
+      ]
+    },
+    "apiTable": {
+      "type": "string",
+      "title": "API リファレンス",
+      "description": "API リファレンステーブル（HTTP 動詞のような値が入るメソッド列）の描画方法です。デフォルトの off はテーブルをそのまま保持します。verbs：動詞の意味に応じてメソッドセルを描画します（GET のような読み取りはリンク色、POST のような書き込みは文字列色、DELETE は削除を表す色、他の動詞は灰色）。auth：認証列の方式セル（Bearer、OAuth、API key、JWT）をアクセント色で描画します。full：両方を実行します。",
+      "default": "off",
+      "options": [
+        "full",
+        "verbs",
+        "auth",
+        "off"
+      ]
+    },
+    "kvTable": {
+      "type": "string",
+      "title": "キーと値の検査",
+      "description": "設定の一覧（オプション列と、値・出典・デフォルト値の列）の描画方法です。デフォルトの off はテーブルをそのまま保持します。sources：値の出典に応じて出典セルをテーマの色で描画します（env はリンク色、config は文字列色、default は灰色）。overrides：行の値がデフォルト値と異なる場合、その値セルをアクセント色で描画します。full：両方を実行します。",
+      "default": "off",
+      "options": [
+        "full",
+        "sources",
+        "overrides",
+        "off"
+      ]
+    },
+    "groupTable": {
+      "type": "string",
+      "title": "グループ化テーブル",
+      "description": "行をグループ化するテーブル（サービスやチームのように、セルが連続して繰り返される最初の列）の描画方法です。デフォルトの off はテーブルをそのまま保持します。merge：各グループのラベルを一度だけアクセント色で描画し、その下の重複を空欄にします。count：ラベルにグループのサイズも追加します（例：api (2)）。full：グループが終わり次の始まる場所に太い罫線も引きます。数値の列がグループ化されることはなく、statusMatrix で既にグループ化されたテーブルはステータスによるグループ化を維持します。",
+      "default": "off",
+      "options": [
+        "full",
+        "count",
+        "merge",
+        "off"
+      ]
+    },
+    "promptStyle": {
+      "type": "string",
+      "title": "質問のスタイル",
+      "description": "入力した質問が会話ログでどのように表示されるかです。bubble：チャットアプリのように右側に `You ⬤` ラベル付きで表示し、Claude の返信は別のバブルに表示されます。framed：同じ表示で背景なしです。その他のスタイルでは Claude の返信は変更されません。off：Claude Code 標準の外観を保持します。",
+      "default": "bubble",
+      "options": [
+        "bubble",
+        "framed",
+        "wide",
+        "bar",
+        "chevron",
+        "off"
+      ]
+    },
+    "replyStyle": {
+      "type": "string",
+      "title": "Claude の返信スタイル",
+      "description": "Claude の返信が会話ログでどのように表示されるかです。auto：質問が bubble なら返信も bubble として描画して会話をチャット風にし、他の質問スタイルでは off として描画します。bubble：`⬤ Claude` の下に各返信を角丸枠で描画します。枠線は Claude のオレンジ色、背景は背景色から少しずらした色です。solid：同じ背景を端まで広げ、上下を半ブロックで表現し、枠線なしにします。framed：枠線のみで背景なしです。off：先頭行の前にドットだけを残します。",
+      "default": "auto",
+      "options": [
+        "auto",
+        "bubble",
+        "solid",
+        "framed",
+        "off"
+      ]
+    },
+    "bubbleLabels": {
+      "type": "string",
+      "title": "バブルラベル",
+      "description": "質問バブル上の `You ⬤` ラベルと、Claude の最初のバブル上の `⬤ Claude` ラベルです。large：Claude Code と同じ ⬤ を描画します。small：小さなドット ● を描画します。off：両方のラベルを外し、枠線だけを残します。",
+      "default": "large",
+      "options": [
+        "large",
+        "small",
+        "off"
+      ]
+    },
+    "clock": {
+      "type": "string",
+      "title": "時刻表示",
+      "description": "各質問を送信した時刻と、各ターンが終了した時刻を表示します。24h：14:32。12h：2:32 PM。別の日の時刻には日付も付きます。off：時刻を表示しません。",
+      "default": "off",
+      "options": [
+        "off",
+        "24h",
+        "12h"
+      ]
+    },
+    "toolStyle": {
+      "type": "string",
+      "title": "ツール行のスタイル",
+      "description": "ツール行（Ran、Read、Edited）が Claude の文章の横にどのように配置されるかです。chat：ツール行を右側に減光して配置し、Claude の文章は左側に置きます。tree-dim：文章の下に ⎿ を付けて減光して配置します。tree-bold：tree-dim に加え、1 行の文章を太字にします。classic：元の外観です。",
+      "default": "chat",
+      "options": [
+        "chat",
+        "tree-dim",
+        "tree-bold",
+        "classic"
+      ]
+    },
+    "runningDot": {
+      "type": "string",
+      "title": "実行中のツールのドット",
+      "description": "まだ実行中のツール呼び出しのドットです。ring：静止した ◌ です。blink：Claude Code 標準と同じように、● が 0.5 秒ごとに点滅します。",
+      "default": "ring",
+      "options": [
+        "ring",
+        "blink"
+      ]
+    },
+    "unreadPrompts": {
+      "type": "boolean",
+      "title": "未読の質問",
+      "description": "送信した質問をコメント色の灰色で描画し、その質問を含むリクエストにモデルが答え始めるまで罫線の色へ点滅させます。Claude Code 標準の灰色のキュー済み質問と同様です。スラッシュコマンドは対象外です。",
+      "default": false
+    },
+    "toolOutput": {
+      "type": "string",
+      "title": "ツールの出力",
+      "description": "ツール呼び出しの結果をどれだけ表示するかです。full：Claude Code が表示する内容そのままです。quiet：呼び出しを平易な言葉で説明します。読み取り、検索、一覧表示はその行だけを表示し、他のシェルコマンドは最初の数行を表示し、編集は差分を保持し、失敗した呼び出しはエラーの最後の行を、拒否された呼び出しはその理由の全文を表示します。rows：quiet と同じですが、成功した呼び出しはシェルの出力も含めてその行だけを表示します。編集は差分を、失敗は理由を保持します。toolRows をオンにする必要があります。",
+      "default": "full",
+      "options": [
+        "full",
+        "quiet",
+        "rows"
+      ]
+    },
+    "taskStyle": {
+      "type": "string",
+      "title": "タスクリストのスタイル",
+      "description": "- [ ] と - [x] の項目の描画方法です。checks：[ ] と [✓] で、完了項目は減光し打ち消し線を引きます。ticks：○ と ✓ で、完了項目を減光します。box：□ と ✓ で、完了項目は減光し打ち消し線を引きます。progress：ticks に加え、各リストの上に完了数のバーを表示します。",
+      "default": "checks",
+      "options": [
+        "checks",
+        "ticks",
+        "box",
+        "progress"
+      ]
+    },
+    "listMarker": {
+      "type": "string",
+      "title": "リストの記号",
+      "description": "箇条書きの項目の描画方法です。dots：最上位は •、入れ子は ◦ です。dash：すべての階層で - を使うため、マウスで選択したリストを Slack、GitHub、ドキュメントに貼り付けても Markdown リストのままになります。",
+      "default": "dots",
+      "options": [
+        "dots",
+        "dash"
+      ]
+    },
+    "rtl": {
+      "type": "string",
+      "title": "右から左へ書く端末",
+      "description": "ヘブライ語とアラビア語は右から左へレイアウトします（右寄せ、箇条書きと引用のバーは右側、テーブルは左右反転）。文字は端末が必要とする並びで送ります。auto は端末を自動検出します。いずれかを選んで処理を強制するか、off で何もしません。",
+      "default": "auto",
+      "options": [
+        "auto",
+        "warp",
+        "kitty",
+        "apple-terminal",
+        "iterm",
+        "ghostty",
+        "wezterm",
+        "vscode",
+        "alacritty",
+        "windows-terminal",
+        "gnome",
+        "konsole",
+        "off"
+      ]
+    },
+    "highlightNumbers": {
+      "type": "boolean",
+      "title": "数値を強調",
+      "description": "文章やテーブル内のバージョン、ID、件数、所要時間に色を付けます。",
+      "default": true
+    },
+    "highlightPaths": {
+      "type": "boolean",
+      "title": "パスを強調",
+      "description": "~/src/app.ts や /var/log のようなファイルパスに色を付けます。",
+      "default": true
+    },
+    "fullPaths": {
+      "type": "boolean",
+      "title": "完全なパス",
+      "description": "クリックで開くパスを完全な形で表示します。~/notes.md、./src/app.ts、src/app.ts は絶対パスとして描画されます。",
+      "default": false
+    },
+    "accentColor": {
+      "type": "string",
+      "title": "アクセント",
+      "description": "返信の箇条書き、H3 以降の見出し、引用のバーの色です。16 進数（#a6e3a1）、rgb(166,227,161)、ansi256(114)、または名前（green）で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "headingColor": {
+      "type": "string",
+      "title": "見出し",
+      "description": "H1 と H2 の見出しの色です。16 進数（#a6e3a1）、rgb(166,227,161)、ansi256(114)、または名前（green）で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "tableHeaderColor": {
+      "type": "string",
+      "title": "テーブルヘッダー",
+      "description": "テーブルのヘッダーセルの色です。16 進数（#a6e3a1）、rgb(166,227,161)、ansi256(114)、または名前（green）で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "tableRuleColor": {
+      "type": "string",
+      "title": "テーブルの罫線",
+      "description": "テーブルの罫線の色です。16 進数（#a6e3a1）、rgb(166,227,161)、ansi256(114)、または名前（green）で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "tableTextColor": {
+      "type": "string",
+      "title": "テーブルの文字",
+      "description": "テーブル本体のセルの通常文字の色（画面表示と png コピーの両方）です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合は端末本来の文字色（png コピーでは図の文字色）を保持します。",
+      "default": ""
+    },
+    "numberColor": {
+      "type": "string",
+      "title": "数値",
+      "description": "バージョン、ID、件数の色です。16 進数（#a6e3a1）、rgb(166,227,161)、ansi256(114)、または名前（green）で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "pathColor": {
+      "type": "string",
+      "title": "パス",
+      "description": "ファイルパスの色です。16 進数（#a6e3a1）、rgb(166,227,161)、ansi256(114)、または名前（green）で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "linkColor": {
+      "type": "string",
+      "title": "リンク",
+      "description": "リンクと URL の色です。16 進数（#a6e3a1）、rgb(166,227,161)、ansi256(114)、または名前（green）で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "inlineCodeColor": {
+      "type": "string",
+      "title": "インラインコード",
+      "description": "`inline code` の色です。16 進数（#a6e3a1）、rgb(166,227,161)、ansi256(114)、または名前（green）で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "codeCommandColor": {
+      "type": "string",
+      "title": "コード内のコマンド",
+      "description": "シェルブロック内のコマンド語の色です。16 進数（#a6e3a1）、rgb(166,227,161)、ansi256(114)、または名前（green）で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "codeFlagColor": {
+      "type": "string",
+      "title": "コード内のフラグ",
+      "description": "シェルブロック内の --flags の色です。16 進数（#a6e3a1）、rgb(166,227,161)、ansi256(114)、または名前（green）で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "codeStringColor": {
+      "type": "string",
+      "title": "コード内の文字列",
+      "description": "シェルブロック内の引用文字列の色です。16 進数（#a6e3a1）、rgb(166,227,161)、ansi256(114)、または名前（green）で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "strongColor": {
+      "type": "string",
+      "title": "太字",
+      "description": "**太字** の色です。16 進数（#a6e3a1）、rgb(166,227,161)、ansi256(114)、または名前（green）で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "quoteColor": {
+      "type": "string",
+      "title": "引用",
+      "description": "引用の色です。16 進数（#a6e3a1）、rgb(166,227,161)、ansi256(114)、または名前（green）で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "mermaidAscii": {
+      "type": "boolean",
+      "title": "Mermaid を ASCII のみで表示",
+      "description": "ボックス描画文字のないフォント向けに、図を + - | > で描画します。",
+      "default": false
+    },
+    "diagramColor": {
+      "type": "string",
+      "title": "図の線",
+      "description": "図のボックスと矢印の色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "diagramTextColor": {
+      "type": "string",
+      "title": "図の文字",
+      "description": "図のラベルと LaTeX 数式の色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "toolRows": {
+      "type": "boolean",
+      "title": "ツール行",
+      "description": "ツール呼び出しを「Ran gh pr view 12」「Read ~/src/app.ts」「Edited README.md」のような 1 行のコンパクトな表示にします。結果はこれまでどおり下に表示されます。",
+      "default": true
+    },
+    "emphasisColor": {
+      "type": "string",
+      "title": "斜体",
+      "description": "*斜体* の色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "codeTextColor": {
+      "type": "string",
+      "title": "コードの文字",
+      "description": "コードブロックの文字色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "codeCommentColor": {
+      "type": "string",
+      "title": "コードのコメント",
+      "description": "シェルブロック内の # コメントの色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "codeFillColor": {
+      "type": "string",
+      "title": "コードブロックの背景",
+      "description": "codeStyle が filled または card のときのコードブロックの背景色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合は背景色から少しずらした色を使います。",
+      "default": ""
+    },
+    "codeBorderColor": {
+      "type": "string",
+      "title": "コードブロックの枠",
+      "description": "codeStyle が framed または card のときのコードブロックの枠線色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合は罫線の色を使います。",
+      "default": ""
+    },
+    "ruleColor": {
+      "type": "string",
+      "title": "罫線",
+      "description": "水平罫線、差分カードの境界、チャートのグリッド線の色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "bulletColor": {
+      "type": "string",
+      "title": "箇条書きの記号",
+      "description": "箇条書きの記号と数字の色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合はテーマの色を使います。",
+      "default": ""
+    },
+    "diffAddedColor": {
+      "type": "string",
+      "title": "差分の追加行",
+      "description": "差分の追加行の色です：+ 記号とその件数、および 16 進数指定の場合は行の背景色。背景色は黒または白に混ぜられ、コード文字のコントラストが 4.5:1 を保てるようにします。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合はテーマの緑色を使います。",
+      "default": ""
+    },
+    "diffRemovedColor": {
+      "type": "string",
+      "title": "差分の削除行",
+      "description": "差分の削除行の色です：− 記号とその件数、および 16 進数指定の場合は行の背景色。背景色は黒または白に混ぜられ、コード文字のコントラストが 4.5:1 を保てるようにします。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合はテーマの赤色を使います。",
+      "default": ""
+    },
+    "promptFillColor": {
+      "type": "string",
+      "title": "質問バブルの背景",
+      "description": "promptStyle が bubble のときの質問バブルの背景色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合はテーマの緑色の深い色合い（明るいテーマでは淡い色合い）を使います。",
+      "default": ""
+    },
+    "promptBorderColor": {
+      "type": "string",
+      "title": "質問バブルの枠",
+      "description": "promptStyle が bubble または framed のときの質問の枠線と `You ⬤` ラベルの色、およびデフォルトの背景色の色相です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合はテーマの緑色（差分の追加色）を使います。",
+      "default": ""
+    },
+    "promptTextColor": {
+      "type": "string",
+      "title": "質問バブルの文字",
+      "description": "promptStyle が bubble または framed のときの質問の文字色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合は見出しの色を使います。見出し色が背景に埋もれる場合はコードの文字色を使います。",
+      "default": ""
+    },
+    "replyFillColor": {
+      "type": "string",
+      "title": "Claude のバブルの背景",
+      "description": "replyStyle が bubble または solid のときの Claude の返信の背景色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合はテーマの背景から少しずらした深夜色（明るいテーマでは淡い色）を使います。",
+      "default": ""
+    },
+    "alertNoteColor": {
+      "type": "string",
+      "title": "注意のアラート",
+      "description": "> [!NOTE] アラートのボックス、バー、ラベルの色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合は端末の青色を使います。",
+      "default": ""
+    },
+    "alertTipColor": {
+      "type": "string",
+      "title": "ヒントのアラート",
+      "description": "> [!TIP] アラートのボックス、バー、ラベルの色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合は端末の緑色を使います。",
+      "default": ""
+    },
+    "alertImportantColor": {
+      "type": "string",
+      "title": "重要なアラート",
+      "description": "> [!IMPORTANT] アラートのボックス、バー、ラベルの色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合は端末のマゼンタ色を使います。",
+      "default": ""
+    },
+    "alertWarningColor": {
+      "type": "string",
+      "title": "警告のアラート",
+      "description": "> [!WARNING] アラートのボックス、バー、ラベルの色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合は端末の黄色を使います。",
+      "default": ""
+    },
+    "alertCautionColor": {
+      "type": "string",
+      "title": "警戒のアラート",
+      "description": "> [!CAUTION] アラートのボックス、バー、ラベルの色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合は端末の赤色を使います。",
+      "default": ""
+    },
+    "replyBorderColor": {
+      "type": "string",
+      "title": "Claude のバブルの枠",
+      "description": "replyStyle が bubble または framed のときの Claude の返信の枠線と `⬤ Claude` ラベルの色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合は Claude Code 標準の Claude オレンジを使います。",
+      "default": ""
+    },
+    "pngBackgroundColor": {
+      "type": "string",
+      "title": "png コピーの背景",
+      "description": "テーブル、図、図形の ▣ png コピーの背景色です。16 進数、rgb()、ansi256()、または名前で指定します。空欄の場合はテーマの背景色（テーマに背景色がない場合は白）を使います。端末の背景色に設定すると、見たままを貼り付けられます。",
+      "default": ""
+    },
+    "diffStyle": {
+      "type": "string",
+      "title": "差分スタイル",
+      "description": "編集やシェルによる編集の差分の描画方法です。card：角丸のボックスで、行に色を付けます。full：ボックスなしで、変更された各行の幅いっぱいに色を付けます。marks：ボックスも色付けもなく、+ と − の記号だけをテーマの差分色で描画します。bar：ボックスも色付けもなく、変更された各行の前に色付きの ▌ を置きます。どのスタイルでもコードをハイライトし、変更された語に印を付けます。",
+      "default": "card",
+      "options": [
+        "card",
+        "full",
+        "marks",
+        "bar"
+      ]
+    },
+    "codeStyle": {
+      "type": "string",
+      "title": "コードブロックのスタイル",
+      "description": "コードブロックの端末での描画方法です。plain：枠線なしなので、マウス選択でコードだけがコピーされます。framed：角丸のボックスを描画します。filled：背景色を描画します。色を塗れないテーマではボックスを描画します。card：背景色付きの角丸ボックスを描画します。",
+      "default": "plain",
+      "options": [
+        "plain",
+        "framed",
+        "filled",
+        "card"
+      ]
+    },
+    "pieStyle": {
+      "type": "string",
+      "title": "円グラフのスタイル",
+      "description": "Mermaid の円グラフの描画方法です。round：凡例付きの円を描画し、kitty と Ghostty では滑らかな画像になります（tmux 下では不可）、それ以外ではテキストになります。ASCII モードでは、扇区数がテーマの区別できる色数より多い場合（mono では常に）、または端末が狭い場合には棒グラフに切り替わります。bars：扇区ごとに 1 本の棒を、大きい順に割合付きで描画します。",
+      "default": "round",
+      "options": [
+        "round",
+        "bars"
+      ]
+    },
+    "mermaid": {
+      "type": "boolean",
+      "title": "Mermaid 図",
+      "description": "```mermaid ブロックを端末の幅に合わせた色付きのボックスアートとして描画します。オフにするとコードをそのまま残します。",
+      "default": true
+    },
+    "folds": {
+      "type": "string",
+      "title": "長いブロック",
+      "description": "長いコードブロック、差分カード、新規ファイルのプレビュー、質問に貼り付けたテキストの開始時の状態です。closed：最初の数行に `+N more lines` ボタンを付けて折りたたみます。open：（各要素の行数上限まで）全体を描画し、`show less` ボタンを付けます。全体を描画すると、再描画のたびにノード数と時間が余分にかかります。",
+      "default": "closed",
+      "options": [
+        "closed",
+        "open"
+      ]
+    },
+    "copyButtons": {
+      "type": "boolean",
+      "title": "コピーボタン",
+      "description": "コードブロック、テーブル、図、リスト、引用にコピーボタンを置きます。ctrl+x Tab の後に Enter で操作するか、端末がクリックを透過する場合はボタンをクリックします。",
+      "default": true
+    },
+    "copyButtonStyle": {
+      "type": "string",
+      "title": "コピーボタンのスタイル",
+      "description": "dim：各ブロックの横または上に素の ⧉ ラベルを置き、通常は減光して表示し、ポインターやフォーカスが当たると明るくします。inline：同じボタンをアクセント色で描画します。hover：各ブロックの先頭行の横に減光した ⧉ を表示し、返信では右下に表示します。⧉ にポインターを合わせるとその上にボタンを描画するため、行を占有しません。ctrl+x Tab では非表示のボタンに到達できず、ポインターのないモバイルアプリでは inline 表示になります。copyButtons をオンにする必要があります。",
+      "default": "dim",
+      "options": [
+        "dim",
+        "inline",
+        "hover"
+      ]
+    },
+    "textCopyButtons": {
+      "type": "boolean",
+      "title": "リストと引用のコピーボタン",
+      "description": "リスト、引用、アラートにコピーボタンを置きます。オフにすると、コードブロック、テーブル、図、返信のボタンだけが残ります。copyButtons をオンにする必要があります。",
+      "default": true
+    },
+    "sectionCopyButtons": {
+      "type": "boolean",
+      "title": "見出しのコピーボタン",
+      "description": "見出しごとに、そのセクションを Markdown としてコピーするボタンを置きます。対象はその下のブロックのうち、同じかより上位の次の見出しまでです。セクションが空の場合、またはセクションが 1 ブロックでそれ自身にコピーボタンがある場合はボタンを置きません。copyButtons をオンにする必要があります。",
+      "default": false
+    },
+    "issueHint": {
+      "type": "boolean",
+      "title": "issue のヒント",
+      "description": "最初の質問と、その後 10 回ごとの質問で、描画がおかしかった場合に最小限の再現 issue を prismantis に開くことを（まず尋ねたうえで）モデルに提案させます。毎回約 35 トークンです。",
+      "default": true
+    },
+    "keyPointHint": {
+      "type": "boolean",
+      "title": "要点のヒント",
+      "description": "入力した質問や他のプラグインが送った質問に、モデルだけが読み、表示されない短いメモを付け、各返信の要点を太字にするよう依頼します。太字が本文に近い場合は strongColor も設定してください。質問ごとに約 80 トークンです。",
+      "default": false
+    },
+    "diagramHints": {
+      "type": "boolean",
+      "title": "図表のヒント",
+      "description": "入力した質問や他のプラグインが送った質問に、モデルだけが読み、表示されない短いメモを付け、テーブル、コード、Mermaid 図、チャート、図形がここで描画されること（レンダラーが動作していれば LaTeX 数式も）を伝えます。質問ごとに約 630 トークン（本体約 275、図形約 360）、LaTeX を加えると約 80 トークン増えます。mermaid がオフの場合はオフになります。",
+      "default": true
+    },
+    "latex": {
+      "type": "boolean",
+      "title": "LaTeX 数式",
+      "description": "$$ および ```math の数式を、PATH にインストールされた ratex-render を使って kitty と Ghostty（tmux 下では不可）で組版画像として描画します。オフの場合は何も実行しません。描画できない数式はテキストのまま残ります。",
+      "default": false
+    }
+  }
+}

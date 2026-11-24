@@ -1,0 +1,6 @@
+{
+  "name": "agentctl",
+  "version": "0.3.1",
+  "description": "単一の Claude Code セッション向けのエージェント制御パネルです。タスクの範囲、エビデンス、引き継ぎを扱います。制御と表示の層であり、分離境界ではありません。",
+  "author": { "name": "sd0xdev" }
+}

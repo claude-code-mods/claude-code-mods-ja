@@ -1,0 +1,15 @@
+{
+  "name": "just-do-it",
+  "version": "0.1.0",
+  "description": "許可済みの作業を検証と引き渡しまで継続して進め、修正可能な環境の問題が見つかったらついでに直します。",
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "fleetConfigPath": {
+      "type": "file",
+      "title": "フリート設定",
+      "description": "プライベートクラスター設定への絶対パス（任意）。空にするとクラスターのチェックを無効にします。",
+      "required": false,
+      "default": ""
+    }
+  }
+}

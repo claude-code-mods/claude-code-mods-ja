@@ -1,0 +1,5 @@
+{
+  "name": "multi-core",
+  "description": "1 つの Claude Code セッションで ChatGPT、Cursor、OpenCode、Antigravity のモデルを /model で切り替えて使用できます。タスクは名前付きのネイティブ worker に委任でき、各プロバイダーは独自のログインと権限を維持します。",
+  "version": "0.0.0"
+}

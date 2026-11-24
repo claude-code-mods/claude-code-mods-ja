@@ -1,0 +1,40 @@
+{
+  "name": "shared-session",
+  "displayName": "Shared Sessions",
+  "version": "0.11.53",
+  "description": "リンクやチームで Claude Code セッションを共有できます。チームメンバーは各自の Claude Code から参加して会話します。1 つのセッションが作業を行い、全員が各ターンをリアルタイムで確認し、ホストが自マシン上での操作を承認します。チームは GitHub または Google でログインし、ワンクリックで参加できます。セルフホストしない限り、共有には本プロジェクトの公開サーバーが使われます（プライバシーについては README を参照）。",
+  "author": {
+    "name": "scoootscooob",
+    "url": "https://github.com/scoootscooob"
+  },
+  "homepage": "https://github.com/Paradigm-Study/claude-share",
+  "repository": "https://github.com/Paradigm-Study/claude-share",
+  "license": "MIT",
+  "keywords": [
+    "collaboration",
+    "multiplayer",
+    "share",
+    "pair-programming",
+    "teams",
+    "sessions"
+  ],
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "server": {
+      "type": "string",
+      "title": "Share server",
+      "description": "Leave empty to share through the public server. To use your own, its https address (README: \"Host a server\"). Joining a link always uses the server in that link."
+    }
+  },
+  "mcpServers": {
+    "traces": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/relay/traces-mcp.mts"
+      ],
+      "env": {
+        "SHARED_SESSION_OPTION_SERVER": "${user_config.server}"
+      }
+    }
+  }
+}

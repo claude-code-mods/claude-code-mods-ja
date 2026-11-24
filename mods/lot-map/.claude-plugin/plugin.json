@@ -1,0 +1,222 @@
+{
+  "name": "lot-map",
+  "version": "0.12.1",
+  "description": "チャットの横のリアルタイムマップ：メモリ、ファイル、shell、ネットワーク、モデル、agents、スキル、hooks が使われるたびに順番に点灯します。",
+  "author": {
+    "name": "Aleksei Volodin",
+    "url": "https://github.com/alexeyw"
+  },
+  "homepage": "https://github.com/alexeyw/lot-map",
+  "repository": "https://github.com/alexeyw/lot-map",
+  "supportUrl": "https://github.com/alexeyw/lot-map/issues",
+  "privacyPolicyUrl": "https://github.com/alexeyw/lot-map/blob/main/PRIVACY.md",
+  "keywords": ["mod", "map", "visualization", "activity", "tool calls", "hooks", "subagents", "memory"],
+  "license": "MIT",
+  "icon": "./.claude-plugin/icon.png",
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "language": {
+      "type": "string",
+      "title": "言語",
+      "options": [
+        "en",
+        "ru",
+        "es",
+        "fr",
+        "de",
+        "it",
+        "pt"
+      ],
+      "default": "en",
+      "description": "マップ上のラベルの言語。"
+    },
+    "coreName": {
+      "type": "string",
+      "title": "中心の名前",
+      "default": "CLAUDE",
+      "description": "マップ中央の円に表示する文字（最大 10 文字）。"
+    },
+    "memoryServers": {
+      "type": "string",
+      "multiple": true,
+      "title": "メモリサーバー",
+      "default": [
+        "memory"
+      ],
+      "description": "ツールが「メモリ」ステーションを点灯させる MCP サーバー。"
+    },
+    "memoryCommands": {
+      "type": "string",
+      "multiple": true,
+      "title": "メモリコマンド",
+      "default": [],
+      "description": "「メモリ」ステーションを点灯させる Shell コマンドまたはスクリプト。名前そのものがコマンド、あるいはコマンドにハイフン・アンダースコア・ピリオドを付けたものなら一致とみなします。"
+    },
+    "memorySubcommands": {
+      "type": "string",
+      "multiple": true,
+      "title": "メモリサブコマンド",
+      "default": [],
+      "description": "メモリコマンドの後にマップ上に表示できる語（add や search など）。未設定の場合はメモリコマンド自身の名前だけを表示します。後ろの語は内容の可能性があるためです。"
+    },
+    "memoryPaths": {
+      "type": "string",
+      "multiple": true,
+      "title": "メモリパス",
+      "default": [],
+      "description": "ファイルをメモリとして扱うパスの断片。Claude Code 標準のメモリディレクトリは常に計上されます。"
+    },
+    "memoryLabels": {
+      "type": "string",
+      "multiple": true,
+      "title": "メモリラベル",
+      "default": [],
+      "description": "メモリツールの短い名前。各項目を tool=name の形式で指定します。未設定のツールは自身の名前を使用します。"
+    },
+    "serverStations": {
+      "type": "string",
+      "multiple": true,
+      "title": "サーバーのステーション",
+      "default": [],
+      "description": "MCP サーバーのツールをマップ上の特定のステーションに配置します。各項目を server=station の形式で指定します。ステーションには files、shell、web、browser、agents、skills、you があります。メモリは memoryServers を使用し、サーバーが両方に現れた場合はメモリが優先されます。未設定またはステーションが不明なサーバーはモジュールの既定配置に従います。"
+    },
+    "hookRecords": {
+      "type": "boolean",
+      "title": "フックが番号付き記録を追加",
+      "default": false,
+      "description": "フックが [#123] のような番号付きメモリ記録を追加する場合は、この項目を有効にしてください。マップは「メモリ」ステーションでそれらの記録を番号順に表示します。メモリフックに限らず、すべてのフックのテキスト中のそのような番号が計上されます。"
+    },
+    "hookReasons": {
+      "type": "boolean",
+      "title": "フック拒否の理由を表示",
+      "default": false,
+      "description": "フックの拒否理由の先頭行を表示します（最大 72 文字）。無効の場合、マップはどのツールが阻止されたかだけを表示します。拒否理由にはフックが発見した内容への参照が含まれる可能性があります。"
+    },
+    "guardedHooks": {
+      "type": "boolean",
+      "title": "ガードがスキップするフック",
+      "default": true,
+      "description": "Team または Enterprise アカウントで、ログに lot-map フックがスキップされたという通知が繰り返し現れる場合は、この項目を無効にしてください。無効にすると、マップは「フック」ステーション、フックが追加した記録、手入力のスラッシュコマンド行、圧縮マーカーを表示しなくなります。その他の機能は変わりません。"
+    },
+    "openAtStart": {
+      "type": "boolean",
+      "title": "セッション開始時にパネルを開く",
+      "default": true,
+      "description": "無効にすると、/lot-map を入力するまでパネルは常に閉じたままになります。マップはセッションの最初の呼び出しから記録し続けるため、開いたときには内容が揃っています。"
+    },
+    "subagentNames": {
+      "type": "boolean",
+      "title": "行にサブエージェント名を表示",
+      "default": false,
+      "description": "サブエージェントのモデルステップには、起動時の最初の数語（最大 40 文字）からどのサブエージェントかを表示します。無効の場合はサブエージェントであることだけを表示します。"
+    },
+    "contextCost": {
+      "type": "boolean",
+      "title": "呼び出しごとのコンテキスト増加量",
+      "default": false,
+      "description": "各呼び出しの返信がコンテキストをどれだけ増やしたかを、各行に概算トークン数で表示します。マップは各ステーションのカウントの後に合計を付け加えます。これは見積もり値です。1 つのモデルステップの増加量には、モデル自身の出力、フックが追加した内容、ターン開始時にそのステップの各呼び出しに共有されたメッセージも含まれます。表示は 1 ステップ遅れ、ターンの最後のステップの呼び出しは表示されません。"
+    },
+    "contextWindow": {
+      "type": "string",
+      "title": "環形進捗の参照範囲",
+      "options": [
+        "model",
+        "compaction"
+      ],
+      "default": "model",
+      "description": "中央のリングとそのパーセントがコンテキストを測る基準です。model はモデルの完全なウィンドウで、ステータス行と同じです。compaction は自動圧縮ウィンドウ（autoCompactWindow などで設定したウィンドウ）で、モデルウィンドウより小さくなります。未設定、または自動圧縮が無効の場合は、compaction は model と同じ表示になります。"
+    },
+    "theme": {
+      "type": "string",
+      "title": "配色",
+      "options": [
+        "auto",
+        "dark",
+        "light"
+      ],
+      "default": "auto",
+      "description": "マップの配色: dark（ダーク）、light（ライト）、または auto（自動：ダーク UI にはダーク、ライト UI にはライト）。"
+    },
+    "background": {
+      "type": "string",
+      "title": "背景",
+      "options": [
+        "solid",
+        "transparent"
+      ],
+      "default": "solid",
+      "description": "マップ自身の背景、または transparent（透明）にして下のパネルを透かします。"
+    },
+    "paneBackground": {
+      "type": "string",
+      "title": "パネルの背景",
+      "default": "theme",
+      "description": "パネルの描画方法: theme は Claude Code 標準のスタイル、transparent は下の端末を透かし、#rrggbb 形式の色も指定できます。"
+    },
+    "colors": {
+      "type": "string",
+      "multiple": true,
+      "title": "カスタムカラー",
+      "default": [],
+      "description": "マップ自身の配色を置き換える色。各項目を name=#rrggbb の形式で指定します。利用可能な名前: background、node、line、spoke、text、label、faint、accent、active、error、memory、memoryActive、route。使用するときは theme を dark または light に設定してください。"
+    },
+    "layout": {
+      "type": "string",
+      "title": "レイアウト",
+      "options": [
+        "you-top",
+        "you-bottom"
+      ],
+      "default": "you-top",
+      "description": "マップ上でのあなたの位置: 上部、または下部（この場合、ネットワークとブラウザは上部になります）。"
+    },
+    "motion": {
+      "type": "string",
+      "title": "アニメーション",
+      "options": [
+        "full",
+        "reduced"
+      ],
+      "default": "full",
+      "description": "reduced にすると、マップ上の要素が飛散・回転しません。呼び出しはそのステーションと接続線を点灯するだけで、変化はフェードのみで表現されます。"
+    },
+    "textSize": {
+      "type": "string",
+      "title": "文字サイズ",
+      "options": [
+        "caption",
+        "footnote",
+        "body"
+      ],
+      "default": "footnote",
+      "description": "マップ下の各行のフォントサイズ: caption は小さめ、body は大きめ。端末は単一のフォントサイズしか持たないため、この設定は無視されます。"
+    },
+    "logRows": {
+      "type": "string",
+      "title": "マップ下の行数",
+      "options": [
+        "16",
+        "fill"
+      ],
+      "default": "16",
+      "description": "マップ下のリストに表示する行数: 16、または fill（パネルのマップ下の領域を埋め、少なくとも 16 行）。fill はデスクトップアプリのドッキングパネル向けです。端末、エディタ、モバイルアプリは引き続き 16 行を表示します。"
+    },
+    "terminalView": {
+      "type": "string",
+      "title": "端末ビュー",
+      "options": [
+        "text",
+        "picture",
+        "braille"
+      ],
+      "default": "text",
+      "description": "端末でのマップの表示方法: text は各行のみを表示します。picture は行の上にモジュールが描画したマップ画像を表示し、kitty、Ghostty、3.7.8 以上の iTerm2 など画像対応端末向けです（初期の iTerm2 は非対応で、各フレームを保持します）。braille は行の上に点字と文字でマップを表示し、点字対応フォントの任意の端末（Windows Terminal など）向けです。"
+    },
+    "cellShape": {
+      "type": "number",
+      "title": "端末セルの形状",
+      "default": 2.4,
+      "description": "端末画像向け: 画像が領域を埋めるようにする端末セルのアスペクト比。iTerm2 の Monaco 12 は約 2.4、kitty の Menlo は約 2 です。マップ下に空白がある、または縦に伸びて見える場合は値を大きくし、右側に空白がある、または押しつぶれて見える場合は小さくします。範囲は 1.2 から 4。"
+    }
+  }
+}

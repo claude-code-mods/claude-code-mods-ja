@@ -1,0 +1,58 @@
+{
+  "name": "cache-tax",
+  "version": "2.4.2",
+  "description": "休憩中もプロンプトキャッシュを1時間温かい状態に保ち、コールドスタート時の送信前に確認を求めて予想される再書き込みコストを表示します。保温にはモデルリクエストとトークンが消費されます。Claude Code 2.1.287+ が必要です。",
+  "author": {
+    "name": "Karan Bansal",
+    "url": "https://karanbansal.in/"
+  },
+  "homepage": "https://cachetax.aidojo.si/",
+  "repository": "https://github.com/karanb192/cache-tax",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "claude-mods",
+    "prompt-caching",
+    "prompt-cache",
+    "keepwarm",
+    "cache-cost",
+    "cost-visibility"
+  ],
+  "userConfig": {
+    "headless": {
+      "type": "string",
+      "title": "ヘッドレスプロンプト",
+      "description": "guard（デフォルト）：CLI と SDK のプロンプトに対してコールド送信のガードを維持します。send：明示的に guard refuse が設定されていない限り、非対話型の SDK プロンプトを確認なしで送信できるようにします。リモートのユーザーによるプロンプトには常にガードが適用されます。",
+      "default": "guard",
+      "options": ["guard", "send"]
+    },
+    "autoWarm": {
+      "type": "string",
+      "title": "自動保温",
+      "description": "on：コールドキャッシュの書き込み費用を支払うと、保温機能が3時間自動で有効になります（デフォルト）。off：/keepwarm で手動で有効にした場合のみ動作します。",
+      "default": "on",
+      "options": [
+        "on",
+        "off"
+      ]
+    },
+    "pingFloor": {
+      "type": "number",
+      "title": "ping コスト下限",
+      "description": "アイドル期間中の1回の ping コストを、予想される再書き込みコスト（次の ping の予測値を含む）をこの値で割った額に制限します。デフォルトは 2 で、0 は制限なしを意味します。最初の ping には見積もりに使える情報がありません。",
+      "default": 2,
+      "min": 0
+    },
+    "display": {
+      "title": "表示形式",
+      "description": "cache-tax がステータスを表示する場所です。band：入力欄の上の帯（デフォルト）。status：帯を表示せず、入力欄の下のステータス項目に表示します。",
+      "type": "string",
+      "options": [
+        "band",
+        "status"
+      ],
+      "default": "band"
+    }
+  },
+  "types": "./types/index.d.ts"
+}

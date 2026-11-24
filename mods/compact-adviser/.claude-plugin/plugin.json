@@ -1,0 +1,69 @@
+{
+  "name": "compact-adviser",
+  "version": "0.1.14",
+  "license": "MIT",
+  "description": "完了したチェックポイントで TypeSafe Jev が判断し、/compact を提案します（有効を選ぶと直接実行）。hooks モジュールは CLAUDE_CODE_ENABLE_FUNCTION_HOOKS が厳密に 1 の場合のみ有効で、それ以外では完全に何もしません。",
+  "author": {
+    "name": "Kun Chen"
+  },
+  "homepage": "https://github.com/kunchenguid/compact-adviser#readme",
+  "repository": "https://github.com/kunchenguid/compact-adviser",
+  "keywords": [
+    "compact",
+    "context",
+    "context-management",
+    "checkpoint",
+    "productivity"
+  ],
+  "userConfig": {
+    "mode": {
+      "type": "string",
+      "title": "モード",
+      "description": "hint は提案のみを表示します。auto は /compact-adviser で初回に承認した後、条件を満たすチェックポイントで自動的に圧縮します。off はアドバイザーを無効にします（Claude Code 標準の自動圧縮には影響しません）。",
+      "options": [
+        "hint",
+        "auto",
+        "off"
+      ],
+      "default": "hint"
+    },
+    "minContextTokens": {
+      "type": "number",
+      "title": "最小コンテキスト（トークン数）",
+      "description": "割合ではなく固定のトークン数です。これ未満では判定を行いません。",
+      "default": 40000,
+      "min": 1
+    },
+    "contextBudgetTokens": {
+      "type": "number",
+      "title": "コンテキスト予算（トークン数）",
+      "description": "任意。圧縮を触发したいコンテキストサイズです。コンテキストが、この値と Claude Code の自動圧縮ポイント（またはウィンドウ上限）の小さい方に近づくと、提案のしきい値が緩和されます。0 で無効。",
+      "default": 0,
+      "min": 0
+    },
+    "logRequests": {
+      "type": "boolean",
+      "title": "TypeSafe リクエストを記録",
+      "description": "有効にすると、TypeSafe/Jev への各リクエストとマスキング済みの Jev 結果が ~/.claude/compact-adviser-requests-<session-id>.jsonl に追記されます。既定は無効です。API キーは記録しません。",
+      "default": false
+    },
+    "profile": {
+      "type": "string",
+      "title": "判定設定 JSON（profile）",
+      "description": "任意の v1 形式の判定設定 JSON です。空欄の場合は組み込みの既定値を使用します。設定が無効な場合は提案を無効にします。この項目では自動圧縮への同意は与えられません。",
+      "default": ""
+    },
+    "beforeCompactPrompt": {
+      "type": "string",
+      "title": "圧縮前のプロンプト",
+      "description": "任意。空欄の場合は自動圧縮をすぐに実行します。承認済みの自動モードでは、空でない値を先に 1 ターンとして実行し、そのターンが確定した回答で終わった場合に続けて圧縮します。/ で始まる値はスラッシュコマンド（例: /stow）と見なされます。Claude Code はプラグインのプロンプト内でスラッシュコマンドや @file 参照を展開せず、/ で始まるプラグインのプロンプトを拒否します。その間にユーザーがプロンプトを送信またはコマンドを実行した場合、ターンが中断・エラー・5 分以内の未完了となった場合は圧縮されません。",
+      "default": ""
+    },
+    "typesafeApiKey": {
+      "type": "string",
+      "title": "TypeSafe API キー",
+      "description": "/compact-adviser によって保存されます。/config では値を隠して表示しません。起動時の環境変数 TYPESAFE_API_KEY が空でない場合はそちらが優先されます。この値をコミットしないでください。",
+      "default": ""
+    }
+  }
+}

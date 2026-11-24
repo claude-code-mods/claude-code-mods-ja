@@ -1,0 +1,24 @@
+{
+  "name": "terminal-browser",
+  "version": "0.0.2",
+  "description": "Claude Code で直接動くブラウザ。ウェブサイトのプレビュー、HTML ドキュメントの閲覧、組み込みブラウザの操作を agent に任せます。",
+  "author": {
+    "name": "zenbu-labs"
+  },
+  "homepage": "https://github.com/zenbu-labs/terminal-browser/tree/main/claude-code-plugin",
+  "repository": "https://github.com/zenbu-labs/terminal-browser",
+  "license": "MIT",
+  "keywords": [
+    "browser",
+    "function-hooks"
+  ],
+  "types": "./hooks/browser.d.ts",
+  "userConfig": {
+    "agentTool": {
+      "type": "boolean",
+      "title": "エージェントに Claude Code で terminal-browser を開閉するツールを提供",
+      "description": "ブラウザパネルにページを表示するため、モデルが呼び出せるツールを追加します。デフォルトはオフです。",
+      "default": false
+    }
+  }
+}

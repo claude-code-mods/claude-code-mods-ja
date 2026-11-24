@@ -1,0 +1,62 @@
+{
+  "name": "fast-jev-compaction",
+  "version": "0.3.0",
+  "description": "Claude Code のセッションに、文字をそのまま保持する Jev 圧縮を提供します。",
+  "license": "MIT",
+  "userConfig": {
+    "apiKey": {
+      "type": "string",
+      "title": "TypeSafe API キー",
+      "description": "TypeSafe API キー。空欄の場合は TYPESAFE_API_KEY を使用します。",
+      "sensitive": true
+    },
+    "keepThreshold": {
+      "type": "number",
+      "title": "保持しきい値",
+      "description": "ツール呼び出しやツール結果がまだ必要とされる最小の Jev 確率。これ未満の場合は項目を削除します。",
+      "default": 0.5
+    },
+    "preserveRecentMessages": {
+      "type": "number",
+      "title": "保持する直近メッセージ数",
+      "description": "圧縮から必ず保持する最新メッセージの件数。",
+      "default": 6
+    },
+    "compactAtPercent": {
+      "type": "number",
+      "title": "圧縮を開始する割合",
+      "description": "turn.complete で圧縮を要求するコンテキストの割合（パーセント）。",
+      "default": 60
+    },
+    "minReductionRatio": {
+      "type": "number",
+      "title": "最小削減率",
+      "description": "履歴を置き換えるために必要な、予測される最小の文字削減量。",
+      "default": 0.25
+    },
+    "maxStateTokens": {
+      "type": "number",
+      "title": "Jev 状態の最大トークン数",
+      "description": "Jev リクエストごとに送信するセッション状態の予測トークン予算。",
+      "default": 25000
+    },
+    "maxRequestTokens": {
+      "type": "number",
+      "title": "Jev リクエストの最大トークン数",
+      "description": "1 回の Jev リクエストで、状態と質問を合わせた予測トークン予算。",
+      "default": 30000
+    },
+    "truncateHeadChars": {
+      "type": "number",
+      "title": "切り詰めたツール結果の先頭",
+      "description": "Jev がツール結果の完全な出力が不要と判断したときに保持する先頭の文字数。0 の場合は説明のみを保持します。",
+      "default": 300
+    },
+    "model": {
+      "type": "string",
+      "title": "Jev モデル",
+      "description": "TypeSafe Jev モデルの名前。",
+      "default": "jev-latest"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "codex-attachment-manager",
+  "displayName": "Context Attachment Manager",
+  "version": "0.11.5",
+  "description": "画像が多い Claude Code セッション向けです。古い画像は短いプレースホルダーとして送信され、以降のメッセージでは再送信されません。モデルは ID を使って元画像を取り出せます（圧縮後も利用可能）。プロンプトキャッシュには影響しません。",
+  "author": {
+    "name": "chipfighter"
+  },
+  "homepage": "https://github.com/chipfighter/context-attachment-manager",
+  "repository": "https://github.com/chipfighter/context-attachment-manager",
+  "license": "MIT",
+  "keywords": ["claude-code", "images", "multimodal", "context", "context-management", "attachments", "prompt-caching", "proxy"],
+  "mcpServers": {
+    "codex_attachment_manager": {
+      "command": "${CLAUDE_PLUGIN_ROOT}/plugin/scripts/launch",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/plugin/src/plugin-server.ts"],
+      "env": {
+        "CAM_HOST": "claude"
+      }
+    }
+  },
+  "types": "./hooks/types.d.ts"
+}

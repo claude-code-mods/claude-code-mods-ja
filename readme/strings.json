@@ -1,0 +1,28 @@
+{
+  "ja": {
+    "label": "日本語",
+    "file": "README.md",
+    "categories": {
+      "dashboards": "ダッシュボードと利用状況",
+      "agents": "エージェントとサブエージェント",
+      "productivity": "生産性とコンテキスト",
+      "rendering": "レンダリングとプレビュー",
+      "safety": "安全性とガード",
+      "git": "Git、PR、デプロイ",
+      "fun": "待ち時間の娯楽"
+    },
+    "columns": [
+      "mod",
+      "機能",
+      "アクセス"
+    ],
+    "reach": {
+      "http": "ネットワーク",
+      "process": "コマンド実行",
+      "model": "モデル呼び出し",
+      "fs": "ファイル",
+      "mcp": "MCP"
+    },
+    "by": "作者"
+  }
+}

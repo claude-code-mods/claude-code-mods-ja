@@ -1,0 +1,9 @@
+{
+  "name": "lcu-approve",
+  "version": "0.6.0",
+  "description": "Claude アプリと Claude Code における LCU コンピューター操作のアプリ別ネイティブ承認（このセッションのみ許可、常に許可、拒否）と、承認済みアプリの /computer-use-apps パネル。",
+  "author": {
+    "name": "LCU"
+  },
+  "types": "./types/index.d.ts"
+}

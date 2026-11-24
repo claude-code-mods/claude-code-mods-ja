@@ -1,0 +1,9 @@
+{
+  "name": "skins",
+  "version": "0.5.16",
+  "description": "Claude Code のスキン：ツール行を展開して入力と回答を確認でき、コード・diff・表・数式・Mermaid・シェルのカードをハイライト表示します。リンク、折りたたみ、使用量バー、フォーカスモード、15 種類のテーマも用意。/skin で即座に切り替えられます。",
+  "author": { "name": "hellosverre", "url": "https://github.com/hellosverre" },
+  "license": "MIT",
+  "keywords": ["claude-code-mods", "claude-mods", "function-hooks", "theme", "skin"],
+  "types": "./types/index.d.ts"
+}

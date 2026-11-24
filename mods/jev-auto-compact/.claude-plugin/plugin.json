@@ -1,0 +1,9 @@
+{
+  "name": "jev-auto-compact",
+  "version": "1.6.1",
+  "description": "Jev による段階的圧縮: コンテキストが 60% に達すると、何も生成せずに古いツール呼び出しを整理します。整理するものがない場合はスキップし（LLM による要約には決してフォールバックしません）、learning.db にエビデンスを記録します。",
+  "author": {
+    "name": "vexjoy-agent"
+  },
+  "license": "MIT"
+}

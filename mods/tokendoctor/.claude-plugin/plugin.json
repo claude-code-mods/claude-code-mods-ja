@@ -1,0 +1,34 @@
+{
+  "name": "tokendoctor",
+  "displayName": "tokendoctor",
+  "version": "0.6.1",
+  "description": "同じ Claude Code で最大 38% 節約。過去の自分のセッションを再生して、各変更でどれだけ節約できたかを示し、選んだ項目だけを変更します。",
+  "author": {
+    "name": "rsaryev"
+  },
+  "license": "MIT",
+  "keywords": [
+    "tokens",
+    "cost",
+    "context",
+    "settings",
+    "audit"
+  ],
+  "icon": "./.claude-plugin/icon.png",
+  "homepage": "https://tokendoctor.localix.ai",
+  "repository": "https://github.com/localixai/tokendoctor",
+  "userConfig": {
+    "slide": {
+      "type": "boolean",
+      "title": "圧縮ではなくスライディングウィンドウ",
+      "description": "Claude Code が会話を要約するはずの場所で、古いツール出力（再読み取り可能）を省略するようにします：要約リクエストは送らず、すべてのプロンプトと回答をそのまま保持します。/compact は従来どおり要約します。",
+      "default": false
+    },
+    "slideTo": {
+      "type": "number",
+      "title": "スライド先（Claude Code の圧縮ポイントに対する割合）",
+      "description": "1回のスライドでコンテキストをどこまで空けるかを、Claude Code の圧縮ポイントに対する割合（20〜90）で指定します。値が小さいほど残る内容が少なくなり、次のスライドまでに進められるターン数が増えます。",
+      "default": 25
+    }
+  }
+}
