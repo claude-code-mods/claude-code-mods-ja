@@ -32,6 +32,10 @@ test("Claude's fallback pane also has a complete Japanese interface", () => {
   assert.deepEqual(Object.keys(words.ja).sort(), Object.keys(words.en).sort());
   assert.deepEqual(Object.keys(words.ja.routing).sort(), Object.keys(words.en.routing).sort());
   assert.equal(words.ja.copy, "リンクをコピー");
+  assert.equal(words.zh.title, "上下文素材", "the Chinese dictionary stays intact");
+  assert.equal(words.en.title, "Context Assets", "the English dictionary stays intact");
+  assert.equal(words.ja.title, "コンテキスト素材", "the Japanese dictionary stays intact");
+  assert.match(mod, /WORDS\[overview\?\.lang\]/, "the pane selects the dictionary by the reported language code");
 });
 
 test("Claude uses its own locale, rereads changes, and leaves the settings read-only", async () => {
