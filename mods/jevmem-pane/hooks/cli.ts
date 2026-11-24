@@ -52,8 +52,8 @@ export async function runCli($: EngineInterface, cli: Cli, args: readonly string
   try {
     const r = await $.process.run([...cli.argv, ...args], { timeoutMs: 15_000 })
     const text = [r.stdout.trim(), r.stderr.trim()].filter(Boolean).join('\n')
-    return { ok: r.exitCode === 0, text: text || (r.exitCode === 0 ? 'done' : `jevmem exited with ${r.exitCode}`) }
+    return { ok: r.exitCode === 0, text: text || (r.exitCode === 0 ? '完了' : `jevmem が終了しました（終了コード ${r.exitCode}）`) }
   } catch (err) {
-    return { ok: false, text: `jevmem could not run: ${err instanceof Error ? err.message : String(err)}` }
+    return { ok: false, text: `jevmem を実行できませんでした：${err instanceof Error ? err.message : String(err)}` }
   }
 }

@@ -2263,7 +2263,7 @@ async function noteMention($: $, room: ShareRoom, who: string, text: string, whe
   const me = await meIn($, room)
   if (who === me || !mentionsOf(text, [me]).length) return
   const said = text.replace(/\s+/g, ' ').trim()
-  $.ui.toast(`${who} mentioned you${where === 'chat' ? ' in the chat' : ''}: ${said.slice(0, 120)}${said.length > 120 ? '…' : ''}`)
+  $.ui.toast(`${who} がメンションしました${where === 'chat' ? '（チャット内）' : ''}：${said.slice(0, 120)}${said.length > 120 ? '…' : ''}`)
   void cue($, 'mention', `${who} mentioned you`)
   void $.prompt.suggest({ text: `@${who} ` }).catch(() => {})
   nudgeSidebar($)
@@ -2542,7 +2542,7 @@ async function receive($: $, mode: ShareMode, room: ShareRoom, page: EventsPage)
   if (mode === 'host') await noteBehind($, page.people)
   const hostIs = page.people.find(p => p.role === 'host')?.online
   if (mode === 'guest' && hostWas !== undefined && hostIs !== undefined && hostWas !== hostIs) {
-    $.ui.toast(hostIs ? `${room.host} is back` : `${room.host}'s Claude Code closed; the room waits for them`)
+    $.ui.toast(hostIs ? `${room.host} が戻りました` : `${room.host} の Claude Code が閉じられました。ルームは待機中です`)
   }
   // What's shared now, before the page's events: an artifact among them
   // shows a preview the list has.
@@ -3097,7 +3097,7 @@ async function setPinned($: $, pinned: boolean, attempt = 0) {
 async function allowTools($: $, tools: readonly string[], said: string): Promise<boolean> {
   const found = await readSettings($)
   if (!found) {
-    $.ui.toast(`Couldn't read ${(await settingsFile($)) ?? 'your Claude Code settings'}, so nothing changed`)
+    $.ui.toast(`${(await settingsFile($)) ?? 'Claude Code の設定'} を読み込めなかったため、何も変更していません`)
     return false
   }
   const permissions = { ...((found.settings.permissions ?? {}) as Record<string, unknown>) }
@@ -3470,7 +3470,7 @@ async function pressInvite($: $, url: string, surface?: RenderSurface) {
     return
   }
   await update($, roomTabA, () => 'people')
-  $.ui.toast(`Invite ${mates.length === 1 ? (mates[0]?.name ?? 'your teammate') : `any of ${mates.length} teammates`} below`)
+  $.ui.toast(`下の一覧から${mates.length === 1 ? (mates[0]?.name ?? 'チームメイト') : `${mates.length} 人のチームメイトのいずれか`}を招待してください`)
 }
 
 async function copyLink($: $, url: string, surface?: RenderSurface) {
@@ -7107,7 +7107,7 @@ async function runTrouble($: $, room: ShareRoom, pid: string, run: LocalPreviewR
   const say = SAY[run.owner]
   if (what !== 'channel') {
     if (run.owner === 'listener')
-      $.ui.toast(what === 'stopped' ? `Local preview on localhost:${run.localPort} stopped. Press Open in the Room to reconnect.` : run.error)
+      $.ui.toast(what === 'stopped' ? `localhost:${run.localPort} のローカルプレビューが停止しました。再接続するには Room の「開く」を押してください。` : run.error)
     return
   }
   const error = code === 'BUSY' ? say.busy : code === 'AUTH' ? say.refused : code === 'CONNECT' ? say.connect(room.host, run.port) : ''
@@ -7325,7 +7325,7 @@ const WINDOW_CLOSING = 'The preview window is still closing. Open the preview ag
 const WINDOW_STEP_MS = 15_000,
   BROWSER_LOOK_MS = 30_000
 // This session closed its own window as its proxy ended under it (routes the proxy refused, looks that failed).
-const windowLost = (host: string) => `The preview window closed: its connection to ${host}'s previews stopped working. Press Open preview to open it again.`
+const windowLost = (host: string) => `プレビューウィンドウが閉じました：${host} のプレビューへの接続が切れました。もう一度「プレビューを開く」を押してください。`
 
 // Looked for once a room (its scope's). A look that failed (the shell
 // itself, no platform line) says nothing about this computer: it isn't kept,
@@ -7850,7 +7850,7 @@ async function blockedPort($: $, proxy: BrowserProxy, port: number) {
     // routes follow it (`takeRoomList`).
     if (answer.shared) return void syncBrowserRoutes($, s)
     const said = `Your preview tried localhost:${port}, which ${room.host} hasn't shared.`
-    $.ui.toast(answer.delivered ? `${said} The request went to ${room.host}.` : `${said} Ask ${room.host} to share it.`)
+    $.ui.toast(answer.delivered ? `${said} リクエストは ${room.host} に送られました。` : `${said} ${room.host} に共有を依頼してください。`)
   } finally {
     s.window.needAsking.delete(port)
   }
@@ -7869,10 +7869,10 @@ async function refusedOf($: $, pid: string): Promise<Refused> {
 // `promised`: the band's Open preview opens what reconnects it (`bandEntry`);
 // otherwise the Room's own button for it is named.
 function refusedWords(host: string, port: number, r: Refused, promised: boolean): string {
-  const said = `${host}'s side refused the preview window's connection to localhost:${port}`
-  const which = r.kind === 'dependency' ? `, which ${r.dependency === true ? 'a preview uses' : `the preview of localhost:${r.dependency} uses`}` : ''
-  if (!promised) return `${said}${which}. Press Open on localhost:${port} in Room → Shown to reconnect.`
-  return `${said}${which}. Press Open preview${r.kind === 'dependency' ? ' for that page' : ''} to reconnect.`
+  const said = `${host} 側がプレビューウィンドウから localhost:${port} への接続を拒否しました`
+  const which = r.kind === 'dependency' ? `（${r.dependency === true ? 'プレビューが使用しています' : `localhost:${r.dependency} のプレビューが使用しています`}` : ''
+  if (!promised) return `${said}${which}。再接続するには Room → 表示済み の localhost:${port} で「開く」を押してください。`
+  return `${said}${which}。再接続するには「プレビューを開く」${r.kind === 'dependency' ? 'でそのページを開いてください' : 'を押してください'}。`
 }
 
 // What the toast for a refusal says: computed when it's said, so it names
@@ -7921,7 +7921,7 @@ function sayWindowLater($: $, room: ShareRoom, pid: string, run: LocalPreviewRun
         if (![...authority.values()].some(a => a.pid === pid)) {
           if (authority.has(run.port) || s.window.stopSaid.has(pid)) return
           s.window.stopSaid.add(pid)
-          return void $.ui.toast(`${room.host} stopped sharing localhost:${run.port}.`)
+          return void $.ui.toast(`${room.host} が localhost:${run.port} の共有を停止しました。`)
         }
         await say()
       })().catch(() => {})
@@ -8019,16 +8019,16 @@ async function openInWindow(
 // What opens a preview without the window, said after trouble with it, in
 // this surface's words (`shownIn`). `ifNone`: the window may still show.
 async function windowRemedy($: $, why: WindowWhy, ifNone: boolean): Promise<string> {
-  const lead = ifNone ? 'If none opens, ' : ''
+  const lead = ifNone ? '開かれない場合は、' : ''
   if ('always' in why) {
-    const setting = (await isDesktop($)) ? "Claude's browser" : 'Your browser'
-    return `${lead}${ifNone ? 'set' : 'Set'} Previews to ${setting} in Room → Settings, and a preview whose ports are free here opens there instead.`
+    const setting = (await isDesktop($)) ? 'Claude のブラウザー' : 'ブラウザー'
+    return `${lead}Room → 設定 でプレビューの表示先を ${setting} に設定すると、このマシンで空いているポートのプレビューがそこで開きます。`
   }
   if ('refused' in why && why.refused === 'taken') {
-    const viewer = (await shownIn($)) === 'pane' ? "Claude's browser" : 'your browser'
-    return `${lead}${ifNone ? 'free' : 'Free'} localhost:${why.port} on this computer and press Open preview to open it in ${viewer} instead.`
+    const viewer = (await shownIn($)) === 'pane' ? 'Claude のブラウザー' : 'ブラウザー'
+    return `${lead}このマシンで localhost:${why.port} を空けてから「プレビューを開く」を押すと、代わりに${viewer}で開きます。`
   }
-  return ifNone ? 'If none opens, press Open preview to try again.' : ''
+  return ifNone ? '開かれない場合は、「プレビューを開く」をもう一度押してください。' : ''
 }
 
 // One open of the window as it goes (`openWindow`): the page, and why the
@@ -8169,7 +8169,7 @@ async function openLook($: $, open: WindowOpen, profile: string): Promise<Window
 // A look that still knows nothing: the open writes, starts and closes
 // nothing more, and the person presses Open preview again.
 function unknownLook($: $, why: string): WindowOutcome {
-  $.ui.toast(`Couldn't tell whether the preview window is open (${why}). Press Open preview again.`)
+  $.ui.toast(`プレビューウィンドウが開いているか確認できませんでした（${why}）。「プレビューを開く」をもう一度押してください。`)
   return 'done'
 }
 
@@ -8347,7 +8347,7 @@ async function launchWindow($: $, open: WindowOpen, proxy: BrowserProxy): Promis
       await windowOpened($, open, port, !pageStopped(open))
       $.ui.invalidate('ui.render')
     }
-    $.ui.toast(`${choice.name} didn't open a preview window within 10 seconds. ${await windowRemedy($, open.why, true)}`)
+    $.ui.toast(`${choice.name} が 10 秒以内にプレビューウィンドウを開きませんでした。${await windowRemedy($, open.why, true)}`)
     return 'done'
   }
   return 'seen'
@@ -8996,7 +8996,7 @@ const hostHere = (room: ShareRoom) => sameRoom(room, scope) && scope.mode === 'h
 // The host's word once ports are forwarded: which, and where to stop them.
 // Never where teammates open them: Claude's browser, their own or a
 // separate window is each teammate's own setting.
-const forwardedSaid = (ports: number[]) => `Teammates can reach ${portList(ports)} now. Stop ${ports.length > 1 ? 'them' : 'it'} in Room → Shown.`
+const forwardedSaid = (ports: number[]) => `チームメイトが ${portList(ports)} にアクセスできるようになりました。Room → 表示済み で停止できます。`
 
 // What the servers a page uses beside it came to: the questions put to the
 // host in the row above the prompt (the first there now, the rest in turn),
@@ -9448,7 +9448,7 @@ async function openForwarded($: $, room: ShareRoom, s: RoomScope, shown: ShareSh
   if (!isForwarded(shown)) return void $.ui.toast('そのプレビューは終了したか、有効な localhost アドレスがありません。')
   // The host away: nothing of theirs answers now, so nothing is bound or opened.
   if ((await read($, peopleA)).some(p => p.role === 'host' && !p.online))
-    return void $.ui.toast(`${room.host} is offline, so their previews can't open now. Press Open again once they're back.`)
+    return void $.ui.toast(`${room.host} はオフラインのため、プレビューは現在開けません。戻ってからもう一度「開く」を押してください。`)
   const page = shown,
     pid = page.pid,
     epoch = s.epoch(pid)
@@ -11113,7 +11113,7 @@ let signInRun = 0
 // sent (its first eight hex, `XXXX-XXXX`): whoever makes a sign-in link
 // picks its hash, so the page's Continue is only for a code that matches.
 const signInCode = (login: string) => `${login.slice(0, 4)}-${login.slice(4, 8)}`.toUpperCase()
-const codeSaid = (code: string) => `Your browser will show the code ${code}: continue there only if it matches.`
+const codeSaid = (code: string) => `ブラウザにコード ${code} が表示されます。一致する場合のみ続行してください。`
 
 // Opens the server's sign-in in the browser with the hash of a secret kept
 // here, then asks for the sign-in with that secret every 2 s for ten minutes.
@@ -11206,7 +11206,7 @@ async function createTeam($: $, name: string): Promise<ShareTeam | null> {
   if (!trimmed) return null
   const { team } = await teamCall<{ team: ShareTeam }>($, '/api/teams', { method: 'POST', body: { name: trimmed } })
   await setCurrentTeam($, team.id)
-  $.ui.toast(`Made ${team.name}. Copy its invite link for your teammates`)
+  $.ui.toast(`${team.name} を作成しました。チームメイトに招待リンクをコピーしてください`)
   return team
 }
 
@@ -11234,7 +11234,7 @@ async function leaveTeam($: $) {
   const saved = await signInFor($, server)
   if (saved) await saveSignIn($, server, { ...saved, current: undefined })
   await refreshTeams($)
-  $.ui.toast(`Left ${team.name}`)
+  $.ui.toast(`${team.name} から退出しました`)
 }
 
 const inviteUrl = (t: ShareTeams, team: ShareTeam) => `${t.server}/i/${team.invite}`
@@ -11312,9 +11312,9 @@ async function openHeld($: $, hold: LiveHold): Promise<boolean> {
 function alreadyIn(hold: LiveHold, opened: boolean): string {
   const where =
     hold.mode === 'host'
-      ? "That's your own shared session, open in another Claude Code session"
-      : `You're already in ${hold.host}'s session, in another Claude Code session`
-  return `${where}${opened ? ': it just opened' : ` (“${tidyTitle(hold.title)}”)`}.`
+      ? 'これはあなた自身の共有セッションで、別の Claude Code セッションで開かれています'
+      : `${hold.host} のセッションに別の Claude Code セッションで既に参加しています`
+  return `${where}${opened ? '：たった今開かれました' : `（“${tidyTitle(hold.title)}”）`}。`
 }
 
 // Joins sessions from the Team panel. The first joins here when this
@@ -11505,7 +11505,7 @@ async function setRoomTeam($: $, teamId: string | null) {
       body: { team: teamId },
     })
     await update($, roomA, rm => (rm ? { ...rm, team: r.team } : rm))
-    $.ui.toast(r.team ? `Shared with ${r.team.name}` : 'Shared by link alone now')
+    $.ui.toast(r.team ? `${r.team.name} と共有しました` : '現在はリンクのみで共有中')
     void refreshTeams($).catch(() => {})
   } catch (error) {
     $.ui.toast(`Couldn't change it: ${String((error as Error)?.message ?? error)}`)
@@ -11714,7 +11714,7 @@ async function pollInvites($: $) {
   // In a room, this session's row is the room's: a new invite says so once,
   // and waits as a button in the row.
   const fresh = list.find(i => !had.some(h => inviteKey(h) === inviteKey(i))) // a new one, or one sent again
-  if (fresh && (await read($, modeA)) !== 'idle') $.ui.toast(`${fresh.from.name} invites you to ${tidyTitle(fresh.room.title)}`)
+  if (fresh && (await read($, modeA)) !== 'idle') $.ui.toast(`${fresh.from.name} が ${tidyTitle(fresh.room.title)} に招待しました`)
 }
 
 // A desktop notification for an invite: the terminal's own channel where
@@ -12928,13 +12928,13 @@ export const register: Register = (on, options) => {
       what,
       extent,
       always,
-      question: `${who} wants Claude to run ${what.slice(0, 200)}${extent ? ` (${extent})` : ''}. Allow it?`,
+      question: `${who} が Claude に ${what.slice(0, 200)}${extent ? `（${extent}）` : ''} の実行を求めています。許可しますか？`,
       preview: approvalPreview(e.tool, e.input, cwd),
       whole: approvalPreview(e.tool, e.input, cwd, WHOLE_CALL_LINES),
       descriptions: {
-        'Allow once': `Run this one ${e.tool} call for ${who}.`,
-        [always]: `Don't ask again for ${who}'s requests while this session is shared.`,
-        Decline: `Claude is told you declined and carries on without it.`,
+        'Allow once': `${who} のためにこの ${e.tool} 呼び出しだけを実行します。`,
+        [always]: `このセッションの共有中は ${who} のリクエストについて再び尋ねません。`,
+        Decline: `拒否したことを Claude に伝え、その呼び出しなしで続行します。`,
       },
       room: room ? roomIdentity(room) : '',
       stage: 'waiting',
@@ -13012,7 +13012,7 @@ export const register: Register = (on, options) => {
             ask.stage = 'row'
             timer = $.clock.after(10 * 60_000, giveUp)
             await showBandAsk($)
-            $.ui.toast(`${who} wants Claude to run ${what.slice(0, 80)}: answer above the prompt`)
+            $.ui.toast(`${who} が Claude に ${what.slice(0, 80)} の実行を求めています：入力欄の上で回答してください`)
             nudgeSidebar($)
             await approvalWait($, ask, answered, () => over)
           }
@@ -13895,9 +13895,9 @@ export const register: Register = (on, options) => {
         </Text>
         {waiting ? <Markdown key="approval-whole" text={waiting.whole} /> : null}
         <Box flexDirection="row" gap={1}>
-          <Button key="room-approve-once" label="Allow once" variant="primary" onPress={() => answerBandAsk(approving.id, 'Allow once')} />
+          <Button key="room-approve-once" label="一度だけ許可" variant="primary" onPress={() => answerBandAsk(approving.id, 'Allow once')} />
           <Button key="room-approve-always" label={approving.always} plain onPress={() => answerBandAsk(approving.id, approving.always)} />
-          <Button key="room-approve-no" label="Decline" plain dimColor onPress={() => answerBandAsk(approving.id, 'Decline')} />
+          <Button key="room-approve-no" label="拒否" plain dimColor onPress={() => answerBandAsk(approving.id, 'Decline')} />
         </Box>
       </Box>
     ) : null
@@ -13950,11 +13950,11 @@ export const register: Register = (on, options) => {
                 </Text>
                 {ask.preview ? <Markdown key={`cloud-ask-whole-${ask.id}`} text={ask.preview} /> : null}
                 <Box flexDirection="row" gap={1}>
-                  <Button key={`cloud-ask-once-${ask.id}`} label="Allow once" variant="primary" onPress={() => void answerCloudAsk($, ask.id, 'Allow once')} />
+                  <Button key={`cloud-ask-once-${ask.id}`} label="一度だけ許可" variant="primary" onPress={() => void answerCloudAsk($, ask.id, 'Allow once')} />
                   {ask.always ? (
                     <Button key={`cloud-ask-always-${ask.id}`} label={ask.always} plain onPress={() => void answerCloudAsk($, ask.id, ask.always)} />
                   ) : null}
-                  <Button key={`cloud-ask-no-${ask.id}`} label="Decline" plain dimColor onPress={() => void answerCloudAsk($, ask.id, 'Decline')} />
+                  <Button key={`cloud-ask-no-${ask.id}`} label="拒否" plain dimColor onPress={() => void answerCloudAsk($, ask.id, 'Decline')} />
                 </Box>
               </Box>
             ),
@@ -14950,7 +14950,7 @@ export const register: Register = (on, options) => {
                 key="invite-join"
                 label="Join"
                 variant="primary"
-                onPress={press => void joinInvited($, invite, press.surface).catch(error => $.ui.toast(`Couldn't join: ${String(error?.message ?? error)}`))}
+                onPress={press => void joinInvited($, invite, press.surface).catch(error => $.ui.toast(`参加できませんでした：${String(error?.message ?? error)}`))}
               />
             ),
             <Button key="invite-dismiss" label="Dismiss" plain dimColor onPress={() => void dropInvite($, invite.room.id)} />,
@@ -15025,9 +15025,9 @@ export const register: Register = (on, options) => {
         ],
         [
           ...(approving.extent ? [<Button key="approve-whole" label={approving.extent} plain dimColor onPress={() => void openRoom($)} />] : []),
-          <Button key="approve-once" label="Allow once" variant="primary" onPress={() => answerBandAsk(approving.id, 'Allow once')} />,
+          <Button key="approve-once" label="一度だけ許可" variant="primary" onPress={() => answerBandAsk(approving.id, 'Allow once')} />,
           <Button key="approve-always" label={approving.always} plain onPress={() => answerBandAsk(approving.id, approving.always)} />,
-          <Button key="approve-no" label="Decline" plain dimColor onPress={() => answerBandAsk(approving.id, 'Decline')} />,
+          <Button key="approve-no" label="拒否" plain dimColor onPress={() => answerBandAsk(approving.id, 'Decline')} />,
         ],
       )
     }
@@ -15079,11 +15079,11 @@ export const register: Register = (on, options) => {
         ],
         [
           ...(cloudAsk.extent ? [<Button key="cloud-whole" label={cloudAsk.extent} plain dimColor onPress={() => void openRoom($)} />] : []),
-          <Button key="cloud-once" label="Allow once" variant="primary" onPress={() => void answerCloudAsk($, cloudAsk.id, 'Allow once')} />,
+          <Button key="cloud-once" label="一度だけ許可" variant="primary" onPress={() => void answerCloudAsk($, cloudAsk.id, 'Allow once')} />,
           ...(cloudAsk.always
             ? [<Button key="cloud-always" label={cloudAsk.always} plain onPress={() => void answerCloudAsk($, cloudAsk.id, cloudAsk.always)} />]
             : []),
-          <Button key="cloud-no" label="Decline" plain dimColor onPress={() => void answerCloudAsk($, cloudAsk.id, 'Decline')} />,
+          <Button key="cloud-no" label="拒否" plain dimColor onPress={() => void answerCloudAsk($, cloudAsk.id, 'Decline')} />,
         ],
       )
     }

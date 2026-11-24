@@ -944,7 +944,7 @@ export const register: Register = (on, options) => {
     if (words[0] !== 'status') {
       await startWindow($, s, window, every)
       const rolls = s.always && (window < s.alwaysMs || every !== PING_AFTER_MS)
-      return { text: armedText(s, now, window) + (rolls ? `. Always is on, so your next turn makes it at least ${fmtDuration(s.alwaysMs)} at one ping per ${fmtDuration(PING_AFTER_MS)}` : '') }
+      return { text: armedText(s, now, window) + (rolls ? `。always が有効なので、次のターンでは ${fmtDuration(PING_AFTER_MS)} ごとの通知で最低でも ${fmtDuration(s.alwaysMs)} になります` : '') }
     }
     return { text: statusText(s, now) ?? '保温はオフです' }
   })

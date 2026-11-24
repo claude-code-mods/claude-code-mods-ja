@@ -21,6 +21,12 @@ const BUILT_IN_RULES = new Set(HARD_FORBIDDEN.map((h) => h.rule))
 const TICK_MS = 30 * 1000
 const GATE_STALE_MS = 30 * 1000
 
+function noProposalText(lang) {
+  if (lang === 'ja') return '保留中の草案はありません。作成するには：/agentctl <あなたが行っている作業>'
+  if (lang === 'zh') return '目前沒有等待中的草稿。要起草：/agentctl <你要做的事>'
+  return 'No proposal is waiting. To draft one: /agentctl <what you are doing>'
+}
+
 // Per-session runtime context, rebuilt from the store after a hot reload. Built once per session
 // through one shared promise: session.start and the first ui.render arrive concurrently in an
 // interactive terminal, and two separate builds left the band reading a context nobody updated
@@ -419,7 +425,7 @@ async function acceptCommand($, c, e, given) {
   // Scope comes only from the person at the prompt (FR-25).
   if (e.origin?.kind !== 'composer') return 'agentctl refused: a proposal can be accepted only from your own prompt.'
   const p = c.pending
-  if (!p) return c.lang === 'zh' ? '。：/agentctl <>' : 'No proposal is waiting. To draft one: /agentctl <what you are doing>'
+  if (!p) return noProposalText(c.lang)
   if (!digestMatches(given, p.digest)) return `agentctl refused: ${sanitize(given, 30)} does not match the waiting proposal ${p.digest.slice(0, 8)}. Check /agentctl proposal.`
   const bound = await boundTask($, c)
   if ((bound?.id ?? null) !== p.effective.base || revisionOf(bound) !== p.baseRev) {
@@ -688,7 +694,7 @@ export function register(on) {
       return reply((await boundTask($, c)) ? t.noHandover : t.noTaskLast)
     }
     if (sub === 'proposal') {
-      if (!c.pending) return reply(c.lang === 'zh' ? '。：/agentctl <>' : 'No proposal is waiting. To draft one: /agentctl <what you are doing>')
+      if (!c.pending) return reply(noProposalText(c.lang))
       await suggestAccept($, c)
       return reply(preview(c).join('\n'))
     }

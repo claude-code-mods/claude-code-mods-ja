@@ -57,7 +57,8 @@ export function words(cfg: WorkModeConfig): Words {
   return { who, Who: who.charAt(0).toUpperCase() + who.slice(1), subj, obj, poss, is: p === 'they' ? 'are' : 'is' }
 }
 
-const plain = (cfg: WorkModeConfig) => (cfg.locale === 'zh-TW' ? 'plain Traditional Chinese' : 'plain language')
+const plain = (cfg: WorkModeConfig) =>
+  cfg.locale === 'ja' ? 'plain Japanese (やさしい日本語、専門用語なし)' : cfg.locale === 'zh-TW' ? 'plain Traditional Chinese' : 'plain language'
 
 // ---- mode texts --------------------------------------------------------------------------
 
@@ -75,11 +76,13 @@ export function convergeText(cfg: WorkModeConfig = getConfig()): string {
   const w = words(cfg)
   const c = cfg.converge
   const labels = c.decisionLabels.map(l => `[${l}]`).join(' ')
-  const example = cfg.locale === 'zh-TW' ? '"A 的好處…；B 的好處…"' : '"Option A pros: ...; Option B pros: ..."'
+  const example = cfg.locale === 'ja' ? '「A の利点…；B の利点…」' : cfg.locale === 'zh-TW' ? '"A 的好處…；B 的好處…"' : '"Option A pros: ...; Option B pros: ..."'
   const reply =
-    cfg.locale === 'zh-TW'
-      ? 'written in plain Traditional Chinese (台灣用語, no jargon)'
-      : 'written in plain language, no jargon'
+    cfg.locale === 'ja'
+      ? 'written in plain Japanese (やさしい日本語、専門用語なし)'
+      : cfg.locale === 'zh-TW'
+        ? 'written in plain Traditional Chinese (台灣用語, no jargon)'
+        : 'written in plain language, no jargon'
   const close = c.autoCloseCommand
     ? `When nothing is open (all work done and verified, no background task, subagent or pane still running, no pending decision), run ${c.autoCloseCommand} yourself without asking. If anything is still running or awaiting the user, do not run it.`
     : 'When nothing is open (all work done and verified, no background task or subagent still running, no pending decision), say in one line that the work is complete and stop.'
@@ -292,7 +295,7 @@ export function parseTempo(arg: string): TempoParse {
     // off next to other words adds nothing: the words already replace the whole state.
     if (w === 'off') continue
     const mode = WORDS[w]
-    if (!mode) return { kind: 'error', message: `不明なモード“${w}”。` }
+    if (!mode) return { kind: 'error', message: `Unknown mode "${w}".` }
     picked.add(mode)
   }
   return { kind: 'set', modes: ORDER.filter(m => picked.has(m)) }
@@ -303,10 +306,13 @@ export function parseTempo(arg: string): TempoParse {
 // Labels never hold a half-width comma: the answer comes back comma-joined.
 export function pickerLabels(current: readonly TempoMode[], cfg: WorkModeConfig = getConfig()): string[] {
   const zh = cfg.locale === 'zh-TW'
-  const hint = cfg.dispatch.pickerHint.replace(/,/g, zh ? '／' : '/')
-  const labels = zh
-    ? ['auto 自主（中途不問）', `out 外派（${hint}）`, 'wrap 收斂（不開新方向）', 'off 關閉']
-    : ['auto - autonomous (no mid-task questions)', `out - delegate (${hint})`, 'wrap - converge (no new branches)', 'off - turn off']
+  const ja = cfg.locale === 'ja'
+  const hint = cfg.dispatch.pickerHint.replace(/,/g, zh || ja ? '／' : '/')
+  const labels = ja
+    ? ['auto 自律（途中で質問しない）', `out 委任（${hint}）`, 'wrap 収束（新しい方向を開かない）', 'off オフ']
+    : zh
+      ? ['auto 自主（中途不問）', `out 外派（${hint}）`, 'wrap 收斂（不開新方向）', 'off 關閉']
+      : ['auto - autonomous (no mid-task questions)', `out - delegate (${hint})`, 'wrap - converge (no new branches)', 'off - turn off']
   return current.length > 0 ? labels : labels.slice(0, 3)
 }
 
@@ -317,6 +323,7 @@ export function pickedArgs(answer: string, cfg: WorkModeConfig = getConfig()): s
   const labels = new Set([
     ...pickerLabels(['autonomous'], { ...cfg, locale: 'en' }),
     ...pickerLabels(['autonomous'], { ...cfg, locale: 'zh-TW' }),
+    ...pickerLabels(['autonomous'], { ...cfg, locale: 'ja' }),
   ])
   return answer
     .split(',')
@@ -442,20 +449,38 @@ async function modeTexts($: EngineInterface, list: readonly TempoMode[]): Promis
 /** The reply /work-mode prints after a switch. */
 export function switchReply(m: readonly TempoMode[], note: string | undefined, cfg: WorkModeConfig = getConfig()): string {
   const tail = note ? ` (${note})` : ''
-  if (m.length === 0) return 'ワークモードをオフにしました：通常どおりに戻ります。' + tail
+  if (cfg.locale === 'ja') {
+    if (m.length === 0) return 'ワークモードをオフにしました：通常どおりに戻ります。' + tail
+    if (m.length === 1 && m[0] === 'converge')
+      return 'ワークモード wrap：新しい作業を始めず、返答の末尾に新しい決定事項と未解決の件数を表示します。オフにするには /work-mode off を使ってください。' + tail
+    return (
+      `ワークモード ${m.map(x => SHORT[x]).join(' + ')}：` +
+      (m.includes('autonomous')
+        ? '内部の可逆的な手順で途中に質問しません。対応する PreToolUse のゲートは質問ではなく操作方法を示して拒否します。硬性停止項目は保留リストに入れます。'
+        : '') +
+      (m.includes('dispatch')
+        ? `委任リマインダー（${cfg.dispatch.pickerHint}）は次のツール結果またはプロンプトで一度だけモデルに送られます。`
+        : '') +
+      (m.includes('converge') ? '新しい作業を始めません。返答は決定事項と推奨事項で締めくくります。' : '') +
+      (both(m) ? '委任はすでに着手している作業を終えるためだけに使います。' : '') +
+      'オフにするには /work-mode off を使ってください。' +
+      tail
+    )
+  }
+  if (m.length === 0) return 'Work mode off: back to normal.' + tail
   if (m.length === 1 && m[0] === 'converge')
-    return 'ワークモード wrap：新しい作業を始めず、返答の末尾に新しい決定事項と未解決の件数を表示します。オフにするには /work-mode off を使ってください。' + tail
+    return 'Work mode wrap: no new branches, replies show new decisions plus an open count. /work-mode off to stop.' + tail
   return (
-    `ワークモード ${m.map(x => SHORT[x]).join(' + ')}：` +
+    `Work mode ${m.map(x => SHORT[x]).join(' + ')}: ` +
     (m.includes('autonomous')
-      ? '内部の可逆的な手順で途中に質問しません。対応する PreToolUse のゲートは質問ではなく操作方法を示して拒否します。硬性停止項目は保留リストに入れます。'
+      ? 'no mid-task questions on internal reversible steps; compatible PreToolUse gates deny with a how-to instead of asking; hard stops go to a pending list. '
       : '') +
     (m.includes('dispatch')
-      ? `委任リマインダー（${cfg.dispatch.pickerHint}）は次のツール結果またはプロンプトで一度だけモデルに送られます。`
+      ? `The delegation reminder (${cfg.dispatch.pickerHint}) reaches the model once, with its next tool result or prompt. `
       : '') +
-    (m.includes('converge') ? '新しい作業を始めません。返答は決定事項と推奨事項で締めくくります。' : '') +
-    (both(m) ? '委任はすでに着手している作業を終えるためだけに使います。' : '') +
-    'オフにするには /work-mode off を使ってください。' +
+    (m.includes('converge') ? 'No new branches; replies end with decisions plus recommendations. ' : '') +
+    (both(m) ? 'Delegation only finishes work already open. ' : '') +
+    '/work-mode off to stop.' +
     tail
   )
 }
@@ -469,12 +494,14 @@ export function registerTempo(on: On): void {
         const current = await read($, modes)
         const label = tempoLabel(current) ?? 'off'
         const question =
-          cfg.locale === 'zh-TW'
+          cfg.locale === 'ja'
             ? `現在のワークモード：${label}。有効にするモードを選択してください（複数選択可。現在の設定を置き換えます）：`
-            : `現在のワークモード：${label}。有効にするモードを選択してください（任意の組み合わせ可。現在の設定を置き換えます）：`
+            : cfg.locale === 'zh-TW'
+              ? `Work mode 目前：${label}。勾選要開的模式（可複選，會取代目前的設定）：`
+              : `Work mode is now: ${label}. Tick the modes to turn on (any mix; it replaces the current set):`
         const answer = await $.ui.ask(question, {
           options: pickerLabels(current, cfg),
-          header: 'ワークモード',
+          header: cfg.locale === 'ja' ? 'ワークモード' : 'Work mode',
           multiSelect: true,
         })
         parsed = parseTempo(pickedArgs(answer, cfg))
@@ -483,11 +510,13 @@ export function registerTempo(on: On): void {
         $.ui.log(`tempo picker unavailable: ${String(err).slice(0, 300)}`, { to: 'debug' })
       }
     }
-    const usage = '/work-mode で auto、out、wrap（任意の順序）または off を指定できます。'
+    const usage = cfg.locale === 'ja'
+      ? '/work-mode で auto、out、wrap（任意の順序）または off を指定できます。'
+      : 'Use /work-mode with any of auto, out, wrap (any order), or off.'
     if (parsed.kind === 'error') return { text: `${parsed.message} ${usage}` }
     if (parsed.kind === 'status') {
       const label = tempoLabel(await read($, modes)) ?? 'off'
-      return { text: `ワークモード：${label}。${usage}` }
+      return { text: cfg.locale === 'ja' ? `ワークモード：${label}。${usage}` : `Work mode: ${label}. ${usage}` }
     }
     const prev = await read($, modes)
     const prevSent = await read($, sent)

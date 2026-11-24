@@ -4,7 +4,7 @@ import type { EngineInterface } from 'claude-code'
 // (or $WORK_MODE_CONFIG). Without it the mod runs on neutral English or Traditional
 // Chinese defaults, picked from the Claude Code `language` setting and the locale env.
 
-export type Locale = 'en' | 'zh-TW'
+export type Locale = 'en' | 'zh-TW' | 'ja'
 export type Pronouns = 'they' | 'he' | 'she'
 
 export interface PoolRouting {
@@ -98,6 +98,21 @@ export const DEFAULT_CONFIG_ZH: WorkModeConfig = {
   locale: 'zh-TW',
   dispatch: {
     ...DEFAULT_CONFIG_EN.dispatch,
+    pickerHint: '背景子代理／外部 CLI',
+  },
+  converge: {
+    sectionHeading: '待你決定',
+    decisionLabels: ['對外', '金流', '刪除', '權限', '取捨'],
+    tradeoffLabel: '取捨',
+    autoCloseCommand: null,
+  },
+}
+
+export const DEFAULT_CONFIG_JA: WorkModeConfig = {
+  ...DEFAULT_CONFIG_EN,
+  locale: 'ja',
+  dispatch: {
+    ...DEFAULT_CONFIG_EN.dispatch,
     pickerHint: 'バックグラウンドのサブエージェント／外部 CLI',
   },
   converge: {
@@ -139,6 +154,7 @@ export function resolvePath(p: string, homeDir: string): string {
 export function localeFrom(value: unknown): Locale | undefined {
   if (typeof value !== 'string' || value.trim() === '') return undefined
   if (/zh|中文|繁體|台灣|臺灣|chinese/i.test(value)) return 'zh-TW'
+  if (/ja|日本語|日文|japanese/i.test(value)) return 'ja'
   if (/^en|english/i.test(value)) return 'en'
   return undefined
 }
@@ -165,8 +181,8 @@ export function validPattern(p: unknown): string | undefined {
 /** Merges a parsed config file over the locale's defaults; anything malformed falls back field by field. */
 export function resolveConfig(raw: unknown, fallbackLocale: Locale = 'en'): WorkModeConfig {
   const r = isObj(raw) ? raw : {}
-  const locale = r.locale === 'en' || r.locale === 'zh-TW' ? r.locale : fallbackLocale
-  const base = locale === 'zh-TW' ? DEFAULT_CONFIG_ZH : DEFAULT_CONFIG_EN
+  const locale = r.locale === 'en' || r.locale === 'zh-TW' || r.locale === 'ja' ? r.locale : fallbackLocale
+  const base = locale === 'zh-TW' ? DEFAULT_CONFIG_ZH : locale === 'ja' ? DEFAULT_CONFIG_JA : DEFAULT_CONFIG_EN
   const a = isObj(r.autonomous) ? r.autonomous : {}
   const d = isObj(r.dispatch) ? r.dispatch : {}
   const c = isObj(r.converge) ? r.converge : {}
@@ -227,6 +243,7 @@ async function detectLocale($: EngineInterface): Promise<Locale> {
     // No settings access: fall through to the environment.
   }
   const env = (await $.env.get('LC_ALL')) ?? (await $.env.get('LANG')) ?? ''
+  if (/^ja/i.test(env)) return 'ja'
   return /^zh/i.test(env) ? 'zh-TW' : 'en'
 }
 
@@ -241,7 +258,7 @@ export async function loadConfig($: EngineInterface): Promise<WorkModeConfig> {
   } catch {
     raw = undefined
   }
-  const fileLocale = isObj(raw) && (raw.locale === 'en' || raw.locale === 'zh-TW') ? raw.locale : undefined
+  const fileLocale = isObj(raw) && (raw.locale === 'en' || raw.locale === 'zh-TW' || raw.locale === 'ja') ? raw.locale : undefined
   current = resolveConfig(raw, fileLocale ?? (await detectLocale($)))
   loaded = true
   return current

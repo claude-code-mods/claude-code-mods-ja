@@ -16,8 +16,8 @@
   "userConfig": {
     "activity": {
       "type": "string",
-      "title": "Claude activity",
-      "description": "Which of Claude's file activity shimmers in the tree: files read with the Read tool or Bash readers (rg, grep, find, cat) in purple, writes in orange and git actions in green",
+      "title": "Claude のアクティビティ",
+      "description": "ツリーで Claude のファイル操作のどれを光らせるか：Read ツールや Bash の読み取りコマンド（rg、grep、find、cat）で読んだファイルは紫、書き込みはオレンジ、git 操作は緑です",
       "default": "reads and writes",
       "options": [
         "reads and writes",
@@ -28,8 +28,8 @@
     },
     "shimmer": {
       "type": "string",
-      "title": "Activity shimmer",
-      "description": "on: the files Claude reads, writes and commits shimmer in the tree. off: they draw as plain rows, and folders still open to show them. The Clawd button in the Desktop app header flips it, and every session, terminal or Desktop, follows it.",
+      "title": "アクティビティのきらめき",
+      "description": "on：Claude が読み取り・書き込み・コミットしたファイルがツリーで光ります。off：通常の行として描画し、フォルダーは開いて中を見られます。デスクトップアプリのヘッダーにある Clawd ボタンで切り替えられ、ターミナルとデスクトップのすべてのセッションに反映されます。",
       "default": "on",
       "options": [
         "on",
@@ -38,8 +38,8 @@
     },
     "glyphs": {
       "type": "string",
-      "title": "Glyphs",
-      "description": "Icon set: auto uses Nerd Font icons when Nerd Fonts 3.2 or newer is installed here, except in the desktop app, and plain Unicode otherwise; plain uses Unicode only; text is plain with the header buttons as words (up, cwd, sync, dots, size, fold, split, clear), falling back to plain glyphs when the pane is too narrow",
+      "title": "グリフ",
+      "description": "アイコンの種類：auto はこのマシンに Nerd Fonts 3.2 以降がインストールされていれば Nerd Font のアイコンを使います（デスクトップアプリでは除外）、それ以外は素の Unicode です。plain は Unicode のみ、text は素のテキストでヘッダーのボタンを単語（up、cwd、sync、dots、size、fold、split、clear）で表示し、ペインが狭い場合は素のグリフに切り替わります",
       "default": "auto",
       "options": [
         "auto",
@@ -50,8 +50,8 @@
     },
     "follow": {
       "type": "string",
-      "title": "Follow Claude",
-      "description": "on: the tree scrolls to what Claude reads, writes or commits. off: the view stays where you put it and only your own scrolling moves it; highlights still show.",
+      "title": "Claude を追従",
+      "description": "on：Claude が読み取り・書き込み・コミットした場所までツリーがスクロールします。off：表示位置はあなたが置いたままで、スクロールしたときだけ動きます。ハイライトは表示されます。",
       "default": "on",
       "options": [
         "on",
@@ -60,8 +60,8 @@
     },
     "jump": {
       "type": "string",
-      "title": "Jump moves Claude",
-      "description": "tree and Claude: picking a folder with z re-roots the tree and moves the session there with /cd, which asks first for a folder this session has not trusted. tree: z re-roots only the tree and Claude stays where it is.",
+      "title": "ジャンプで Claude も移動",
+      "description": "tree and Claude：z でフォルダーを選ぶとツリーのルートを切り替え、/cd でセッションもそこへ移動します。このセッションがまだ信頼していないフォルダーでは先に確認します。tree：z はツリーのルートだけを切り替え、Claude は現在地に留まります。",
       "default": "tree and Claude",
       "options": [
         "tree and Claude",
@@ -70,8 +70,8 @@
     },
     "copy": {
       "type": "string",
-      "title": "Right-click copies",
-      "description": "relative: a right-click on an entry copies its path from the tree's root. absolute: it copies the full path. Shift+right-click copies the other one. y and Y keep copying the relative and the absolute path.",
+      "title": "右クリックでコピー",
+      "description": "relative：項目を右クリックするとツリーのルートからの相対パスをコピーします。absolute：絶対パスをコピーします。Shift+右クリックではもう片方をコピーします。y と Y はそれぞれ相対パスと絶対パスをコピーし続けます。",
       "default": "relative",
       "options": [
         "relative",
@@ -80,8 +80,8 @@
     },
     "work": {
       "type": "string",
-      "title": "Follow work",
-      "description": "on: when Claude or its subagents keep reading and writing in another git repo for a few minutes, the session moves there with /cd at the end of a turn (or while idle) and the tree follows; at most once every two minutes, never while several repos are equally busy, and never into temp folders, ~/.claude, ~/.config or the agents vault. off: the session stays where you put it. With Jump moves Claude set to tree, only the tree moves.",
+      "title": "作業を追従",
+      "description": "on：Claude やそのサブエージェントが数分間にわたって別の git リポジトリで読み書きを続けた場合、ターン終了時（またはアイドル時）に /cd でセッションがそこへ移り、ツリーも追従します。移動は最大 2 分に 1 回、複数のリポジトリが同じくらい忙しいときは行わず、temp フォルダー、~/.claude、~/.config、agents vault にも入りません。off：セッションはあなたが置いた場所に留まります。Jump moves Claude が tree の場合はツリーだけが移動します。",
       "default": "on",
       "options": [
         "on",
@@ -90,8 +90,8 @@
     },
     "start": {
       "type": "string",
-      "title": "Open at start",
-      "description": "on: the pane opens when a session starts. off: it stays closed until you run /filetree.",
+      "title": "起動時に開く",
+      "description": "on：セッション開始時にペインを開きます。off：/filetree を実行するまで閉じたままです。",
       "default": "on",
       "options": [
         "on",
@@ -100,8 +100,8 @@
     },
     "focus": {
       "type": "string",
-      "title": "Focus on open",
-      "description": "on: /filetree moves the keyboard into the tree when it opens it. off: the keyboard stays in the prompt, so the same command, or a key bound to it, hides the tree again; /filetree open, /filetree <path> and a tree hidden behind another tab still take the focus.",
+      "title": "開いたときにフォーカス",
+      "description": "on：/filetree でツリーを開くとキーボードのフォーカスがツリーへ移ります。off：フォーカスは入力欄に留まり、同じコマンドや割り当てキーでツリーを再び閉じます。/filetree open、/filetree <path>、別タブの背後にあるツリーはフォーカスを取得します。",
       "default": "on",
       "options": [
         "on",
@@ -110,8 +110,8 @@
     },
     "column": {
       "type": "string",
-      "title": "Right column",
-      "description": "What the right column shows by default: date (last modified), age (time since last modified, short: now, 12m, 3h, 5d, then Oct 9 past a week and the year past a year), size (files in bytes, folders as disk usage computed in the background) loc (non-blank lines in every text file, folders as the sum and 0 when they hold no text, counted in the background; binaries show nothing) or files (the number of files under each folder, counted in the background). The header button cycles the date or age, size, loc and files; in loc the treemap sizes boxes by lines.",
+      "title": "右の列",
+      "description": "右の列に既定で表示する内容：date（最終更新日時）、age（最終更新からの経過時間。短い表記は now、12m、3h、5d、1 週間以上は Oct 9、1 年以上は年）、size（ファイルはバイト数、フォルダーはバックグラウンドで計算したディスク使用量）、loc（すべてのテキストファイルの空行以外の行数。フォルダーは合計で、テキストがなければ 0。バックグラウンドでカウントし、バイナリは何も表示しません）、files（各フォルダー配下のファイル数。バックグラウンドでカウント）。ヘッダーのボタンで date または age、size、loc、files を切り替えます。loc ではツリーマップのボックスサイズが行数になります。",
       "default": "date",
       "options": [
         "date",
@@ -123,8 +123,8 @@
     },
     "dates": {
       "type": "string",
-      "title": "Date format",
-      "description": "How the date column writes a day: year-month-day (2026-11-04 15:40), day-month (04-11 15:40) or month-day (11-04 15:40). day-month and month-day leave out the year. The age column is unchanged.",
+      "title": "日付の形式",
+      "description": "日付の列が日をどう表すか：year-month-day（2026-11-04 15:40）、day-month（04-11 15:40）、month-day（11-04 15:40）。day-month と month-day では年を省略します。age の列は変わりません。",
       "default": "year-month-day",
       "options": [
         "year-month-day",
@@ -134,8 +134,8 @@
     },
     "clock": {
       "type": "string",
-      "title": "Clock",
-      "description": "How the date column writes the time: 24h (15:40) or 12h (3:40 PM).",
+      "title": "時計",
+      "description": "日付の列が時刻をどう表すか：24h（15:40）または 12h（3:40 PM）。",
       "default": "24h",
       "options": [
         "24h",
@@ -144,14 +144,14 @@
     },
     "long": {
       "type": "string",
-      "title": "Long file",
-      "description": "In the loc column, a file with more lines than this number shows its line count in red. off: never. Default 500.",
+      "title": "長いファイル",
+      "description": "loc の列で、行数がこの数を超えるファイルの行数を赤で表示します。off：表示しません。既定は 500 です。",
       "default": "500"
     },
     "remote": {
       "type": "string",
-      "title": "Remote branch",
-      "description": "on: the branch row shows the upstream branch next to the ahead and behind counts. off: only the counts show.",
+      "title": "リモートブランチ",
+      "description": "on：ブランチの行に、ahead と behind の件数の隣にアップストリームのブランチを表示します。off：件数のみ表示します。",
       "default": "off",
       "options": [
         "on",
@@ -160,8 +160,8 @@
     },
     "hints": {
       "type": "string",
-      "title": "Hints",
-      "description": "on: outside a git repo, a line under the header says git status starts after git init. off: the line is hidden and the tree gets the row.",
+      "title": "ヒント",
+      "description": "on：git リポジトリ外では、ヘッダー下の行に git init 後に git status が動くことを表示します。off：その行を隠し、ツリーがその行を使います。",
       "default": "on",
       "options": [
         "on",
@@ -170,8 +170,8 @@
     },
     "collapse": {
       "type": "string",
-      "title": "Auto-collapse",
-      "description": "on: folders the tree opened to show Claude's reads and writes close again 10 seconds after Claude last touched them, unless you opened or moved into them; turning it on also closes the ones opened while it was off. off: they stay open. The toolbar toggle and the a key flip it.",
+      "title": "自動折りたたみ",
+      "description": "on：Claude の読み書きを示すためにツリーが開いたフォルダーを、Claude が最後に触れてから 10 秒後に閉じます。ただしあなたが開いたり移動したフォルダーは除きます。オンにすると、オフの間に開いたフォルダーも閉じます。off：開いたままです。ツールバーのトグルと a キーで切り替えられます。",
       "default": "off",
       "options": [
         "on",
@@ -180,8 +180,8 @@
     },
     "headers": {
       "type": "string",
-      "title": "Column headers",
-      "description": "on: a Name, Git and value header row under the search bar; click one to sort desc, asc, then off. off: hide it.",
+      "title": "列の見出し",
+      "description": "on：検索バーの下に Name、Git、値の見出し行を表示します。クリックすると降順、昇順、オフの順に切り替わります。off：非表示にします。",
       "default": "on",
       "options": [
         "on",
@@ -190,8 +190,8 @@
     },
     "spacing": {
       "type": "string",
-      "title": "Search spacing",
-      "description": "on: a blank line above and below the search bar. off: the search bar sits right under the header and the tree gets the two rows.",
+      "title": "検索バーの余白",
+      "description": "on：検索バーの上下に空行を入れます。off：検索バーは見出しのすぐ下に置かれ、ツリーがその 2 行を使います。",
       "default": "on",
       "options": [
         "on",
@@ -200,8 +200,8 @@
     },
     "shortcuts": {
       "type": "string",
-      "title": "Shortcuts",
-      "description": "? in the tree shows every key, grouped, in place of the tree; j, k, the arrows, f, b and the page keys scroll it; ? again or any other key that acts closes it, and the key still acts. auto: the footer shows a ?: shortcuts hint. always: the list opens with the pane. off: no hint. ? works in every mode with the tree focused; typed in the search field it is just a character.",
+      "title": "ショートカット",
+      "description": "ツリー内で ? を押すと、ツリーの代わりにすべてのキーをグループ別に表示します。j、k、矢印、f、b、ページキーでスクロールします。? をもう一度押すか、他の操作キーを押すと閉じ、そのキーは操作として働きます。auto：フッターに ?: shortcuts のヒントを表示します。always：ペインを開くと一覧が開きます。off：ヒントなし。ツリーにフォーカスがあれば ? はどのモードでも機能し、検索欄に入力した場合は単なる文字です。",
       "default": "auto",
       "options": [
         "auto",
@@ -211,14 +211,14 @@
     },
     "open": {
       "type": "string",
-      "title": "Open with",
-      "description": "What a double-click or Enter does with a file. Empty: the default app, also inside tmux. editor: use $VISUAL, then $EDITOR, then vi in tmux or a herdr pane (Linux/macOS only; otherwise shows a notice). preview: show it in the pane (left goes back; ↗ always opens the default app). Anything else is a command run instead: {path} is the file and {dir} its folder; without {path} the path goes last. Words split on spaces, quotes keep a word whole, and no shell runs it. It should start the viewer and return; on Linux it runs detached.",
+      "title": "開くアプリ",
+      "description": "ファイルをダブルクリックまたは Enter したときの動作。空欄：既定のアプリ（tmux 内でも同様）。editor：$VISUAL、$EDITOR、tmux または herdr ペインでは vi を使います（Linux/macOS のみ。それ以外では通知を表示）。preview：ペイン内で表示します（左で戻り、↗ は常に既定のアプリを開きます）。それ以外はコマンドとして実行し、{path} がファイル、{dir} がそのフォルダーです。{path} がない場合はパスが末尾に付きます。語は空白で分割し、引用符で 1 つの語として扱います。シェルは使いません。ビューアーを起動して戻る必要があり、Linux では切り離して実行します。",
       "default": ""
     },
     "binaries": {
       "type": "string",
-      "title": "Binary files",
-      "description": "What a double-click or Enter does with an image, audio, video, PDF, office document, archive, font or compiled file when Open with names an editor or command. Open with: hand it to the editor or command like any other file. default app: open it in the default app for its type, as if Open with were empty, so a code editor in Open with gets code and the system gets images. The file type comes from its extension; preview is unaffected.",
+      "title": "バイナリファイル",
+      "description": "Open with でエディターやコマンドを指定しているとき、画像、音声、動画、PDF、オフィス文書、アーカイブ、フォント、コンパイル済みファイルをダブルクリックまたは Enter したときの動作。Open with：他のファイルと同じくエディターやコマンドに渡します。default app：Open with が空欄の場合と同じく、種類に応じた既定のアプリで開きます。そのため Open with にコードエディターを指定していても、画像はシステム側が開きます。ファイルの種類は拡張子から判断し、preview は影響を受けません。",
       "default": "Open with",
       "options": [
         "Open with",
@@ -227,20 +227,20 @@
     },
     "edit": {
       "type": "string",
-      "title": "Edit with",
-      "description": "What e does in the preview: open the file at the top line shown. Empty: $VISUAL, then $EDITOR, then vi in tmux or a herdr pane with +line (Linux/macOS only; the e button is hidden elsewhere). Anything else is a command like Open with, where {line} is that line, for example code -g {path}:{line} or zed {path}:{line}.",
+      "title": "編集アプリ",
+      "description": "プレビューで e を押したときの動作：表示されている先頭行からファイルを開きます。空欄：$VISUAL、$EDITOR、tmux または herdr ペインでは +line 付きの vi（Linux/macOS のみ。それ以外では e ボタンを隠します）。それ以外は Open with と同じコマンドで、{line} がその行です。例：code -g {path}:{line}、zed {path}:{line}。",
       "default": ""
     },
     "diff": {
       "type": "string",
-      "title": "Diff with",
-      "description": "What d does on a changed file, in the tree or the preview. Empty: show its diff against HEAD in the pane, drawn by Claude Code's own diff view (an untracked file shows as all added; d again goes back to the file). Anything else is a terminal command, run on the file in a tmux window, a herdr pane or, on Linux, a new terminal window through xdg-terminal-exec, the file path going last. Examples: hunk diff --, lazygit -f, git difftool -y --, nvim -c Gvdiffsplit.",
+      "title": "差分を表示するアプリ",
+      "description": "ツリーまたはプレビューで変更されたファイルに d を押したときの動作。空欄：ペイン内で Claude Code 自身の diff 表示を使い HEAD との差分を表示します（未追跡ファイルはすべて追加として表示。もう一度 d を押すとファイルに戻ります）。それ以外はターミナルコマンドとして、tmux ウィンドウ、herdr ペイン、または Linux では xdg-terminal-exec 経由の新しいターミナルウィンドウでファイルに対して実行し、ファイルパスが末尾に付きます。例：hunk diff --、lazygit -f、git difftool -y --、nvim -c Gvdiffsplit。",
       "default": ""
     },
     "groups": {
       "type": "string",
-      "title": "Diff groups",
-      "description": "How d on a folder orders its changed files. folder: grouped by folder, with test, build and generated files (lockfiles, dist, build and out folders, *.min.*, snapshots, test folders, *.test.* and *_test.* files) in their own group last. kind: the other files first, then that test, build and generated group. off: one list in git's order.",
+      "title": "差分のグループ",
+      "description": "フォルダーで d を押したときに変更ファイルをどう並べるか。folder：フォルダーごとにまとめ、テスト、ビルド、生成ファイル（ロックファイル、dist、build、out フォルダー、*.min.*、スナップショット、テストフォルダー、*.test.* と *_test.*）を最後の別グループにします。kind：その他のファイルを先に、そのテスト・ビルド・生成グループを後にします。off：git の順番で 1 つの一覧にします。",
       "default": "folder",
       "options": [
         "folder",
@@ -250,8 +250,8 @@
     },
     "target": {
       "type": "string",
-      "title": "Terminal target",
-      "description": "Where Open with: editor, e in the preview and a Diff with command start their terminal program inside tmux or herdr. auto: a new tmux window, or a herdr pane split to the right. pane right and pane below split the current pane; tab opens a tmux window or a herdr tab; workspace opens a new tmux session and switches to it, or a new herdr workspace. In tmux, nvim already running in the session is reused wherever it is.",
+      "title": "ターミナルの表示先",
+      "description": "Open with のエディター、プレビューの e、Diff with のコマンドがターミナルプログラムを起動する場所。auto：新しい tmux ウィンドウ、または右に分割した herdr ペイン。pane right と pane below は現在のペインを分割します。tab は tmux ウィンドウまたは herdr タブを開きます。workspace は新しい tmux セッションを開いて切り替えるか、新しい herdr ワークスペースを開きます。tmux ではセッション内で既に動いている nvim を場所に関係なく再利用します。",
       "default": "auto",
       "options": [
         "auto",
@@ -263,14 +263,14 @@
     },
     "ignore": {
       "type": "string",
-      "title": "Ignore",
-      "description": "File and folder names to leave out of the tree, its search and its shimmer, separated by spaces or commas. Names match exactly, without wildcards, at any depth, like the built-in .git and node_modules. Example: .cache .tmp",
+      "title": "除外",
+      "description": "ツリー、検索、きらめきに含めないファイル名とフォルダー名。空白またはカンマで区切ります。名前は組み込みの .git や node_modules のように、あらゆる深さで完全一致します。例：.cache .tmp",
       "default": ""
     },
     "split": {
       "type": "string",
-      "title": "Preview pane",
-      "description": "Where the split preview of the file under the cursor sits when the header button or p shows it: bottom (under the tree, above the status line) or top (under the header). It starts hidden; text scrolls with the wheel over it, f/b or Page Up/Down, images, video poster frames and PDF or office document pages draw through the kitty graphics protocol in terminals that support it, and [ and ] turn a document's pages.",
+      "title": "プレビューペイン",
+      "description": "ヘッダーボタンまたは p でカーソル下のファイルの分割プレビューを表示するときの位置：bottom（ツリーの下、ステータス行の上）または top（ヘッダーの下）。初期状態では非表示。その上でホイール、f/b、Page Up/Down でテキストをスクロールし、画像、動画のポスターフレーム、PDF やオフィス文書のページは対応端末では kitty のグラフィックプロトコルで描画されます。[ と ] で文書のページを切り替えられます。",
       "default": "bottom",
       "options": [
         "bottom",
@@ -279,8 +279,8 @@
     },
     "treemap": {
       "type": "string",
-      "title": "Treemap",
-      "description": "What the split preview shows on a folder. auto: a pixel-accurate treemap through the kitty graphics protocol in Ghostty and kitty, outside tmux and herdr, and the cell treemap everywhere else. image: try the pixel treemap in any terminal, falling back to cells where it cannot show, as inside tmux. cells: always the cell treemap. off: no treemap and no disk usage scans.",
+      "title": "ツリーマップ",
+      "description": "フォルダーの分割プレビューに表示する内容。auto：Ghostty と kitty（tmux と herdr の外）では kitty のグラフィックプロトコルでピクセル単位のツリーマップ、それ以外ではセル単位のツリーマップです。image：どの端末でもピクセルのツリーマップを試し、表示できない場合は（tmux 内など）セルに切り替えます。cells：常にセル単位です。off：ツリーマップもディスク使用量のスキャンも行いません。",
       "default": "auto",
       "options": [
         "auto",
@@ -291,8 +291,8 @@
     },
     "palette": {
       "type": "string",
-      "title": "Palette",
-      "description": "Your own colors, laid over the Omarchy, light or default theme: key=#hex pairs separated by spaces. Keys: fg, bg, accent (folders, links), muted (dates, sizes), urgent (deleted, conflicts), selection (selected row), hover (hovered row), jump (folders in z jump mode), added, modified, renamed (git status), add and del (line counts). A key you leave out keeps the theme's color. Example (Gruvbox Dark Hard): fg=#ebdbb2 bg=#1d2021 accent=#83a598 muted=#928374 urgent=#fb4934 selection=#3c3836 added=#b8bb26 modified=#fabd2f renamed=#83a598 add=#b8bb26 del=#fb4934",
+      "title": "配色",
+      "description": "Omarchy、ライト、既定のテーマの上に重ねる独自の色：key=#hex の組を空白で区切ります。キー：fg、bg、accent（フォルダー、リンク）、muted（日付、サイズ）、urgent（削除、競合）、selection（選択行）、hover（ホバー行）、jump（z ジャンプモードのフォルダー）、added、modified、renamed（git status）、add、del（行数）。省略したキーはテーマの色を維持します。例（Gruvbox Dark Hard）：fg=#ebdbb2 bg=#1d2021 accent=#83a598 muted=#928374 urgent=#fb4934 selection=#3c3836 added=#b8bb26 modified=#fabd2f renamed=#83a598 add=#b8bb26 del=#fb4934",
       "default": ""
     }
   },

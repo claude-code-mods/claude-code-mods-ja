@@ -22,8 +22,8 @@
   "userConfig": {
     "server": {
       "type": "string",
-      "title": "Share server",
-      "description": "Leave empty to share through the public server. To use your own, its https address (README: \"Host a server\"). Joining a link always uses the server in that link."
+      "title": "共有サーバー",
+      "description": "空欄の場合は公開サーバーで共有します。自分のサーバーを使う場合はその https アドレスを指定してください（README: \"Host a server\"）。リンクに参加するときは常にそのリンクのサーバーを使います。"
     }
   },
   "mcpServers": {

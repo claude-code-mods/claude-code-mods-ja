@@ -39,8 +39,10 @@ export const WHY_CLAUDE = /^\s*(?:<[^>]*>\s*)?why-claude:\s*([^\n]*)/i
 /** The refusal of an Agent call under out when subagents spend the main quota (dispatch.subagentsDelegate false). */
 export function agentText(cfg: WorkModeConfig = getConfig()): string {
   const hint = cfg.dispatch.pickerHint
+  if (cfg.locale === 'ja')
+    return `[dispatch-gate] out モードでは、Claude のサブエージェントはこのスレッドと同じ週間割り当てを消費します。読み取り、抽出、分類、要約、照合など、抜き取り検査で検収できる一括作業なら、外部 CLI（${hint}）に回してください。どうしても Claude が必要な場合（ファイル編集、MCP や認証情報、判断力、このスレッドで既に読んだ文脈の引き継ぎ）は、prompt の先頭行に \`why-claude: <一行の理由>\` を書いて再度委任すれば通ります。理由は記録されます。`
   return cfg.locale === 'zh-TW'
-    ? `[dispatch-gate] out モードでは、Claude のサブエージェントはこのスレッドと同じ週間割り当てを消費します。読み取り、抽出、分類、要約、照合など、抜き取り検査で検収できる一括作業なら、外部 CLI（${hint}）に回してください。どうしても Claude が必要な場合（ファイル編集、MCP や認証情報、判断力、このスレッドで既に読んだ文脈の引き継ぎ）は、prompt の先頭行に \`why-claude: <一行の理由>\` を書いて再度委任すれば通ります。理由は記録されます。`
+    ? `[dispatch-gate] out 模式：Claude 子代理花的是同一份週額度。這件事如果是讀取、抽取、分類、摘要、核對這類能驗收的批次工作，改交外部 CLI（${hint}）。真的需要 Claude（要改檔、要 MCP 或憑證、要判斷力、接續主線已讀的脈絡），在 prompt 第一行寫 \`why-claude: <一句理由>\` 再派一次就放行，理由會記錄。`
     : `[dispatch-gate] out is on: a Claude subagent spends the same weekly quota as this thread. If this job is reading, extraction, classification, summarising or checking that a spot check can verify, send it to an external CLI (${hint}) instead. If it really needs Claude (edits, MCP or credentials, judgement, context already read here), put \`why-claude: <one-line reason>\` on the first line of the prompt and call again; it then passes and the reason is logged.`
 }
 
@@ -51,8 +53,10 @@ export function responseLength(v: unknown): number {
 
 export function nudgeText(n: number, cfg: WorkModeConfig = getConfig()): string {
   if (cfg.dispatch.nudgeTemplate) return cfg.dispatch.nudgeTemplate.split('{chars}').join(String(n))
-  if (cfg.locale === 'zh-TW')
+  if (cfg.locale === 'ja')
     return `[dispatch-nudge] このターンでメインスレッドは約 ${n} 文字の生データを読み込みましたが、まだ委任していません。残りの分類、照合、抽出、要約をチェッカーや抜き取り検査で検収できるなら、バックグラウンドのサブエージェント（Agent ツール）か外部 CLI（${cfg.dispatch.pickerHint}）に回し、メインスレッドは結果だけを検証してください。もうすぐ終わる場合やメインモデル自身の判断が必要な場合は、そのまま続けてください。`
+  if (cfg.locale === 'zh-TW')
+    return `[dispatch-nudge] 這一回合主線已讀進約 ${n} 字元的原始內容、還沒外派。剩下的逐條分類、核對、抽取、摘要若能用檢查器或抽查驗收，改派背景子代理（Agent 工具）或外部 CLI（${cfg.dispatch.pickerHint}）處理，主線只驗收結果。已經快做完、或必須由主模型判斷的，照常繼續。`
   return `[dispatch-nudge] This turn the main thread has read about ${n} characters of raw material without delegating anything. If the remaining classification, checking, extraction or summarising can be verified by a checker or a spot check, hand it to a background subagent (the Agent tool) or an external CLI (${cfg.dispatch.pickerHint}) and only verify the result here. If it is nearly done or needs the main model's judgement, carry on.`
 }
 
@@ -61,15 +65,22 @@ export function gateText(n: number, corpus: string | undefined, cfg: WorkModeCon
   const hint = cfg.dispatch.pickerHint
   if (cfg.dispatch.gateTemplate) return cfg.dispatch.gateTemplate.split('{chars}').join(String(n)).split('{hint}').join(hint)
   const how =
-    cfg.locale === 'zh-TW'
+    cfg.locale === 'ja'
       ? `メインスレッドで読み続けるには、まず空コマンドで理由を宣言してください：\`: # work-mode: inline <一行の理由>\`。以降このターンの読み取りは通ります（理由は記録されます）。`
-      : `To keep reading inline, first run a no-op Bash declaring why: \`: # work-mode: inline <one-line reason>\`; reads then pass for the rest of this turn (the reason is logged).`
-  if (corpus)
+      : cfg.locale === 'zh-TW'
+        ? `要繼續在主線讀，先跑一個空指令宣告理由：\`: # work-mode: inline <一句理由>\`，這一回合之後的讀取就放行（理由會記錄下來）。`
+        : `To keep reading inline, first run a no-op Bash declaring why: \`: # work-mode: inline <one-line reason>\`; reads then pass for the rest of this turn (the reason is logged).`
+  if (corpus) {
+    if (cfg.locale === 'ja')
+      return `[dispatch-gate] out モード：\`${corpus}\` は一括の生データ（会話ログ、文字起こし、ダンプ）です。メインスレッドでは直接読みません。調べたいことを一行でまとめ、バックグラウンドのサブエージェントか外部 CLI（${hint}）に読み取りを任せ、メインスレッドは結果だけを検証してください。${how}`
     return cfg.locale === 'zh-TW'
-      ? `[dispatch-gate] out モード：\`${corpus}\` は一括の生データ（会話ログ、文字起こし、ダンプ）です。メインスレッドでは直接読みません。調べたいことを一行でまとめ、バックグラウンドのサブエージェントか外部 CLI（${hint}）に読み取りを任せ、メインスレッドは結果だけを検証してください。${how}`
+      ? `[dispatch-gate] out 模式：\`${corpus}\` 是整批原始材料（對話紀錄、逐字稿、傾印檔），主線不直接讀。把要查的問題寫成一句話，交給背景子代理或外部 CLI（${hint}）去讀，主線只驗收結果。${how}`
       : `[dispatch-gate] out is on: \`${corpus}\` is batch material (transcripts, dumps, logs); the main thread does not read it. Put the question in one line and hand the reading to a background subagent or an external CLI (${hint}); verify the result here. ${how}`
+  }
+  if (cfg.locale === 'ja')
+    return `[dispatch-gate] out モード：このターンでメインスレッドは約 ${n} 文字を読み込みましたが、まだ委任していません。これ以上読むと一括読み取りになります。残りの読み取り、抽出、分類、照合はバックグラウンドのサブエージェントか外部 CLI（${hint}）に任せ、メインスレッドは結果だけを検証してください。${how}`
   return cfg.locale === 'zh-TW'
-    ? `[dispatch-gate] out モード：このターンでメインスレッドは約 ${n} 文字を読み込みましたが、まだ委任していません。これ以上読むと一括読み取りになります。残りの読み取り、抽出、分類、照合はバックグラウンドのサブエージェントか外部 CLI（${hint}）に任せ、メインスレッドは結果だけを検証してください。${how}`
+    ? `[dispatch-gate] out 模式：這一回合主線已讀進約 ${n} 字元、還沒外派，再讀下去就是整批讀取。把剩下的讀取、抽取、分類、核對交給背景子代理或外部 CLI（${hint}），主線只驗收結果。${how}`
     : `[dispatch-gate] out is on: this turn the main thread has read about ${n} characters without delegating; reading on is batch work. Hand the remaining reading, extraction, classification or checking to a background subagent or an external CLI (${hint}) and verify the result here. ${how}`
 }
 

@@ -171,7 +171,7 @@ test('A: locale detection order: WORK_MODE_LOCALE, then settings, then LC_ALL/LA
   await start($)
   expect((await switched($, 'wrap')).context).toContain(convergeText(DEFAULT_CONFIG_EN))
   expect(localeFrom('English')).toBe('en')
-  expect(localeFrom('日本語')).toBe(undefined)
+  expect(localeFrom('日本語')).toBe('ja')
 })
 
 test('A: with no language setting, a zh LANG picks Traditional Chinese', async ($, on) => {

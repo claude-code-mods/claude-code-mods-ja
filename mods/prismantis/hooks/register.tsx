@@ -722,14 +722,14 @@ const copySample = (el: ReturnType<EngineInterface['ui']['resolve']>, style: Sty
 
 const clockSample = (el: ReturnType<EngineInterface['ui']['resolve']>, style: Style, value: string, id: string, columns: number): RenderElement[] => {
   const time = value === '24h' || value === '12h' ? clockText(SETUP_SENT, SETUP_SENT, value) : undefined
-  const prompt = style.promptStyle === 'off' ? <el.Text dimColor>{`> ${time === undefined ? '' : `[${time}] `}fix the failing test`}</el.Text> : renderUserPrompt(el, style, '失敗したテストを修正', columns, time)
+  const prompt = style.promptStyle === 'off' ? <el.Text dimColor>{`> ${time === undefined ? '' : `[${time}] `}失敗したテストを修正`}</el.Text> : renderUserPrompt(el, style, '失敗したテストを修正', columns, time)
   return [<el.Box key={`${id}p`}>{prompt}</el.Box>, <el.Box key={`${id}d`}>{renderTurnDuration(el, style, '所要時間', 115000, time)}</el.Box>]
 }
 
 const promptSample = (el: ReturnType<EngineInterface['ui']['resolve']>, style: Style, value: string, id: string, columns: number): RenderElement[] =>
-  [value === 'off' ? <el.Text key={id} dimColor>{'> fix the failing test'}</el.Text> : <el.Box key={id}>{renderUserPrompt(el, style, '失敗したテストを修正', columns)}</el.Box>]
+  [value === 'off' ? <el.Text key={id} dimColor>{'> 失敗したテストを修正'}</el.Text> : <el.Box key={id}>{renderUserPrompt(el, style, '失敗したテストを修正', columns)}</el.Box>]
 
-const SETUP_REPLY = 'The failing test passes now: `retries` was read before the config loaded.'
+const SETUP_REPLY = '失敗しているテストは現在パスしています。`retries` は設定が読み込まれる前に読み取られていました。'
 
 const replySample = ($: EngineInterface, el: ReturnType<EngineInterface['ui']['resolve']>, style: Style, id: string, columns: number): RenderElement[] => {
   const framed = replyStyleFor(style, SETUP_REPLY)
