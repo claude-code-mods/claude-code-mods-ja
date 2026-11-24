@@ -755,7 +755,7 @@ export const register = (on, options) => {
         ((await $.settings.read())?.env || {})['TYPESAFE_API_KEY'];
 
       if (!apiKey) {
-        $.ui.log('[jev-auto-compact] no TYPESAFE_API_KEY, falling back to built-in');
+        $.ui.log('[jev-auto-compact] TYPESAFE_API_KEY がありません。組み込みモードに切り替えます');
         await appendEvidence($, { ...base, engine: 'builtin', note: 'no api key' });
         return next(event);
       }
