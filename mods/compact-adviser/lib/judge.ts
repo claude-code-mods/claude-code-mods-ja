@@ -149,7 +149,7 @@ export function judgeErrorMessage(kind: JudgeErrorKind): string {
 export const JUDGE_UNAVAILABLE_MESSAGE =
   "compact adviser は TypeSafe（Jev）に問い合わせましたが，有効な判定が得られませんでした。" +
   "誤った回答で圧縮やヒントが発動しないよう，コンテキストは意図的に変更されていません。" +
-  "This can be temporary; the adviser will try again later. No action needed unless it keeps repeating.";
+  "一時的な問題かもしれません；アドバイザーは後で再試行します。繰り返さない限り対処は不要です。";
 
 export const JUDGE_DISABLED_NETWORK_MESSAGE =
   "compact adviser は TypeSafe（Jev）に問い合わせられません：Claude Code が必須以外のネットワーク通信を無効にしています。" +

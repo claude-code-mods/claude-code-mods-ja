@@ -348,7 +348,7 @@ async function submitBeforeCompact($: EngineInterface, text: string): Promise<vo
   if (trimmed.startsWith("/")) {
     const slash = slashInvocation(trimmed);
     if (!slash) {
-      throw new Error("before-compact prompt starts with / but is not a slash command");
+      throw new Error("圧縮前ヒントが / で始まっていますが、スラッシュコマンドではありません");
     }
     await $.command.run(slash);
     return;
@@ -1235,7 +1235,7 @@ export const register: Register = (on, options) => {
     }
 
     const modeValue = `${MODE_LABELS[config.mode]}${
-      config.mode === "auto" && !config.autoAcknowledged ? ", not confirmed" : ""
+      config.mode === "auto" && !config.autoAcknowledged ? "（未確認）" : ""
     }`;
     const setting = (label: string, value: string) => `${label.padEnd(24)}${value}`;
     const open = (target: Exclude<PaneView, "menu">, row: string, focus: string) => () => {

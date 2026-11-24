@@ -45,27 +45,27 @@ const EFFORT_SHAPE = /^[a-z]+$/
  */
 export function parseConfig(text: string | undefined, rowOn: boolean): HeadsUpConfig {
   if (text === undefined) return rowOn ? { enabled: true, seat: DEFAULT_SEAT, every: DEFAULT_EVERY } : { enabled: false }
-  const off = (why: string): HeadsUpConfig => ({ enabled: false, problem: `${CONFIG_FILE}${why}; heads-up is off` })
+  const off = (why: string): HeadsUpConfig => ({ enabled: false, problem: `${CONFIG_FILE}${why}。ヘッドアップ副チェックはオフです` })
   let raw: unknown
   try {
     raw = JSON.parse(text)
   } catch {
-    return off(' is not valid JSON')
+    return off(' は有効な JSON ではありません')
   }
-  if (!isRecord(raw)) return off(' must hold a JSON object')
-  if (raw.enabled !== undefined && typeof raw.enabled !== 'boolean') return off(': enabled must be true or false')
-  if (raw.seats !== undefined) return off(': seats is not a key; one seat goes under "seat"')
-  if (raw.models !== undefined) return off(': models is not a key; the seat\'s pick goes under "model"')
+  if (!isRecord(raw)) return off(' には JSON オブジェクトを指定してください')
+  if (raw.enabled !== undefined && typeof raw.enabled !== 'boolean') return off('：enabled は true または false にしてください')
+  if (raw.seats !== undefined) return off('：seats は設定項目ではありません。シートは 1 つだけ seat に指定してください')
+  if (raw.models !== undefined) return off('：models は設定項目ではありません。シートのモデル指定は model に書いてください')
   const seat = raw.seat ?? DEFAULT_SEAT
-  if (typeof seat !== 'string' || !SEAT_SHAPE.test(seat)) return off(`: seat ${JSON.stringify(seat)} is not a plain lowercase word`)
+  if (typeof seat !== 'string' || !SEAT_SHAPE.test(seat)) return off(`：シート ${JSON.stringify(seat)} は小文字の単語ではありません`)
   const every = raw.every ?? DEFAULT_EVERY
-  if (typeof every !== 'number' || !Number.isInteger(every) || every < 2) return off(`: every must be a whole number of at least 2, got ${JSON.stringify(every)}`)
+  if (typeof every !== 'number' || !Number.isInteger(every) || every < 2) return off(`：every は 2 以上の整数にしてください。取得 ${JSON.stringify(every)}`)
   let model: SeatPick | undefined
   if (raw.model !== undefined) {
     const pick = raw.model
-    if (!isRecord(pick)) return off(': model must be an object of {model, effort}')
-    if (pick.model !== undefined && typeof pick.model !== 'string') return off(`: model for ${seat} must be a string, got ${JSON.stringify(pick.model)}`)
-    if (pick.effort !== undefined && (typeof pick.effort !== 'string' || !EFFORT_SHAPE.test(pick.effort))) return off(`: effort for ${seat} must be lowercase letters, got ${JSON.stringify(pick.effort)}`)
+    if (!isRecord(pick)) return off('：model は {model, effort} のオブジェクトにしてください')
+    if (pick.model !== undefined && typeof pick.model !== 'string') return off(`：${seat} の model は文字列にしてください。取得 ${JSON.stringify(pick.model)}`)
+    if (pick.effort !== undefined && (typeof pick.effort !== 'string' || !EFFORT_SHAPE.test(pick.effort))) return off(`：${seat} の effort は小文字にしてください。取得 ${JSON.stringify(pick.effort)}`)
     if (pick.model !== undefined || pick.effort !== undefined) model = { ...(pick.model === undefined ? {} : { model: pick.model }), ...(pick.effort === undefined ? {} : { effort: pick.effort }) }
   }
   if (raw.enabled === false || (raw.enabled === undefined && !rowOn)) return { enabled: false }
@@ -208,10 +208,10 @@ export type HeadsUpCommand =
 export function headsUpCommand(args: string): HeadsUpCommand {
   const [word = '', ...rest] = args.trim().toLowerCase().split(/[\s,]+/).filter(part => part !== '')
   if (word === '' || word === 'status') return { action: 'status' }
-  if (word === 'off') return rest.length === 0 ? { action: 'off' } : { action: 'unknown', why: 'off takes no words' }
-  if (word === 'setup') return rest.length === 0 ? { action: 'setup' } : { action: 'unknown', why: 'setup takes no words' }
-  if (word !== 'on') return { action: 'unknown', why: `unknown word ${JSON.stringify(word)}` }
-  if (rest.length > 1) return { action: 'unknown', why: `on takes one seat, got ${rest.length}: ${rest.join(', ')}` }
+  if (word === 'off') return rest.length === 0 ? { action: 'off' } : { action: 'unknown', why: 'off に引数は指定できません' }
+  if (word === 'setup') return rest.length === 0 ? { action: 'setup' } : { action: 'unknown', why: 'setup に引数は指定できません' }
+  if (word !== 'on') return { action: 'unknown', why: `認識できない語 ${JSON.stringify(word)}` }
+  if (rest.length > 1) return { action: 'unknown', why: `on に指定できるシートは 1 つだけです。取得 ${rest.length} 件：${rest.join(', ')}` }
   const [seat] = rest
   if (seat === undefined) return { action: 'on' }
   if (!SEAT_SHAPE.test(seat)) return { action: 'unknown', why: `シート ${JSON.stringify(seat)} は小文字の単語ではありません` }
@@ -329,15 +329,15 @@ export function seatOptions(available: readonly string[]): string[] {
 export function seatFromAnswer(answer: string): { seat: string } | { why: string } {
   const words = answer.toLowerCase().split(/[\s,]+/).filter(part => part !== '')
   const [seat] = words
-  if (seat === undefined) return { why: 'no seat named' }
-  if (words.length > 1) return { why: `one seat, got ${words.length}: ${words.join(', ')}` }
+  if (seat === undefined) return { why: 'シートが指定されていません' }
+  if (words.length > 1) return { why: `シートは 1 つだけ指定してください。取得 ${words.length} 件：${words.join(', ')}` }
   return SEAT_SHAPE.test(seat) ? { seat } : { why: `シート ${JSON.stringify(seat)} は小文字の単語ではありません` }
 }
 
 export function everyFromAnswer(answer: string): { every: number } | { why: string } {
   const digits = /^(?:every\s+)?(\d+)(?:\s+requests?)?$/i.exec(answer.trim())
   const every = digits === null ? NaN : Number(digits[1])
-  return Number.isInteger(every) && every >= 2 ? { every } : { why: `every must be a whole number of at least 2, got ${JSON.stringify(answer.trim())}` }
+  return Number.isInteger(every) && every >= 2 ? { every } : { why: `every は 2 以上の整数にしてください。取得 ${JSON.stringify(answer.trim())}` }
 }
 
 export const MODEL_QUESTION = (seat: string) => `${seat} どのモデルを使用しますか？`
@@ -579,7 +579,7 @@ export type RunResult =
 export function parseRunResult(checkId: string, text: string): RunResult {
   const unread: RunResult = {
     kind: 'failed', payloadBytes: 0,
-    seats: [{ seat: 'runner', outcome: 'error', elapsedMs: 0, detail: `result.json does not read as a run result: ${JSON.stringify(cut(text, UNREAD_CHARS))}` }],
+    seats: [{ seat: 'runner', outcome: 'error', elapsedMs: 0, detail: `result.json を実行結果として読み取れません：${JSON.stringify(cut(text, UNREAD_CHARS))}` }],
   }
   let raw: unknown
   try {
@@ -626,7 +626,7 @@ const plainLinks = (text: string) => text.replace(/\[([^\]]+)\]\((https?:\/\/[^)
 // A seat's tag, case-folded; anything but the builtin's two reads as Heads up,
 // the tag for this session's own work, which is what the check is asked for.
 function tagOf(raw: unknown): Tag {
-  return typeof raw === 'string' && raw.trim().toLowerCase() === 'you should know' ? 'You should know' : 'Heads up'
+  return typeof raw === 'string' && raw.trim().toLowerCase() === 'you should know' ? '知っておくべきこと' : 'Heads up'
 }
 
 // How much of an unreadable result.json its failure quotes.
