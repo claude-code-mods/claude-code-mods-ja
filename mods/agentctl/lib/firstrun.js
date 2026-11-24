@@ -99,24 +99,24 @@ export function draftingRequest({ goal, worktree, base, root, lang }) {
 
 const COPY = {
   en: {
-    filled: (bound) => `A request for Claude to draft the scope is in your prompt box — press Enter to send it. ${bound ? 'The current task stays in force until you accept the new scope.' : 'Nothing is bound yet.'}`,
-    mixed: (bound) => `The request was added after text you typed meanwhile; both are in your prompt box. Edit it before you press Enter. ${bound ? 'The current task stays in force until you accept the new scope.' : 'Nothing is bound yet.'}`,
-    copy: (bound) => `Send this to Claude to have it draft the scope (${bound ? 'the current task stays in force until you accept the new one' : 'nothing is bound yet'}):`,
-    typo: (v) => `Did you mean "/agentctl ${v}"? To start a task, describe it: /agentctl <what you are doing>`,
-    extra: (v) => `"/agentctl ${v}" takes no such arguments. ${v === 'proposal' ? 'It shows a waiting draft; to make one, describe the work: /agentctl <what you are doing>' : 'See /agentctl help.'}`,
-    acceptLine: (d) => `Accept this scope: /agentctl accept ${d} — it binds the scope only; it does not start any work.`,
-    accepted: 'Scope bound. Next: ask Claude to start the work.',
-    runChecks: (checks) => `To leave evidence, run each check as written: ${checks.join(' · ')} — a pipe, redirect or wrapper keeps a run from counting, and added arguments may check less than declared.`,
-    wholeScope: '/agentctl policy shows the whole scope.',
-    noTaskLast: 'No task is bound, so there is no hand-over yet. Start one: /agentctl <what you are doing>',
-    noHandover: 'This task has no saved hand-over yet: /agentctl handoff saves one.',
+    filled: (bound) => `Claude に範囲の草案を作成するリクエストを入力欄に入れました。Enter で送信してください。${bound ? '新しい範囲を承認するまでは、現在のタスクが有効なままです。' : 'まだ範囲はバインドされていません。'}`,
+    mixed: (bound) => `リクエストはあなたが入力したテキストの後ろに追加され、両方が入力欄にあります。送信前に編集してください。${bound ? '新しい範囲を承認するまでは、現在のタスクが有効なままです。' : 'まだ範囲はバインドされていません。'}`,
+    copy: (bound) => `このテキストを Claude に送ると範囲の草案を作成します（${bound ? '新しい範囲を承認するまでは現在のタスクが有効なままです' : 'まだ範囲はバインドされていません'}）：`,
+    typo: (v) => `「/agentctl ${v}」の間違いでしょうか？タスクを始めるには内容を説明してください：/agentctl <あなたが行っている作業>`,
+    extra: (v) => `「/agentctl ${v}」にはこのような引数はありません。${v === 'proposal' ? 'これは保留中の草案を表示するだけです。作成するには作業を説明してください：/agentctl <あなたが行っている作業>' : '/agentctl help を参照してください。'}`,
+    acceptLine: (d) => `この範囲を承認：/agentctl accept ${d} ——範囲をバインドするだけで、作業は開始されません。`,
+    accepted: '範囲をバインドしました。次は Claude に作業の開始を依頼してください。',
+    runChecks: (checks) => `証拠を残すには、各チェックを記載どおりに実行してください：${checks.join(' · ')} ——パイプ、リダイレクト、ラッパーを使うと実行として数えられません。引数を追加すると宣言した範囲より少ないチェックになることがあります。`,
+    wholeScope: '範囲の全体は /agentctl policy で確認できます。',
+    noTaskLast: 'タスクがバインドされていないため、引き継ぎはまだありません。開始するには：/agentctl <あなたが行っている作業>',
+    noHandover: 'このタスクには保存された引き継ぎがありません。/agentctl handoff で保存できます。',
     next: {
-      none: 'Next: describe the work — /agentctl <what you are doing>. Built-in refusals (direct git push, production writes) apply even now.',
-      proposal: (d) => `Next: review /agentctl proposal, then /agentctl accept ${d}`,
-      task: 'Next: ask Claude to work; /agentctl handoff saves where things stand.',
-      taskThenChecks: (checks) => `Next: ask Claude to work, then to run the checks exactly as written: ${checks.join(' · ')}. Once they are current: /agentctl handoff`,
-      rerun: (checks) => `Next: not current on this tree — ask Claude to run exactly as written: ${checks.join(' · ')}. Then: /agentctl handoff`,
-      checksCurrent: 'Next: every declared check is current on this tree — /agentctl handoff saves the hand-over.',
+      none: '次のステップ：作業を説明してください——/agentctl <あなたが行っている作業>。組み込みの拒否（直接 git push、production への書き込み）は今でも適用されます。',
+      proposal: (d) => `次のステップ：/agentctl proposal を確認し、/agentctl accept ${d} を実行してください`,
+      task: '次のステップ：Claude に作業を依頼してください。/agentctl handoff で現状を保存できます。',
+      taskThenChecks: (checks) => `次のステップ：Claude に作業を依頼し、完了後にチェックを記載どおりに実行してください：${checks.join(' · ')}。すべて最新になったら：/agentctl handoff`,
+      rerun: (checks) => `次のステップ：現在のツリーではチェックが最新ではありません——Claude に記載どおりに実行させてください：${checks.join(' · ')}。その後：/agentctl handoff`,
+      checksCurrent: '次のステップ：宣言されたチェックはすべて現在のツリーで最新です——/agentctl handoff で引き継ぎを保存できます。',
     },
   },
   zh: {
@@ -171,7 +171,7 @@ export function copy(lang) {
 // shortened. An argv no quoting can carry is shown as its JSON array instead, which says to run it as
 // those words.
 export function checkLine(argv) {
-  return renderArgv(argv) ?? `${JSON.stringify(argv)} (as these words)`
+  return renderArgv(argv) ?? `${JSON.stringify(argv)}（これらの語として実行）`
 }
 
 // The task's declared checks, as the command lines Claude must run as written.

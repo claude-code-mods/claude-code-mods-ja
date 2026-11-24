@@ -42,13 +42,13 @@ export function parseJevResponse(
   text: string,
 ): JevResponse {
   if (!ok) {
-    throw new Error(`Jev request failed (${status}): ${text.slice(0, 200)}`);
+    throw new Error(`Jev リクエストに失敗しました（${status}）：${text.slice(0, 200)}`);
   }
   let parsed: unknown;
   try {
     parsed = JSON.parse(text);
   } catch {
-    throw new Error('Jev returned malformed JSON');
+    throw new Error('Jev が不正な JSON を返しました');
   }
   if (
     parsed === null ||
@@ -57,7 +57,7 @@ export function parseJevResponse(
     parsed.answers === null ||
     typeof parsed.answers !== 'object'
   ) {
-    throw new Error('Jev response is missing answers');
+    throw new Error('Jev の応答に answers がありません');
   }
   return parsed as JevResponse;
 }
@@ -74,7 +74,7 @@ export function noulAnswer(
     typeof answer.noul !== 'number' ||
     !Number.isFinite(answer.noul)
   ) {
-    throw new Error(`Invalid Jev answer for ${name}`);
+    throw new Error(`${name} の Jev 応答が無効です`);
   }
   return answer.noul;
 }

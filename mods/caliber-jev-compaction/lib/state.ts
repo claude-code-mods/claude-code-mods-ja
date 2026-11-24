@@ -44,7 +44,7 @@ export function truncate(text: string, limit: number): string {
 function abridge(text: string, head: number, tail: number): string {
   if (text.length <= head + tail + 40) return text;
   const omitted = text.length - head - tail;
-  return `${text.slice(0, head)}\n[… ${omitted} chars omitted …]\n${text.slice(-tail)}`;
+  return `${text.slice(0, head)}\n[… ${omitted} 文字を省略 …]\n${text.slice(-tail)}`;
 }
 
 export function isPinned(
@@ -97,13 +97,13 @@ function inputText(input: Record<string, unknown>, limit: number): string {
   try {
     json = JSON.stringify(input);
   } catch {
-    json = '[unserializable input]';
+    json = '[シリアライズできない入力]';
   }
   return truncate(json, limit);
 }
 
 function resultNote(call: ToolCall): string {
-  return `${call.isError ? 'error' : 'ok'}, ${call.resultChars} chars (omitted)`;
+  return `${call.isError ? 'エラー' : '正常'}、${call.resultChars} 文字（省略）`;
 }
 
 /** One call as a single line, for when the structured form is too costly. */
@@ -115,7 +115,7 @@ function compactCall(call: ToolCall): string {
     })
     .join(' ');
   return `${call.id} ${call.tool} ${truncate(input, INPUT_CHARS[2])} → ${
-    call.isError ? 'error' : 'ok'
+    call.isError ? 'エラー' : '正常'
   } ${call.resultChars}ch`;
 }
 
@@ -230,7 +230,7 @@ export function fitState(
   };
 
   rebuild(INPUT_CHARS[0]);
-  if (fits()) return fitted(history, tokens, 'full');
+  if (fits()) return fitted(history, tokens, '全体');
 
   for (const limit of INPUT_CHARS.slice(1)) {
     rebuild(limit);
@@ -251,7 +251,7 @@ export function fitState(
     shrink(index, (e) => {
       e.text = abridge(e.text, TEXT_HEAD, TEXT_TAIL);
     });
-    if (fits()) return fitted(history, tokens, 'texts abridged');
+    if (fits()) return fitted(history, tokens, 'テキストを要約');
   }
 
   for (const index of order) {
@@ -259,9 +259,9 @@ export function fitState(
     if (pinned(entry) || entry.text.length === 0) continue;
     const original = messages[entry.i]?.text.length ?? entry.text.length;
     shrink(index, (e) => {
-      e.text = `[… ${original} chars omitted …]`;
+      e.text = `[… ${original} 文字を省略 …]`;
     });
-    if (fits()) return fitted(history, tokens, 'old messages collapsed');
+    if (fits()) return fitted(history, tokens, '古いメッセージを圧縮');
   }
 
   const byMessage = callsByMessage(calls);
@@ -272,7 +272,7 @@ export function fitState(
     shrink(index, (e) => {
       e.tool_calls = own.map(compactCall);
     });
-    if (fits()) return fitted(history, tokens, 'old calls compacted');
+    if (fits()) return fitted(history, tokens, '古い呼び出しを圧縮');
   }
 
   const left = new Set<number>();
@@ -285,7 +285,7 @@ export function fitState(
       return fitted(
         history.filter((_, i) => !left.has(i)),
         tokens,
-        'old messages left out',
+        '古いメッセージを除外',
       );
     }
   }
@@ -296,9 +296,9 @@ export function fitState(
   );
   perEntry = history.map(entryTokens);
   tokens = baseTokens + perEntry.reduce((sum, n) => sum + n, 0);
-  if (fits()) return fitted(history, tokens, 'old calls merged');
+  if (fits()) return fitted(history, tokens, '古い呼び出しを統合');
 
   throw new Error(
-    `history too large for Jev (~${tokens} tokens after truncation, limit ${options.maxStateTokens})`,
+    `履歴が Jev には大きすぎます（切り詰め後約 ${tokens} トークン、上限 ${options.maxStateTokens}）`,
   );
 }

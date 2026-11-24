@@ -88,7 +88,7 @@ export function batchCalls(
     }
     if (current.length === 0 && tokens > budget) {
       throw new Error(
-        `state leaves no room for questions (~${stateTokens} of ${options.maxRequestTokens} tokens)`,
+        `状態が質問用の余裕を残しません（約 ${stateTokens} / ${options.maxRequestTokens} トークン）`,
       );
     }
     current.push(call);
@@ -136,8 +136,8 @@ function truncatedResultText(text: string, isError: boolean, headChars: number):
   if (text.length <= headChars + 120) return text;
   const head = headChars > 0 ? `${text.slice(0, headChars)}\n` : '';
   return `${head}[caliber-jev-compaction truncated ${text.length - headChars} chars of this tool result${
-    isError ? ' (error)' : ''
-  }; re-run the tool if needed]`;
+    isError ? '（エラー）' : ''
+  }。必要ならツールを再実行してください]`;
 }
 
 /**

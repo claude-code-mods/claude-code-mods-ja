@@ -248,9 +248,9 @@ function saveText(s: State, now: number): string {
   if (!holds(s, now)) return `${KEEP_LABEL} ${cold == null ? '費用は発生しません' : `${fmtUsd(cold)} 節約`}。${SEND_LABEL} を選ぶと保温はオフのままです（/keepwarm で有効化）。`
   if (pingFloor > 0) return `${KEEP_LABEL} ${cold == null ? '費用は発生しません' : `${fmtUsd(cold)} 節約`}。${SEND_LABEL} を選ぶと保温が最大 ${fmtDuration(holdMs(s, now))} 有効になります。` +
     (warm == null ? '' : ` キャッシュ読み出しのみなら 1 回あたり約 ${fmtUsd(warm)}。`) + (cold == null ? '' : ' アイドル費用の上限に達すると ping が早期停止し、キャッシュが失効する場合があります。')
-  if (cold == null || warm == null) return `${KEEP_LABEL} pays nothing; after ${SEND_LABEL}, keepwarm holds the cache for ${fmtDuration(holdMs(s, now))}.`
-  return `${KEEP_LABEL} saves ${fmtUsd(cold)}; after ${SEND_LABEL}, keepwarm holds the cache for ${fmtDuration(holdMs(s, now))} ` +
-    `at about ${fmtUsd(warm)} a ping, so the next break does not cost ${fmtUsd(cold)} again.`
+  if (cold == null || warm == null) return `${KEEP_LABEL} は費用なし。${SEND_LABEL} を選ぶと保温は ${fmtDuration(holdMs(s, now))} キャッシュを保持します。`
+  return `${KEEP_LABEL} で ${fmtUsd(cold)} を節約できます。${SEND_LABEL} を選ぶと保温は ${fmtDuration(holdMs(s, now))} キャッシュを保持し ` +
+    `1 回の ping は約 ${fmtUsd(warm)} なので、次の休憩で再び ${fmtUsd(cold)} を支払わずに済みます。`
 }
 
 function sendLabel(s: State): string {
@@ -587,7 +587,7 @@ async function ping($: EngineInterface, s: State) {
   if (gen !== s.gen || s.lastRequestAt !== sentAt) return s.pending ? undefined : arm($, s)
   if ('err' in sent) return stop($, s, `ping に失敗しました：${sent.err instanceof Error ? sent.err.message : String(sent.err)}`)
   const reply = sent.reply
-  if (reply === null) return stop($, s, 'the engine did not send the ping, either the snapshot was cold or the API call failed')
+  if (reply === null) return stop($, s, 'エンジンが ping を送信しませんでした。スナップショットが失効していたか、API 呼び出しが失敗しました')
   if (reply.isAnswered === false) {
     // A restarted process has no conversation to fork until its first turn; the window waits for one instead of ending.
     if (reply.reason === 'nothing-to-fork') {
@@ -619,7 +619,7 @@ async function ping($: EngineInterface, s: State) {
   const warm = u.cache_read_input_tokens > 0 && u.cache_creation_input_tokens < WARM_WRITE_SHARE * u.cache_read_input_tokens
   const usd = price ? pingUsd(u, price) : null
   s.last = { at: now, read: u.cache_read_input_tokens, write: u.cache_creation_input_tokens, input: u.input_tokens, output: u.output_tokens, usd, warm }
-  if (!warm) return stop($, s, `the ping read ${fmtTok(u.cache_read_input_tokens)} and wrote ${fmtTok(u.cache_creation_input_tokens)} tokens (${fmtUsd(usd)}), the cache was already gone`)
+  if (!warm) return stop($, s, `ping は ${fmtTok(u.cache_read_input_tokens)} を読み出し ${fmtTok(u.cache_creation_input_tokens)} トークンを書き込みました（${fmtUsd(usd)}）。キャッシュはすでに失効していました`)
   s.skipSaid = false
   s.lastRequestAt = now
   await arm($, s)

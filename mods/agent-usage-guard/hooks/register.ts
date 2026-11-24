@@ -146,7 +146,7 @@ export function register(on: On): void {
         immediate: true,
       })
     } catch (error) {
-      $.ui.log(`agent-usage-guard could not add /${COMMAND}: ${String(error)}`, { to: 'debug' })
+      $.ui.log(`agent-usage-guard は /${COMMAND} を登録できませんでした：${String(error)}`, { to: 'debug' })
     }
     return next(e)
   }).catch(($, e, next) => failOpen($, 'session.start', next.error, () => next(e)))
@@ -235,7 +235,7 @@ export function register(on: On): void {
         if (now - lastPublished >= HEARTBEAT_MS) await publish($, now)
       }
     } catch (error) {
-      $.ui.log(`agent-usage-guard: could not record a response (${String(error)})`, { to: 'debug' })
+      $.ui.log(`agent-usage-guard：応答を記録できませんでした（${String(error)}）`, { to: 'debug' })
     }
     return result
   })
@@ -387,7 +387,7 @@ export function register(on: On): void {
 
     const print = fingerprint(canonical(argumentsOf(e)))
     if (!resumed) {
-      const label = loop === MAIN ? 'this conversation' : agentLabel(loop)
+      const label = loop === MAIN ? 'この会話' : agentLabel(loop)
       const request = { loop, tool: e.tool, fingerprint: print, label }
       if (isScheduling(e.tool)) await loadPeers($, now)
       let verdict = scheduleGate(session, peers, config, now, request)
@@ -434,7 +434,7 @@ export function register(on: On): void {
     if (command.action === 'allow') {
       // Only the person lifts limits: another plugin's $.command.run reaches this hook too.
       if (!fromPerson(e.origin.kind)) {
-        const from = e.origin.kind === 'plugin' ? `the ${e.origin.name} plugin` : `a ${e.origin.kind} prompt`
+        const from = e.origin.kind === 'plugin' ? `${e.origin.name} プラグイン` : `${e.origin.kind} プロンプト`
         $.ui.log(`${from} からの /${COMMAND} ${e.args.trim()} 呼び出しを拒否しました。`)
         return { text: `ガード制限を解除できるのはあなただけです。このリクエストは ${from} からなので何も変更しませんでした。解除するには /${COMMAND} ${e.args.trim()} を入力してください。` }
       }
@@ -483,7 +483,7 @@ async function loadConfig($: Api): Promise<void> {
   })
   config = parsed.config
   problems = parsed.problems
-  for (const problem of problems) $.ui.log(`agent-usage-guard: ${problem}`, { to: 'debug' })
+  for (const problem of problems) $.ui.log(`agent-usage-guard：${problem}`, { to: 'debug' })
 }
 
 /** Starts fresh state for the session id Claude Code reports now. */
@@ -525,7 +525,7 @@ async function housekeeping($: Api): Promise<void> {
       if (typeof at !== 'number' || now - at > LAST_ACTIVE_KEEP_MS) await $.store.delete(key)
     }
   } catch (error) {
-    $.ui.log(`agent-usage-guard housekeeping failed: ${String(error)}`, { to: 'debug' })
+    $.ui.log(`agent-usage-guard の整理に失敗しました：${String(error)}`, { to: 'debug' })
   }
 }
 
@@ -566,7 +566,7 @@ async function publish($: Api, now: number): Promise<void> {
   try {
     await save($, PEER_PREFIX + session.id, peerRecord(session, now, config.windowMs))
   } catch (error) {
-    $.ui.log(`agent-usage-guard could not publish its counts: ${String(error)}`, { to: 'debug' })
+    $.ui.log(`agent-usage-guard は使用量を公開できませんでした：${String(error)}`, { to: 'debug' })
   }
   await keepLastActive($)
   await refreshStatus($)
@@ -585,7 +585,7 @@ async function keepLastActive($: Api): Promise<void> {
     await save($, LAST_ACTIVE_PREFIX + session.id, last)
     lastActiveKept = last
   } catch (error) {
-    $.ui.log(`agent-usage-guard could not store when the session was last active: ${String(error)}`, { to: 'debug' })
+    $.ui.log(`agent-usage-guard はセッションの最終アクティブ時刻を保存できませんでした：${String(error)}`, { to: 'debug' })
   }
 }
 
@@ -614,7 +614,7 @@ async function loadPeers($: Api, now: number): Promise<void> {
     const records = await Promise.all(keys.map((k) => $.store.get(k)))
     peers = livePeers(records, now, config.peerTtlMs)
   } catch (error) {
-    $.ui.log(`agent-usage-guard could not read other sessions: ${String(error)}`, { to: 'debug' })
+    $.ui.log(`agent-usage-guard は他セッションを読み取れませんでした：${String(error)}`, { to: 'debug' })
   }
 }
 
@@ -661,7 +661,7 @@ async function refreshStatus($: Api): Promise<void> {
     lastStatus = text
     $.ui.status(text)
   } catch (error) {
-    $.ui.log(`agent-usage-guard could not update its status line: ${String(error)}`, { to: 'debug' })
+    $.ui.log(`agent-usage-guard はステータス行を更新できませんでした：${String(error)}`, { to: 'debug' })
   }
 }
 
@@ -715,7 +715,7 @@ async function askUser($: Api, ask: Ask, ctx?: string): Promise<Asked> {
       session.canAsk = false
       unavailable = true
     } else if (!/\$\.ui\.ask: no answer\b/.test(text)) {
-      $.ui.log(`agent-usage-guard: the question ended without an answer (${text}), so it counts as dismissed.`, { to: 'debug' })
+      $.ui.log(`agent-usage-guard：質問が回答なしで終了しました（${text}）。キャンセルとして扱います。`, { to: 'debug' })
     }
   }
   return { answer, unavailable, at: await $.clock.now() }
@@ -755,11 +755,11 @@ async function oneAtATime<T>($: Api, key: string, held: () => T, run: () => Prom
 async function simulation($: Api, rule: SimulatedRule, now: number): Promise<string> {
   const verdict = simulate(rule, config, now, canAsk())
   const opening = `シミュレーションルール：${rule}`
-  const aside = `${opening}：操作はブロックしていません，以下は現在の作業には適用されません。`
+  const aside = `${opening}：操作はブロックしていません。以下は現在の作業には適用されません。`
   if (verdict.kind === 'ask') {
     if (canAsk()) {
       try {
-        const answer = await $.ui.ask(`シミュレーション場面，何も変更しません：${verdict.question}`, { options: verdict.options, header: HEADER })
+        const answer = await $.ui.ask(`シミュレーション場面、何も変更しません：${verdict.question}`, { options: verdict.options, header: HEADER })
         return `${opening}：あなたは“${answer}”を選択しました。操作のブロック、変更、使用量の消費はいずれもありません。`
       } catch {
         // Dismissed, or the dialog could not open: show the question instead.
@@ -801,7 +801,7 @@ async function compactThenSend($: Api, text: string, resend: boolean): Promise<v
   const failed = await compact($)
   if (failed !== undefined) {
     if (resend) await putBack($, text)
-    $.ui.log(`圧縮に失敗しました（${failed}），プロンプトは入力欄に戻しました。`)
+    $.ui.log(`圧縮に失敗しました（${failed}）。プロンプトは入力欄に戻しました。`)
     return
   }
   if (!resend) return
@@ -810,7 +810,7 @@ async function compactThenSend($: Api, text: string, resend: boolean): Promise<v
     await $.prompt.submit({ text, asUser: true })
   } catch (error) {
     await putBack($, text)
-    $.ui.log(`プロンプト送信に失敗しました（${String(error)}），入力欄に戻しました。`)
+    $.ui.log(`プロンプト送信に失敗しました（${String(error)}）。入力欄に戻しました。`)
   }
 }
 
@@ -874,7 +874,7 @@ function resumeTarget(to: unknown, message: unknown): string | undefined {
  */
 function agentLabel(id: string): string {
   const name = session.agents[id]?.name
-  return name !== undefined && PLAIN_NAME.test(name) ? `agent "${name}"` : `agent ${id.slice(0, 8)}`
+  return name !== undefined && PLAIN_NAME.test(name) ? `エージェント「${name}」` : `エージェント ${id.slice(0, 8)}`
 }
 
 /** The tool's own arguments, for its fingerprint. */
@@ -939,7 +939,7 @@ async function appendRow($: Api, id: string, now: number, row: Omit<JournalRow, 
     if (journalCache.rows.length > MAX_ROWS_PER_DAY) journalCache.rows.splice(0, journalCache.rows.length - MAX_ROWS_PER_DAY)
     await save($, key, journalCache.rows)
   } catch (error) {
-    $.ui.log(`agent-usage-guard could not write its journal: ${String(error)}`, { to: 'debug' })
+    $.ui.log(`agent-usage-guard はログを書き込めませんでした：${String(error)}`, { to: 'debug' })
   }
 }
 
@@ -966,6 +966,6 @@ async function report($: Api, now: number, days: number): Promise<string> {
 
 /** A hook that throws or overruns lets the event go ahead: a broken guard must not break the session. */
 function failOpen<T>($: Api, event: string, error: { kind?: string; message?: string } | undefined, proceed: () => T): T {
-  $.ui.log(`agent-usage-guard: the ${event} hook failed, so the event went ahead (${error?.kind ?? 'error'}: ${error?.message ?? 'unknown'})`, { to: 'debug' })
+  $.ui.log(`agent-usage-guard：${event} フックが失敗したためイベントを継続しました（${error?.kind ?? 'エラー'}：${error?.message ?? '不明'}）`, { to: 'debug' })
   return proceed()
 }

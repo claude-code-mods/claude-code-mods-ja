@@ -237,7 +237,7 @@ export function summarize(result: CompactResult): string {
     stats.pinned > 0 ? `${stats.pinned} 件を固定` : '',
   ].filter(Boolean);
   return `${percent(reductionRatio(result))} に削減。${
-    parts.join(', ') || 'ツール呼び出しなし'
+    parts.join('、') || 'ツール呼び出しなし'
   }。状態は約 ${stats.stateTokens} トークン（${stats.stateStage}）、計 ${stats.requests} 回のリクエスト`;
 }
 
