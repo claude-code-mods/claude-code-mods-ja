@@ -504,7 +504,7 @@ export function register(on) {
     }
     await checkProposal($, c)
     // `immediate`: /agentctl stop must run while the turn it cancels is still in flight.
-    await $.command.register({ name: 'agentctl', description: 'Agent Control Plane — describe the work and Claude drafts a scope you accept', argumentHint: '<what you are doing> | accept <digest> | help', immediate: true })
+    await $.command.register({ name: 'agentctl', description: 'エージェント制御：作業を説明すると Claude が範囲の草案を作り、あなたが承認します', argumentHint: '<what you are doing> | accept <digest> | help', immediate: true })
     $.ui.invalidate('ui.render')
     return next(e)
   })

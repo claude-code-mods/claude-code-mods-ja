@@ -3649,7 +3649,7 @@ export const register: Register = (on, options) => {
     return (
       <Box flexDirection="column">
         {drawn}
-        <Markdown key="filetree-refs" dimColor text={`in the file tree: ${links.map(l => `[${l.label.replace(/[[\]]/g, '\\$&')}](${l.href})`).join('  ')}`} pressableLinks={links.map(l => l.href)} onLinkPress={(link, p) => void openRef($, link.href, p.surface)} />
+        <Markdown key="filetree-refs" dimColor text={`ファイルツリー内：${links.map(l => `[${l.label.replace(/[[\]]/g, '\\$&')}](${l.href})`).join('  ')}`} pressableLinks={links.map(l => l.href)} onLinkPress={(link, p) => void openRef($, link.href, p.surface)} />
       </Box>
     )
   })

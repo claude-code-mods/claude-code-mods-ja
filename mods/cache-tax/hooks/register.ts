@@ -585,7 +585,7 @@ async function ping($: EngineInterface, s: State) {
   // Checked after the last await. A stop, /clear, resume or compaction, or a main request that moved the
   // cache clock, replaced what this fork was sent for: its reply is dropped and the window armed afresh.
   if (gen !== s.gen || s.lastRequestAt !== sentAt) return s.pending ? undefined : arm($, s)
-  if ('err' in sent) return stop($, s, `the ping failed, ${sent.err instanceof Error ? sent.err.message : String(sent.err)}`)
+  if ('err' in sent) return stop($, s, `ping に失敗しました：${sent.err instanceof Error ? sent.err.message : String(sent.err)}`)
   const reply = sent.reply
   if (reply === null) return stop($, s, 'the engine did not send the ping, either the snapshot was cold or the API call failed')
   if (reply.isAnswered === false) {
