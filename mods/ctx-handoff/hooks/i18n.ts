@@ -2,7 +2,7 @@
 // 不放這裡：給模型的提示、經驗檔的格式與標記（NOTE_TAG、標題、做法／理由／根據、規則行）、store 的鍵——那些是資料，改了會讀不了舊檔。
 // 有參數的訊息寫成函式；zh-TW 是原文，en 的型別跟著它，少一條就編譯不過。
 
-export type Lang = 'en' | 'zh-TW'
+export type Lang = 'en' | 'zh-TW' | 'ja'
 
 let current: Lang = 'en'
 export const setLang = (lang: Lang) => { current = lang }
@@ -11,12 +11,14 @@ export const t = (): Messages => MSG[current]
 
 // 設定值或語系字串是不是中文（zh、zh_TW.UTF-8、繁體中文、Traditional Chinese…）
 export const isChinese = (s: string) => /^zh|chinese|中文|繁體|繁体|台灣|taiwan/i.test(s.trim())
+const JA = /^ja(?:-|[_ ]|$)|japanese|日本語|日本语|日语|日語|nihongo/i
+
 
 // 選介面語言：Claude Code 的 language 設定（使用者明確選的）優先，沒設就看系統語系。
 // 系統語系在 Linux／macOS 跟著 LANG，在 Windows 是作業系統的顯示語言；Git Bash 的 LANG 常是 en_US，不能拿來判斷
 export const pickLang = (setting: unknown, systemLocale: string | undefined): Lang => {
-  if (typeof setting === 'string' && setting.trim()) return isChinese(setting) ? 'zh-TW' : 'en'
-  return systemLocale && isChinese(systemLocale) ? 'zh-TW' : 'en'
+  if (typeof setting === 'string' && setting.trim()) return isChinese(setting) ? 'zh-TW' : JA.test(setting) ? 'ja' : 'en'
+  return systemLocale && isChinese(systemLocale) ? 'zh-TW' : systemLocale && JA.test(systemLocale) ? 'ja' : 'en'
 }
 
 const s = (n: number) => (n === 1 ? '' : 's')
@@ -433,6 +435,419 @@ const zh = {
     typeLabel: { user: '好み', feedback: '修正', project: '事実', reference: '位置' } as Record<string, string>,
   },
 }
+const ja: Messages = {
+  ind: '　',
+  bullet: '・',
+  list: '、',
+  slashList: ' ／ ',
+  fieldLabel: (line: string) => line,
+  guardMatch: (tool: string, match: string, unless?: string) => `${tool} が /${match}/ に一致${unless ? ` かつ /${unless}/ に不一致` : ''}`,
+
+  // 用量一行
+  usage: (input: string, read: string, ratio: string, write: string, plain: string, output: string, sec: string) =>
+    `入力 ${input}（キャッシュ読込 ${read} = ${ratio}%、書込 ${write}、未キャッシュ ${plain}）・出力 ${output}・${sec}s`,
+
+  // fork／整理的失敗原因
+  fork: {
+    timeout: 'timeout：fork が時間内に応答せず、待機を打ち切りました',
+    nothingToFork: 'nothing-to-fork：このセッションは再起動直後または /clear 直後で、引き継げるリクエストがありません。メッセージを1件送って返答を待ってから再試行してください',
+  },
+
+  // 產生交接
+  handoff: {
+    failedLog: (why: string) => `handoff 生成失敗：${why}`,
+    failedToast: 'handoff 生成失敗',
+    failGenerate: (why: string) => `生成失敗：${why}`,
+    savedLog: (kind: string, usage: string) => `handoff（${kind}）${usage}`,
+    dropped: (reason: string) => `破棄：${reason}`,
+    reasonClear: (r: string) => `clear 失敗：${r}`,
+    reasonSubmit: (r: string) => `送信失敗：${r}`,
+    reasonException: (r: string) => `例外：${r}`,
+    reasonStage: (stage: string, r: string) => `${stage} 失敗：${r}`,
+    resubmitFailed: (r: string) => `handoff 中に受信したメッセージの再送に失敗：${r}`,
+    clearFailedLog: (r: string) => `/clear 失敗：${r}`,
+    submitFailedLog: (r: string) => `送信失敗：${r}`,
+    submitFailedToast: 'handoff は生成されましたが送信に失敗しました。/handoff resend で再送してください',
+    failedAll: (r: string) => `交接失敗：${r}`,
+    failedCleanup: (r: string) => `交接失敗後の後処理にも失敗：${r}`,
+    whyManual: '手動で /handoff now を実行',
+    whyTokens: (tokens: number) => `context が ${tokens} tokens に到達`,
+    // 送進新對話的第一則：誰、為什麼、請 AI 做什麼
+    intro: (why: string) =>
+      `前回の対話は${why}のため、自動で /clear しました。以下が handoff です：読み終えたら、現状と次のステップを数行で報告し、ユーザーの指示を待ってください。勝手に作業しないでください。`,
+    introHeld: (why: string) =>
+      `前回の対話は${why}のため、自動で /clear しました。以下が handoff と交接中にユーザーが送ったメッセージです：handoff の流れに沿って、最後に添付されたユーザーのメッセージに応答してください。`,
+    note: (note: string) => `（${note}）`,
+    heldHead: '---\n交接中に受信したユーザーのメッセージ：',
+  },
+
+  background: {
+    pause: 'このセッションの離席作業を一時停止',
+    resume: 'このセッションの離席作業を再開',
+    bound: (file: string, sid: string) => `ワークスペースメモ：${file}；このセッション ${sid}`,
+    away: (paused: boolean, next?: number) => `離席作業${paused ? '一時停止中' : '有効'}；${next === undefined ? 'タイマー未設定' : `次回 ${new Date(next).toLocaleString()}`}`,
+    task: (label: string, sid: string, phase: string, at: number) => `${label}：${phase}（出所 ${sid}、${new Date(at).toLocaleTimeString()} 開始）`,
+    distill: 'メモ整理', handoff: '交接／更新', idle: '待機',
+    idleTask: (label: string) => `${label}：待機`,
+    phases: { refresh: 'キャッシュ更新', generating: '要約生成', submitting: '交接送信' },
+    collected: (at: number, usage: string, unknown: number) => `このセッションのバックグラウンド使用量（${new Date(at).toLocaleString()} 更新分から収集、請求額ではありません）：${usage}；使用量不明 ${unknown} 回`,
+    uncollected: 'このセッションのバックグラウンド使用量はまだ収集されていません；過去の支出がゼロという意味ではありません',
+    pending: (sid: string) => `未配達の交接出所 ${sid}；/handoff resend ${sid}`,
+    history: '最近の記録（診断履歴は復元可能な要約とは異なります）',
+  },
+  // 背景整理
+  distill: {
+    why: {
+      idle: 'アイドル更新',
+      away: '離席',
+      before: '交接前',
+      manual: '手動',
+      every: (n: number) => `${n} 件ごと`,
+    },
+    failLog: (why: string, reason: string) => `メモ整理失敗（${why}）：${reason}`,
+    timeout: (min: number) => `timeout：整理が ${min} 分以上応答せず、打ち切りました`,
+    edited: (file: string) => `整理中に経験ファイルが変更されたため、今回はスキップ：${file}`,
+    skipLog: (why: string, reason: string) => `メモ整理（${why}）：${reason}`,
+    waiting: (why: string) => `メモ整理（${why}）：整理がすでに実行中です。その後に回します；この対話は先に読み込み済み`,
+    doneLog: (why: string, changes: number, rejected: number, file: string) =>
+      `メモ整理（${why}）：${changes} 件変更${rejected ? `、無効出力 ${rejected} 行を破棄` : ''}${changes ? `；${file} に書込` : ''}`,
+    queued: (n: number) => `${n} 件の変更を次のメッセージに回しました`,
+    toast: (n: number, queued: boolean, file: string) => `メモを ${n} 件更新${queued ? '、次のメッセージに伴って適用' : ''}：${file}`,
+    writeFailed: (err: string) => `ファイル書込失敗：${err}`,
+    noUsableActions: '整理出力に採用できるアクションがありません；この対話を次回リトライ用に保持しました',
+    retryLost: '前回部分書込の対話終端が見つかりません；整理を停止し、メモと進捗は上書きしません',
+    retryCleanup: (err: string) => `整理は完了しましたが、リトライ終端のクリーンアップに失敗：${err}`,
+  },
+
+  // 狀態列
+  status: {
+    running: 'メモを整理中…',
+    left: (n: number) => `あと ${n} 件でメモ整理`,
+    short: '対話が短いため、メモ整理はまだ行いません',
+    next: '次のメッセージ後にメモ整理',
+    deferred: (parts: string) => `handoff 延期：${parts}`,
+  },
+
+  // /handoff 的整理狀態區塊
+  distillStatus: {
+    head: (on: string, every: number) => `バックグラウンド整理 ${on}（アイドル更新、離席、交接前、${every} 件ごと）`,
+    next: (left: number, idleMin: number) => `次回：あと ${left} 件、またはアイドル ${idleMin} 分、または交接前`,
+    last: (at: string, why: string, n: number) => `前回：${at}・${why}・${n} 件変更`,
+    lastNone: '前回：なし',
+    rejected: (n: number, samples: string) => `無効出力 ${n} 行を破棄：${samples}`,
+    failed: (at: string, why: string, reason: string) => `前回失敗：${at}・${why}・${reason}`,
+    notes: (file: string, memory: number, rules: number, injected: number) =>
+      `ワークスペース経験：${file}（メモ ${memory} 件、ルール ${rules} 件、新対話に持ち込むルール ${injected} 件）`,
+    procedures: (n: number, inProject: number) => `ワークスペース手順：${n} 件（プロジェクト skill またはドキュメントに組込済み ${inProject} 件；手順は新対話に持ち込みません）`,
+    tiers: (full: number, titles: number, archived: number, days: number) =>
+      `メモの持ち込み：好みと修正 ${full} 件は全文、事実と位置 ${titles} 件はタイトルのみ、封存 ${archived} 件（${days} 日以上未確認のため持ち込みません）`,
+  },
+
+  // 閒置刷新與離席
+  idle: {
+    refreshSkipped: 'キャッシュ更新スキップ：現在の process に fork 対象のリクエストがありません。次の主対話の応答後にアイドル計時を開始します',
+    refresh: (n: number, max: number, read: number, create: number) => `キャッシュ更新 ${n}/${max} cache_read=${read} cache_creation=${create}`,
+    refreshFailed: (n: number, max: number, reason: string) => `キャッシュ更新 ${n}/${max} 失敗：${reason}`,
+    awaySavedLog: (tokens: number) => `離席 handoff を保存済み（${tokens} tokens）、自動 /clear しません`,
+    awaySavedToast: '離席 handoff を保存済み',
+    outdated: '対話が続行されたため、古い離席 handoff を削除しました',
+  },
+
+  // 背景工作與延後
+  stop: {
+    tasks: (n: number) => `バックグラウンドタスク ${n} 件`,
+    oneShot: (n: number) => `ワンショット予定 ${n} 件`,
+    agents: (n: number) => `サブエージェント ${n} 件`,
+    deferral: (parts: string, cap: number) => `${parts}がまだ動いています。終了を待ってから交接します（上限 ${cap} tokens）`,
+    deferLog: (tokens: number, parts: string) => `context ${tokens} が閾値に達しましたが、${parts}があるため、終了を待ってから交接します`,
+    note: (parts: string, cap: number) => `交接時に${parts}がまだ実行中です。context は上限 ${cap} に達しました`,
+    capLog: (tokens: number, cap: number, parts: string) => `context ${tokens} が上限 ${cap} に達したため、${parts}を待たずに直接交接します`,
+    retryLog: (tokens: number) => `context ${tokens} が閾値に達しましたが、前回の交接失敗から間もないため、少し後に再試行します`,
+    stopFailed: (err: string) => `Stop 判定失敗：${err}`,
+  },
+
+  // 防呆提醒
+  loops: {
+    doneLog: '完了を報告しましたが、このターンでファイルを変更した後にテストやチェックを実行していません。先に検証するよう AI に依頼しました',
+    rewriteLog: '最後の返答が指定言語ではありませんでした。AI に一度書き直させました',
+    status: (retry: string, done: string, reply: string) => `防呆リマインダー：繰り返し失敗 ${retry}、完了前検証 ${done}、返答言語 ${reply}`,
+  },
+
+  // 進度備忘
+  progress: {
+    status: (at: string, task: string, state: string, hintOff: boolean) => `最近の進捗：${at}・${task}（${state}）${hintOff ? '・新対話ではヒントを出しません（resume_hint はオフ）' : ''}`,
+    states: { done: '完了', in_progress: '進行中', blocked: 'ブロック中' } as Record<string, string>,
+  },
+
+  // session 啟動
+  start: {
+    description: 'ctx-handoff：状態；panel／now／dry／distill／resume／continue／resend／away／guard／refresh',
+    taken: (err: string) => `/handoff は使用中です（${err}）。/ctx-handoff を使ってください`,
+    registerFailed: (err: string) => `コマンド登録失敗：${err}`,
+    resumeFailed: (err: string) => `アイドル計時の再開に失敗：${err}`,
+    pruneFailed: (err: string) => `起動時の store 整理に失敗：${err}`,
+  },
+
+  // 送出訊息時的提示
+  submit: {
+    wait: (sec: number, max: number) => `${sec} 秒経過。通常 1 分以内に完了、最長約 ${max} 分`,
+    attach: '画像などの添付は一時保存できません。交接完了後に貼り直してください。',
+    busy: (wait: string, attach: string) => `交接中（${wait}）。${attach}`,
+    dup: (wait: string, attach: string) => `交接中（${wait}）。このメッセージはすでに一時保存済みで、重複送信されません。${attach}`,
+    held: (wait: string, attach: string) => `交接中（${wait}）、このメッセージは一時保存済みで、新しい対話で一緒に送信されます。${attach}`,
+    pendingToast: '未配達の handoff があります。/handoff resend で再送してください',
+    awayAttach: '離席 handoff が1件あります。旧対話のキャッシュは期限切れです。画像などの添付は一時保存できません：先に /handoff resume（新対話を開く）または /handoff continue（旧対話に残る）を実行し、その後貼り直してください。',
+    awayHeld: (hasAttach: boolean) =>
+      '離席 handoff が1件あります。旧対話のキャッシュは期限切れです。/handoff resume：新対話で引き継ぎ、このメッセージも持ち込みます；/handoff continue：旧対話でこのメッセージを送信します（またはもう一度送り直してください）。' +
+      (hasAttach ? 'テキストのみ一時保存しました。画像などの添付は選択後に貼り直してください。' : ''),
+  },
+
+  // 守門
+  guard: {
+    state: { proposed: '下書き', on: '有効', off: '無効' },
+    mode: { deny: 'ブロック', remind: 'リマインド' },
+    checkFailed: (err: string) => `ガード比較失敗、通過させます：${err}`,
+    head: (id: number, rule: string, message: string) => `ガード #${id}（${rule}）：${message}`,
+    denyToast: (id: number, tool: string, rule: string) => `ガード #${id} が ${tool} をブロック：${rule}`,
+    denyHint: (id: number) => `ユーザーがそのまま実行したい場合は、先に /handoff guard off ${id} を実行してください。`,
+    noCandidates: (min: number) => `repo に書いた後に訂正されたルール、または repo に入れなかったのに ${min} 回以上言及されたのにガードがないルールはありません`,
+    suggestFailed: (reason: string) => `ガード提案失敗：${reason}`,
+    autoFailed: (reason: string) => `ガードの自動下書き失敗：${reason}`,
+    autoDrafted: (n: number) => `${n} 件のガードを下書きしました。次の新対話で Claude が採用するか尋ねます`,
+    suggested: (rules: number, drafts: number) => `${rules} 件のルールを確認し、${drafts} 件のガード下書きを提案しました（まだ有効ではありません。/handoff guard on N で承認）`,
+    droppedLines: (n: number, list: string) => `${n} 行を破棄：${list}`,
+    none: (min: number) => `ガード：なし（repo に書いた後に訂正されたルール、または repo に入れなかったのに ${min} 回以上のルールは自動下書きされ、Claude が尋ねます。/handoff guard suggest も使えます）`,
+    listHead: 'ガード：',
+    entry: (id: number, state: string, mode: string, rule: string, hits: number) => `#${id} [${state}・${mode}] ${rule}（発火 ${hits} 回）`,
+    example: (bad: string, good: string) => `例：「${bad}」をブロック、「${good}」を許可`,
+    replay: (calls: number, hits: number) => `提案時の試合致：この対話の ${calls} 回のツール呼び出し中 ${hits} 回がヒット`,
+    recentHits: '最近のヒット（本当にリマインドすべきか確認。誤検知が多いなら範囲を狭めるか無効化）：',
+    usage: '使い方 /handoff guard [suggest | on N | off N | mode N deny|remind | drop N]',
+    missing: (id: string) => `ガード #${id} はありません`,
+    changed: (id: number, dropped: boolean) => `ガード #${id} を${dropped ? '削除' : '更新'}しました`,
+    summary: (on: number, draft: number, off: number) => `ガード：有効 ${on}、下書き ${draft}、無効 ${off}`,
+    summaryMore: (n: number, min: number) => `；${min} 回以上出現しているのにガードがないルールが ${n} 件あります（/handoff guard suggest）`,
+    panelDone: (id: number, action: 'on' | 'off' | 'drop') => `ガード #${id} を${action === 'on' ? '承認' : action === 'off' ? '無効化' : '削除'}しました`,
+    parse: {
+      noMarker: 'ACTIONS マーカーが見つかりません',
+      notCandidate: 'rule は候補ルールではありません',
+      badTool: 'tool の形式が正しくありません',
+      missingFields: 'match／message／mode が不足しています',
+      tooLong: 'regex が長すぎます',
+      missingExamples: 'bad／good の例が不足しています',
+      badNotBlocked: '違反例がブロックされていません',
+      goodBlocked: '正しい例もブロックされてしまいます',
+      duplicate: '同じルールが重複しています',
+      wrap: (line: string, why: string) => `${line}（${why}）`,
+    },
+  },
+
+  // 面板的指令與動作回覆
+  panelCmd: {
+    opened: 'パネルを開きました（入力欄の上）：ボタンを直接クリックするか、ctrl+x tab でキーボード操作。もう一度 /handoff panel で閉じます',
+    closed: 'パネルを閉じました',
+    readFailed: (err: string) => `パネルデータの読み取り失敗：${err}`,
+    failed: (err: string) => `失敗：${err}`,
+    busyKeep: 'メモ整理中です。少し待ってから再試行してください',
+    busyDrop: 'メモ整理中です。少し待ってから削除してください',
+    notFound: 'この項目は見つかりません。経験ファイルが最近変更された可能性があります',
+    kept: (title: string) => `保持：${title}（新対話への持ち込みを復活）`,
+    deleted: (kind: 'm' | 'r' | 'p', name: string, dir: string) =>
+      `${kind === 'm' ? 'メモ' : kind === 'r' ? `ルール「${name}」` : `手順「${name}」`}を削除しました（元ファイルは ${dir}/.ctx-handoff-backup/ にバックアップ済み）`,
+    settingSet: (name: string, value: string) => `${name}：${value}（他のセッションは次のメッセージで適用）`,
+    settingReset: (name: string, value: string) => `${name} を settings.json またはデフォルト値に戻しました：${value}`,
+  },
+
+  // 整理的變動（寫進紀錄、toast、面板，也會跟著下一則訊息帶入）
+  change: {
+    addMemory: (head: string) => `メモ追加：${head}`,
+    updateMemory: (head: string) => `メモ更新：${head}`,
+    confirmMemory: (head: string) => `メモ確認：${head}`,
+    deleteMemory: (head: string) => `メモ削除：${head}`,
+    addRule: (name: string, rule: string) => `新ルール：${name}（出現 1 回）：${rule}`,
+    confirmRule: (name: string, count: number) => `ルール確認：${name} → 出現 ${count} 回`,
+    updateRule: (name: string) => `ルール更新：${name}`,
+    deleteRule: (name: string) => `ルール削除：${name}`,
+    addProcedure: (name: string, steps: number) => `新手順：${name}（${steps} ステップ、出現 1 回）`,
+    confirmProcedure: (name: string, count: number) => `手順確認：${name} → 出現 ${count} 回`,
+    updateProcedure: (name: string) => `手順更新：${name}`,
+    deleteProcedure: (name: string) => `手順削除：${name}`,
+    inProject: (name: string, where: string) => `repo に配置：${name} → ${where}`,
+    notInProject: (name: string) => `ユーザーは repo に配置しない：${name}`,
+    guardApproved: (id: number, rule: string) => `ユーザーがガード #${id} を採用：${rule}`,
+    guardDeclined: (id: number, rule: string) => `ユーザーがガード #${id} を却下：${rule}`,
+  },
+
+  // 整理輸出被丟棄的原因（記進樣本，/handoff 看得到）
+  reject: {
+    over: (k: string, max: number) => `${k} が ${max} 文字を超えています`,
+    overJoin: '、',
+    idNot: (kind: string) => `id が ${kind}# ではありません`,
+    noId: (id: string) => `番号 ${id} はありません`,
+    whereMissing: (where: string) => `repo に ${where} がありません`,
+    buried: (title: string) => `ユーザーが「${title}」を削除しましたが、ユーザーが再度言及した原文が添付されていません`,
+    badType: (type: string) => `type が無効です（${type}）`,
+    missing: (names: string) => `${names} が不足しています`,
+    quoteNotFound: 'quote がユーザーのメッセージにありません',
+    quoteMissing: (type: string) => `${type} タイプにユーザー原文の quote が不足しています`,
+    badOp: (op: string) => `認識できない op（${op}）`,
+    badSteps: (min: number, max: number) => `steps は ${min}〜${max} 個の非空文字列である必要があります`,
+    noMarker: (marker: string) => `${marker} マーカーが見つかりません`,
+    badJson: (msg: string) => `JSON 形式エラー（${msg}）`,
+    notObject: 'JSON オブジェクトではありません',
+    secret: '秘密鍵の疑いがあります',
+    badState: (v: string) => `state が無効です（${v}）`,
+    badFiles: 'files が一覧ではありません',
+    badList: (field: string) => `${field} が一覧ではありません`,
+    tooMany: (k: string, max: number) => `${k} が ${max} 件を超えています`,
+    overTotal: (max: number) => `進捗全体が ${max} 文字を超えています`,
+    noRecord: '（内容は記録しません）',
+    sample: (why: string, line: string) => `${why}：${line}`,
+  },
+
+  // /handoff 指令的回覆
+  cmd: {
+    unknown: (sub: string) => `「${sub}」は認識できません`,
+    usageHead: '使い方：',
+    usageLines: [
+      '  /handoff                  状態',
+      '  /handoff now              今すぐ handoff を生成して /clear',
+      '  /handoff dry              handoff を試生成（/clear なし）',
+      '  /handoff distill          このワークスペースの経験を今すぐ整理',
+      '  /handoff resume           離席 handoff で新対話を開いて引き継ぐ（/clear あり）',
+      '  /handoff continue         離席 handoff を破棄し、旧対話でブロックされていたメッセージを送信',
+      '  /handoff resend [source-session-id] 未配達 handoff を再送；再起動後は出所を指定',
+      '  /handoff away pause|resume このセッションの離席作業を一時停止／再開。メモ整理は通常通り',
+      '  /handoff refresh on|off    アイドル時のキャッシュ更新のオン／オフ',
+      '  /handoff distill on|off    バックグラウンド整理のオン／オフ',
+      '  /handoff panel            入力欄上のパネルのオン／オフ：最近の整理変更、誤ったメモの削除、ガード承認、設定調整',
+      '  /handoff guard           ガード一覧；suggest で常犯ルールから下書き；on|off|drop N；mode N deny|remind',
+    ],
+    context: (tokens: string, threshold: number, window: number) => `context ${tokens} / 閾値 ${threshold}（ウィンドウ ${window}）`,
+    refresh: (on: string, n: number, max: number, timer: boolean) =>
+      `キャッシュ更新 ${on}、今回アイドルで ${n}/${max} 回更新、タイマー${timer ? '待機中' : '未起動'}`,
+    away: (state: 'none' | 'yes' | 'held') => `離席 handoff：${state === 'none' ? 'なし' : state === 'yes' ? 'あり' : 'あり（メッセージを1件ブロック中）'}`,
+    latest: (last: { at: string; kind: string; tokens: string } | undefined) =>
+      `最新の handoff：${last ? `${last.at} ${last.kind}、context ${last.tokens}` : 'なし'}`,
+    latestFailure: (at: string, kind: string, reason: string) => `最新の失敗：${at} ${kind}、${reason}`,
+    undelivered: '未配達の handoff：あり（/handoff resend で再送）',
+    deferred: (deferral: string) => `handoff 延期：${deferral}`,
+    background: (tasks: number, oneShot: number, recurring: number) => `バックグラウンド（前回 Stop）：作業 ${tasks}、ワンショット予定 ${oneShot}、ループ予定 ${recurring}`,
+    busy: '別の handoff を処理中です',
+    nowStarted: 'handoff を生成中。続いて /clear してから送信します',
+    dryFailed: '試生成失敗。原因は上の記録を参照してください',
+    dryDone: (tokens: string) => `試生成完了（/clear なし）、context ${tokens}`,
+    distillSet: (arg: string) => `バックグラウンド整理を ${arg} に設定しました`,
+    distillUsage: '使い方 /handoff distill（今すぐ整理）または /handoff distill on|off',
+    distilling: '整理中です',
+    distillNone: '整理なし：前回の整理以降に新しいメッセージがないか、整理に失敗しました',
+    distillDone: '整理完了',
+    refreshNow: (on: string) => `現在 ${on}；使い方 /handoff refresh on|off`,
+    refreshSet: (arg: string, minutes: number) => `キャッシュ更新を ${arg} に設定しました${arg === 'off' ? `（アイドル ${minutes} 分で離席 handoff を直接生成）` : ''}`,
+    noAway: '離席 handoff はありません',
+    resumeIntro: '前回の対話がアイドル後に handoff を生成し、新対話を開きました。読み終えたら、現状と次のステップを数行で報告し、ユーザーの指示を待ってください。',
+    resumeIntroHeld: '前回の対話がアイドル後に handoff を生成し、新対話を開きました。handoff の流れに沿って、最後に添付されたユーザーのメッセージに応答してください。',
+    resumeHeld: '---\nユーザーが戻った後の最初のメッセージ：',
+    resumeFailedLog: (r: string) => `/clear または送信に失敗：${r}`,
+    resumeClearFailed: '/clear 失敗。離席 handoff は保持済みです。再度 /handoff resume できます',
+    resuming: 'まもなく /clear して離席 handoff を送信します',
+    resendIntro: '前回の handoff を再送します。読み終えたら、現状と次のステップを数行で報告し、ユーザーの指示を待ってください。勝手に作業しないでください。',
+    nothingToResend: 'このセッションに再送できる handoff はありません',
+    pendingUnbound: 'この旧版の未配達記録にはワークスペース出所がありません。安全に再送できないため、元の記録は保持します',
+    awayUsage: '使い方 /handoff away pause|resume（このセッションの離席作業のみ制御。メモ整理は止めません）',
+    commandFailed: (err: string) => `コマンド失敗、完了報告なし：${err}`,
+    awayChanged: (paused: boolean): string => paused ? 'このセッションの離席作業を一時停止しました；発行済みのリクエストは取り消せません。引き続き課金される可能性があり、遅れて届いた結果は採用しません。メモ整理には影響しません' : 'このセッションの離席作業を再開しました。今から再度計時します',
+    resendFailed: (err: string) => `再送失敗：${err}`,
+    resending: 'handoff を再送中（/clear なし）',
+    discarded: '離席 handoff を破棄し、旧対話を続けます',
+    discardedSend: '離席 handoff を破棄し、旧対話で先ほどのメッセージを送信しました',
+    sendHeldFailed: (err: string) => `ブロックされていたメッセージの送信に失敗：${err}`,
+  },
+
+  // 面板畫面
+  panel: {
+    title: '・プロジェクトメモとガード',
+    close: '閉じる',
+    more: '展開',
+    less: '折りたたむ',
+    del: '削除',
+    confirmDel: '削除の確認',
+    cancel: 'キャンセル',
+    keep: '保持',
+    off: '無効化',
+    approve: '承認',
+    draftBtn: '下書き作成',
+    // 一列右側按鈕佔的寬度（格）：展開＋確定刪除＋取消
+    buttonsCells: 28,
+    tabGuard: (n: number) => `ガード ${n}`,
+    tabMemory: (n: number) => `メモ ${n}`,
+    tabRules: (r: number, p = 0) => (p > 0 ? `ルール ${r}／手順 ${p}` : `ルール ${r}`),
+    tabDistill: '最近の整理',
+    tabSettings: '設定',
+    settingsHint: 'パネルで変更した値は settings.json より優先され、全ワークスペース共通です。「展開」で説明を表示',
+    source: { panel: 'パネル', file: 'settings.json', default: 'デフォルト' } as Record<string, string>,
+    on: 'オン',
+    offValue: 'オフ',
+    toggleBtn: '切替',
+    resetBtn: '復元',
+    minutes: (n: number) => `${n} 分`,
+    settingName: {
+      auto_handoff: '閾値到達で自動交接',
+      threshold: '交接閾値',
+      window_ratio: '小ウィンドウの閾値比率',
+      refresh: '離席中もキャッシュを保持',
+      idle_minutes: 'アイドル更新までの時間',
+      max_refresh: 'アイドルごとの最大更新回数',
+      away_handoff: '離席交接',
+      distill: 'プロジェクトメモ（バックグラウンド整理）',
+      distill_every: '何件ごとに整理するか',
+      min_tokens: '最小処理サイズ',
+      notes_model: '整理に使うモデル',
+      resume_hint: '新対話にどこで止まったかを伝える',
+      retry_nudge: '繰り返し失敗のリマインダー',
+      done_check: '完了前の検証',
+      reply_language: '返答言語のリマインダー',
+      language: 'UI 言語',
+    } as Record<string, string>,
+    settingHelp: {
+      auto_handoff: 'オフにすると閾値での交接を行わず、Claude Code 自身の compact に任せます',
+      threshold: 'context がこの tokens に達したとき新対話に交接します（自動交接をオンにする必要があります）',
+      window_ratio: 'ウィンドウが閾値より小さい場合、ウィンドウのこの比率で交接します',
+      refresh: '離席中、定期的に小さなリクエストを送ってキャッシュの期限切れを防ぎます',
+      idle_minutes: '最後にキャッシュを使った後、何分で更新するか（キャッシュは 60 分で期限切れ）',
+      max_refresh: 'この回数を超えると離席 handoff を生成し、戻ったときに続けます',
+      away_handoff: '更新を使い切るかオフにした後、離席 handoff を生成し、戻ったときに /handoff resume または continue を選択。オフなら何もしません',
+      distill: 'N 件ごと、アイドル時、交接前にバックグラウンドでプロジェクトメモを整理します',
+      distill_every: 'ユーザーのメッセージがこの件数たまるごとにメモを整理。少ないほど即時性が上がりますが、リクエストが増えます',
+      min_tokens: 'これより小さい対話の再構築は安価なため、更新・整理・離席 handoff 生成を行いません',
+      notes_model: 'バックグラウンド整理に使うモデル（最低 Sonnet 5.5）；settings.json では他のモデルも指定可能',
+      resume_hint: '7 日以内に同じフォルダで新対話を開いたとき、Claude に前回どこで止まったかを伝えます',
+      retry_nudge: '同じツールが同じ理由で2回連続失敗した場合、Claude にやり方を変えるよう促します',
+      done_check: 'プログラムファイルを変更したのに通過済みのテストやチェックを実行せずに完了と言った場合、Claude に一度検証させます',
+      reply_language: 'Claude の説明がこの言語でない場合に一度リマインドします；auto は Claude Code の language に従います',
+      language: 'ステータスバー、ヒント、パネルの言語；auto は Claude Code の language に従い、未設定ならシステムロケールを見ます',
+    } as Record<string, string>,
+    noGuards: 'ガードはまだありません。ルールが 3 回以上出現すると、モデルに下書きを依頼できます。',
+    guardMeta: (id: number, mode: string, hits: number) => `#${id}・${mode}・発火 ${hits} 回`,
+    blockLabel: 'ブロック　',
+    allowLabel: '許可',
+    replay: (calls: number, hits: number) => `試合致：この対話の ${calls} 回のツール呼び出し中 ${hits} 回がヒット`,
+    recentHits: '最近のヒット（誤検知が多いなら範囲を狭めるか無効化）：',
+    suggesting: 'モデルに下書きを依頼中…',
+    candidates: (n: number) => `ガードのないルールが ${n} 件、3 回以上出現しています `,
+    memoryHint: (shown: number, total: number) => `最新 ${shown} 件（全 ${total} 件）・好みと修正は全文を新対話に持ち込み、事実と位置はタイトルのみ`,
+    archived: (n: number, days: number) => `封存 ${n} 件：${days} 日以上未確認のため、新対話に持ち込みません`,
+    noRules: 'ルールはまだありません',
+    ruleCount: (n: number) => `${n} 回`,
+    proceduresHint: (n: number) => `手順 ${n} 件・新対話には持ち込みません。3 回以上出現すると AI にプロジェクトの skill 化を依頼します`,
+    inProject: (project: string) => (project.startsWith('已在 ') ? `repo 内 ${project.slice(3)}` : 'プロジェクトに含めない'),
+    distillLine: (at: string, why: string, n: number) => `${at}・${why}・${n} 件変更`,
+    noDistill: '整理記録はまだありません',
+    footer: (file: string) => `ctrl+x tab の後に 1–5 でタブ切替・${file}`,
+    typeLabel: { user: '好み', feedback: '修正', project: '事実', reference: '位置' } as Record<string, string>,
+  },
+}
+
 export type Messages = typeof zh
 
 const en: Messages = {
@@ -827,4 +1242,4 @@ const en: Messages = {
   },
 }
 
-const MSG: Record<Lang, Messages> = { 'zh-TW': zh, en }
+const MSG: Record<Lang, Messages> = { 'zh-TW': zh, en, ja: ja }
